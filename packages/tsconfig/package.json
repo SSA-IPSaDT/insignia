@@ -1,0 +1,31 @@
+{
+    "name": "@insignia/tsconfig",
+    "version": "0.1.0",
+    "description": "Общие пресеты конфигурации TypeScript для монорепозитория Insignia",
+    "private": true,
+    "license": "UNLICENSED",
+    "author": "naylour",
+    "contributors": [
+        {
+            "name": "naylour"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/organization/insignia.git",
+        "directory": "packages/tsconfig"
+    },
+    "bugs": {
+        "url": "https://github.com/organization/insignia/issues"
+    },
+    "homepage": "https://github.com/organization/insignia/tree/master/packages/tsconfig#readme",
+    "keywords": [
+        "tsconfig",
+        "typescript",
+        "compiler",
+        "insignia"
+    ],
+    "files": [
+        "tsconfig.json"
+    ]
+}

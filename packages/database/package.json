@@ -1,0 +1,45 @@
+{
+    "name": "@insignia/database",
+    "version": "0.1.0",
+    "description": "Слой доступа к данным, схема моделей и миграции базы данных платформы Insignia",
+    "private": true,
+    "type": "module",
+    "license": "UNLICENSED",
+    "author": "naylour",
+    "contributors": [
+        {
+            "name": "naylour"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/organization/insignia.git",
+        "directory": "packages/database"
+    },
+    "bugs": {
+        "url": "https://github.com/organization/insignia/issues"
+    },
+    "homepage": "https://github.com/organization/insignia/tree/master/packages/database#readme",
+    "keywords": [
+        "database",
+        "postgres",
+        "prisma",
+        "kysely",
+        "orm",
+        "insignia"
+    ],
+    "main": "./src/index.ts",
+    "types": "./src/index.ts",
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "typecheck": "bun check"
+    },
+    "dependencies": {
+        "@insignia/contracts": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.4.4"
+    }
+}

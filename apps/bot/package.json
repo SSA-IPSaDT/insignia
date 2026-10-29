@@ -1,0 +1,39 @@
+{
+    "name": "@insignia/bot",
+    "version": "0.1.0",
+    "description": "Сервис бота автоматизации и интеграций платформы Insignia",
+    "private": true,
+    "type": "module",
+    "license": "UNLICENSED",
+    "author": "naylour",
+    "contributors": [
+        {
+            "name": "naylour"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/organization/insignia.git",
+        "directory": "apps/bot"
+    },
+    "bugs": {
+        "url": "https://github.com/organization/insignia/issues"
+    },
+    "homepage": "https://github.com/organization/insignia/tree/master/apps/bot#readme",
+    "keywords": [
+        "bot",
+        "telegram",
+        "automation",
+        "bun",
+        "typescript",
+        "insignia"
+    ],
+    "scripts": {
+        "dev": "bun run --watch src/index.ts",
+        "build": "bun build src/index.ts --outdir dist --target bun",
+        "typecheck": "bun check"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.4.4"
+    }
+}
