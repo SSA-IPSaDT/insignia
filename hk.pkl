@@ -1,0 +1,11 @@
+amends "package://github.com/jdx/hk/releases/download/v2.9.0/hk@2.9.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.9.0/hk@2.9.0#/Builtins.pkl"
+
+local linters = new Mapping {
+    ["check_case_conflict"] = Builtins.check_case_conflict
+    ["check_merge_conflict"] = Builtins.check_merge_conflict
+    ["check_added_large_files"] = Builtins.check_added_large_files
+    ["detect_private_key"] = Builtins.detect_private_key
+}
+
+steps = linters

@@ -1,0 +1,2 @@
+[secrets]
+APP_ENV = { value = "staging" }
