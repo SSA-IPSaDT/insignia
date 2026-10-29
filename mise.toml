@@ -1,0 +1,14 @@
+[tools]
+age = "1.3.2"
+"aqua:moonrepo/moon" = "2.6.4"
+bun = "1.4.4"
+fnox = "1.39.0"
+hk = "2.9.0"
+node = "26.12.0"
+
+[env]
+FNOX_AGE_KEY_FILE = "{{env.HOME | default(value=env.USERPROFILE)}}/.config/age/key.txt"
+
+[tasks.create-key]
+description = "Инициализация персонального ключа age для fnox"
+run = "bun run scripts/create-key.ts"

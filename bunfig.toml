@@ -1,0 +1,16 @@
+[fmt]
+tabWidth = 4
+useTabs = false
+singleQuote = true
+semi = true
+sortImports = true
+sortTailwindcss = true
+ignorePatterns = [
+    "dist/**",
+    "out/**",
+    "old/**",
+    "prisma/generated/**",
+    "prisma/migrations/**",
+    "prisma/schemas/**",
+    "bun.lock",
+]
