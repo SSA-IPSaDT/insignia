@@ -41,3 +41,30 @@ description: Verifies adherence to Insignia code conventions including arrow fun
         ```typescript
         const user = await api.get('users/me').json<UserDto>();
         ```
+
+5. **Обязательное тестирование (`bun:test`)**:
+    - Любая продуктовая логика, схемы контрактов, роуты и утилиты должны сопровождаться модульными тестами:
+        ```typescript
+        import { describe, expect, test } from 'bun:test';
+
+        describe('User Module', () => {
+            test('validates user DTO correctly', () => {
+                expect(userDtoSchema.safeParse(data).success).toBe(true);
+            });
+        });
+        ```
+    - Запуск тестов: `bun test` или `moon run :test`.
+
+6. **Секреты и локальная разработка (`fnox.local.toml`)**:
+    - Локальные токены и переопределения переменных сохраняются через скрипт:
+        ```bash
+        bun run fnox:set BOT_TOKEN 123456:ABC-DEF
+        ```
+    - Запрещено коммитить секреты или сырые `.env` файлы в репозиторий.
+
+7. **Избирательный запуск сервисов (Moonrepo)**:
+    - Разработчик запускает только нужный для его роли стек:
+        - `bun run dev:api` — только бэкенд API (`apps/api`).
+        - `bun run dev:bot` — бот вместе с API (`apps/bot` + `apps/api`).
+        - `bun run dev:web` — веб-интерфейс вместе с API (`apps/web` + `apps/api`).
+        - `bun run dev:all` — весь стек целиком.

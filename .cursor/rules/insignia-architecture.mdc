@@ -13,5 +13,7 @@ globs: *
 - **Environment**: Use typed schemas from `@insignia/env` (e.g. `apiEnv`, `botEnv`), never raw `process.env`.
 - **Logging**: Use `@insignia/logger` with namespaces (`createLogger('api')`).
 - **Functions**: Always use modern ECMAScript **arrow functions** (`const fn = () => ...`). Avoid `function` keyword except generators.
-- **Human Confirmation**: Ask explicit confirmation before structural refactoring, migrations, or deleting files.
-- **Verification**: Always run `bun fmt` and `bun check` before finishing work.
+- **Selective Runners**: Developers launch only their scoped stack via `bun run dev:api` (API only), `bun run dev:bot` (API + Bot), or `bun run dev:web` (API + Web).
+- **Testing Standard**: Every business logic, API route, bot command, or contract schema MUST be accompanied by unit/integration tests (`bun:test`).
+- **Feature-First (Docs Freeze)**: Do not create new documentation/ADR/process files until the first vertical slice (bot/web <-> api <-> database) is built. Focus on productive code.
+- **Verification**: Always run `bun fmt`, `bun check`, `bun test`, and `hk check` before finishing work.
