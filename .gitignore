@@ -37,5 +37,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .moon/cache
 .moon/docker
 
-# skills (agent skills directory)
-skills/
+# system generated skills
+skills/system/

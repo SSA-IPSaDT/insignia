@@ -1,0 +1,12 @@
+# Insignia Project Rules for AI Assistants
+
+- **Language & Runtime**: TypeScript 5+ (Strict Mode), Bun 1.4+.
+- **Package Manager & Orchestrator**: Bun workspaces, Moonrepo (`moon run <project>:<task>`).
+- **Core Principle**: Respect package boundaries. `apps/*` NEVER import from other `apps/*`.
+- **Contracts**: All API DTOs and Zod validation schemas belong in `packages/contracts`.
+- **Database**: `packages/database` contains only Prisma and raw client, NO business logic.
+- **Environment**: Use typed schemas from `@insignia/env` (e.g. `apiEnv`, `botEnv`), never raw `process.env`.
+- **Logging**: Use `@insignia/logger` with namespaces (`createLogger('api')`).
+- **Functions**: Always use modern ECMAScript arrow functions (`const fn = () => ...`). Avoid `function` keyword except generators.
+- **Human Confirmation**: Ask explicit confirmation before structural refactoring, migrations, or deleting files.
+- **Verification**: Always run `bun fmt` and `bun check` before finishing work.
