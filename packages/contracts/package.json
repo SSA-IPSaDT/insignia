@@ -5,10 +5,16 @@
     "private": true,
     "type": "module",
     "license": "UNLICENSED",
-    "author": "naylour",
+    "author": {
+        "name": "naylour",
+        "email": "naylour@tuta.io",
+        "url": "https://github.com/naylour"
+    },
     "contributors": [
         {
-            "name": "naylour"
+            "name": "naylour",
+            "email": "naylour@tuta.io",
+            "url": "https://github.com/naylour"
         }
     ],
     "repository": {

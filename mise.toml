@@ -9,6 +9,10 @@ node = "26.12.0"
 [env]
 FNOX_AGE_KEY_FILE = "{{env.HOME | default(value=env.USERPROFILE)}}/.config/age/key.txt"
 
+[tasks.setup]
+description = "Автоматическая первоначальная настройка окружения разработчика"
+run = "bun run scripts/setup.ts"
+
 [tasks.create-key]
 description = "Инициализация персонального ключа age для fnox"
 run = "bun run scripts/create-key.ts"

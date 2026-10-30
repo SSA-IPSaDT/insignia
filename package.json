@@ -5,10 +5,21 @@
     "private": true,
     "type": "module",
     "license": "UNLICENSED",
-    "author": "naylour",
+    "author": {
+        "name": "naylour",
+        "email": "naylour@tuta.io",
+        "url": "https://github.com/naylour"
+    },
     "contributors": [
         {
-            "name": "naylour"
+            "name": "naylour",
+            "email": "naylour@tuta.io",
+            "url": "https://github.com/naylour"
+        },
+        {
+            "name": "segn1s",
+            "email": "delissat3@gmail.com",
+            "url": "https://github.com/segn1s"
         }
     ],
     "repository": {
@@ -50,6 +61,7 @@
         "fmt:check": "bun fmt --check",
         "hk:check": "hk check",
         "hk:install": "hk install",
+        "setup": "bun run scripts/setup.ts",
         "create-key": "bun run scripts/create-key.ts"
     },
     "devDependencies": {

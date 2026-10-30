@@ -2,7 +2,7 @@
 
 - **Статус**: Принято
 - **Дата**: 2026-10-30
-- **Авторы**: Gemini, Naylour
+- **Авторы**: Gemini, naylour
 - **Область (Scope)**: infrastructure, apps/api, apps/bot, apps/web
 
 ---

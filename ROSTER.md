@@ -1,4 +1,4 @@
-# Структура команды и зоны ответственности (Team & Code Ownership)
+# Реестр личного состава и зоны ответственности (Roster & Code Ownership)
 
 Данный документ определяет роли участников команды платформы **Insignia**, границы их ответственности (Scope of Responsibility) и регламент внесения изменений.
 
@@ -10,7 +10,7 @@
 
 | Разработчик | GitHub     | Email                 | Роль                                 | Основная зона ответственности | Доступ к репозиторию     |
 | :---------- | :--------- | :-------------------- | :----------------------------------- | :---------------------------- | :----------------------- |
-| **Naylour** | `@naylour` | —                     | **Lead Architect / Core Maintainer** | Весь репозиторий (`all`)      | Полный (Full maintainer) |
+| **naylour** | `@naylour` | `naylour@tuta.io`     | **Lead Architect / Core Maintainer** | Весь репозиторий (`all`)      | Полный (Full maintainer) |
 | **segn1s**  | `@segn1s`  | `delissat3@gmail.com` | **Bot Service Contributor**          | `apps/bot/`                   | Сервис Telegram-бота     |
 
 ---

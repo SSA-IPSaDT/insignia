@@ -161,7 +161,7 @@ bun fmt
 - `refactor/` — рефакторинг кода без изменения внешнего поведения (`refactor/contracts-dto`).
 - `docs/` — добавление или изменение документации (`docs/onboarding-guide`).
 - `infra/` или `chore/` — инфраструктура, CI, обновление тулчейна (`infra/docker-redis`, `chore/bump-deps`).
-- `rfc/` или `proposal/` — межмодульные архитектурные предложения от контрибьюторов сервисов согласно [TEAM.md](TEAM.md) (`proposal/bot-webhook-proxy`).
+- `rfc/` или `proposal/` — межмодульные архитектурные предложения от контрибьюторов сервисов согласно [ROSTER.md](ROSTER.md) (`proposal/bot-webhook-proxy`).
 
 ### Формат коммитов (Conventional Commits)
 

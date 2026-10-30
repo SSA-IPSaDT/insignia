@@ -4,10 +4,16 @@
     "description": "Общие пресеты конфигурации TypeScript для монорепозитория Insignia",
     "private": true,
     "license": "UNLICENSED",
-    "author": "naylour",
+    "author": {
+        "name": "naylour",
+        "email": "naylour@tuta.io",
+        "url": "https://github.com/naylour"
+    },
     "contributors": [
         {
-            "name": "naylour"
+            "name": "naylour",
+            "email": "naylour@tuta.io",
+            "url": "https://github.com/naylour"
         }
     ],
     "repository": {
