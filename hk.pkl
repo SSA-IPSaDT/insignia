@@ -6,6 +6,9 @@ local linters = new Mapping {
     ["check_merge_conflict"] = Builtins.check_merge_conflict
     ["check_added_large_files"] = Builtins.check_added_large_files
     ["detect_private_key"] = Builtins.detect_private_key
+    ["check_symlinks"] = Builtins.check_symlinks
+    ["mixed_line_ending"] = Builtins.mixed_line_ending
+    ["check_executables_have_shebangs"] = Builtins.check_executables_have_shebangs
 }
 
 steps = linters
