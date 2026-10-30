@@ -26,6 +26,9 @@
         "insignia"
     ],
     "files": [
-        "tsconfig.json"
+        "tsconfig.json",
+        "base.json",
+        "bun.json",
+        "web.json"
     ]
 }
