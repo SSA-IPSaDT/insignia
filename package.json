@@ -71,7 +71,8 @@
         "hk:check": "hk check",
         "hk:install": "hk install",
         "setup": "bun run scripts/setup.ts",
-        "create-key": "bun run scripts/create-key.ts"
+        "create-key": "bun run scripts/create-key.ts",
+        "fnox:set": "bun run scripts/fnox-set.ts"
     },
     "devDependencies": {
         "@types/bun": "^1.4.4"

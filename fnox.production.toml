@@ -1,2 +1,6 @@
+[providers.default]
+type = "age"
+recipients = ["age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9"]
+
 [secrets]
-APP_ENV = { value = "production" }
+APP_ENV = { provider = "plain", value = "production" }
