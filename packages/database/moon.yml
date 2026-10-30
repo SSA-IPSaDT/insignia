@@ -1,0 +1,15 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+language: 'typescript'
+stack: 'infrastructure'
+
+dependsOn:
+    - 'env'
+    - 'tsconfig'
+
+tasks:
+    check:
+        command: 'bun check'
+        inputs:
+            - 'src/**/*'
+            - 'tsconfig.json'

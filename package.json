@@ -56,10 +56,14 @@
         "node": ">=22.0.0"
     },
     "scripts": {
-        "dev": "moon run :dev",
+        "dev": "moon run web:dev",
+        "dev:all": "moon run :dev",
+        "dev:api": "moon run api:dev",
+        "dev:bot": "moon run bot:dev",
+        "dev:web": "moon run web:dev",
         "build": "moon run :build",
-        "typecheck": "bun check",
-        "check": "bun check",
+        "typecheck": "moon run :check",
+        "check": "moon run :check",
         "fmt": "bun fmt",
         "fmt:check": "bun fmt --check",
         "hk:check": "hk check",

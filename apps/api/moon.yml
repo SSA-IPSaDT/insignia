@@ -1,0 +1,32 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+language: 'typescript'
+stack: 'backend'
+
+dependsOn:
+    - 'contracts'
+    - 'database'
+    - 'logger'
+    - 'env'
+
+tasks:
+    dev:
+        command: 'bun run --watch src/index.ts'
+        options:
+            persistent: true
+            runInCI: false
+
+    build:
+        command: 'bun build src/index.ts --outdir dist --target bun'
+        inputs:
+            - 'src/**/*'
+            - 'package.json'
+            - 'tsconfig.json'
+        outputs:
+            - 'dist'
+
+    check:
+        command: 'bun check'
+        inputs:
+            - 'src/**/*'
+            - 'tsconfig.json'
