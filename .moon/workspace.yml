@@ -1,5 +1,5 @@
 projects: ['apps/*', 'packages/*', 'infra/env']
 
 vcs:
-    defaultBranch: 'master'
+    defaultBranch: 'main'
     provider: 'github'

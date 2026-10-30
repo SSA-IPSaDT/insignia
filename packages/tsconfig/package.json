@@ -24,7 +24,7 @@
     "bugs": {
         "url": "https://github.com/SSA-IPSaDT/insignia/issues"
     },
-    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/packages/tsconfig#readme",
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/main/packages/tsconfig#readme",
     "keywords": [
         "tsconfig",
         "typescript",

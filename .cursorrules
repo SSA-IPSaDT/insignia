@@ -11,4 +11,5 @@
 - **Human Confirmation**: Ask explicit confirmation before structural refactoring, migrations, or deleting files.
 - **Active Collaboration**: Work with the human, not instead of them. Do not let developer become passive. Business rules and architectural choices require human design and explicit approval.
 - **Co-Authorship (70/30 Rule)**: If agent authored >30% of core business logic, propose Co-authored-by trailer and warn developer before committing. Docs/comments/formatting alone do not count towards co-authorship.
-- **Verification**: Always run `bun fmt` and `bun check` before finishing work.
+- **Testing Standard**: Every business logic, API route, bot command, or contract change MUST have tests (`bun:test`). Never deliver code without tests.
+- **Verification**: Always run `bun fmt`, `bun check`, and `bun test` before finishing work.

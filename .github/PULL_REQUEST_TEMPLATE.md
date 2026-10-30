@@ -43,7 +43,7 @@
 
 Перед отправкой Pull Request на ревью проверьте выполнение следующих пунктов:
 
-- [ ] Ветка синхронизирована с последней версией `master` (`git rebase origin/master`).
+- [ ] Ветка синхронизирована с последней версией `main` (`git rebase origin/main`).
 - [ ] Название PR соответствует стандарту [Conventional Commits](https://www.conventionalcommits.org/): `тип(область): описание`.
 - [ ] Код отформатирован с помощью Bun (`bun fmt`).
 - [ ] Проверка типов TypeScript проходит без ошибок (`bun run typecheck`).

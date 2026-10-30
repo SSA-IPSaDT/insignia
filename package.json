@@ -64,6 +64,8 @@
         "build": "moon run :build",
         "typecheck": "moon run :check",
         "check": "moon run :check",
+        "test": "bun test",
+        "test:moon": "moon run :test",
         "fmt": "bun fmt",
         "fmt:check": "bun fmt --check",
         "hk:check": "hk check",

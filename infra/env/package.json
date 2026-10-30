@@ -27,7 +27,7 @@
     "bugs": {
         "url": "https://github.com/SSA-IPSaDT/insignia/issues"
     },
-    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/infra/env#readme",
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/main/infra/env#readme",
     "dependencies": {
         "zod": "catalog:"
     },

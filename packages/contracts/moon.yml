@@ -12,3 +12,10 @@ tasks:
         inputs:
             - 'src/**/*'
             - 'tsconfig.json'
+
+    test:
+        command: 'bun test tests'
+        inputs:
+            - 'src/**/*'
+            - 'tests/**/*'
+            - 'tsconfig.json'
