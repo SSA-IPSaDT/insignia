@@ -1,0 +1,45 @@
+services:
+    api:
+        build:
+            context: ../..
+            dockerfile: infra/docker/Dockerfile.api
+        container_name: insignia-prod-api
+        restart: always
+        env_file:
+            - ../env/.env.production
+        ports:
+            - '3000:3000'
+        networks:
+            - insignia-internal
+
+    web:
+        build:
+            context: ../..
+            dockerfile: infra/docker/Dockerfile.web
+        container_name: insignia-prod-web
+        restart: always
+        depends_on:
+            - api
+        env_file:
+            - ../env/.env.production
+        ports:
+            - '80:3000'
+        networks:
+            - insignia-internal
+
+    bot:
+        build:
+            context: ../..
+            dockerfile: infra/docker/Dockerfile.bot
+        container_name: insignia-prod-bot
+        restart: always
+        depends_on:
+            - api
+        env_file:
+            - ../env/.env.production
+        networks:
+            - insignia-internal
+
+networks:
+    insignia-internal:
+        driver: bridge

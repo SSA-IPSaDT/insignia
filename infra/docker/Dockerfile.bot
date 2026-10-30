@@ -1,0 +1,39 @@
+# =============================================================================
+# Production Dockerfile for @insignia/bot (Telegram Bot on Bun)
+# =============================================================================
+
+FROM oven/bun:1.4.4 AS base
+WORKDIR /app
+
+# -----------------------------------------------------------------------------
+# 1. Загрузка зависимостей (кэшируемый слой)
+# -----------------------------------------------------------------------------
+FROM base AS deps
+COPY package.json bun.lock bunfig.toml ./
+COPY apps/bot/package.json ./apps/bot/
+COPY packages/contracts/package.json ./packages/contracts/
+COPY packages/tsconfig/package.json ./packages/tsconfig/
+COPY packages/logger/package.json ./packages/logger/
+COPY infra/env/package.json ./infra/env/
+
+RUN bun install --frozen-lockfile --production
+
+# -----------------------------------------------------------------------------
+# 2. Финальный образ для запуска
+# -----------------------------------------------------------------------------
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/bot/node_modules ./apps/bot/node_modules
+
+COPY packages/ ./packages/
+COPY infra/env/ ./infra/env/
+COPY apps/bot/ ./apps/bot/
+COPY tsconfig.json ./
+
+USER bun
+
+CMD ["bun", "run", "apps/bot/src/index.ts"]

@@ -1,0 +1,41 @@
+# =============================================================================
+# Production Dockerfile for @insignia/api (Elysia.js on Bun)
+# =============================================================================
+
+FROM oven/bun:1.4.4 AS base
+WORKDIR /app
+
+# -----------------------------------------------------------------------------
+# 1. Загрузка зависимостей (кэшируемый слой)
+# -----------------------------------------------------------------------------
+FROM base AS deps
+COPY package.json bun.lock bunfig.toml ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/contracts/package.json ./packages/contracts/
+COPY packages/database/package.json ./packages/database/
+COPY packages/tsconfig/package.json ./packages/tsconfig/
+COPY packages/logger/package.json ./packages/logger/
+COPY infra/env/package.json ./infra/env/
+
+RUN bun install --frozen-lockfile --production
+
+# -----------------------------------------------------------------------------
+# 2. Финальный образ для запуска
+# -----------------------------------------------------------------------------
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
+
+COPY packages/ ./packages/
+COPY infra/env/ ./infra/env/
+COPY apps/api/ ./apps/api/
+COPY tsconfig.json ./
+
+USER bun
+EXPOSE 3000
+
+CMD ["bun", "run", "apps/api/src/index.ts"]
