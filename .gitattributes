@@ -1,0 +1,48 @@
+# -----------------------------------------------------------------------------
+# Insignia Git Attributes Configuration
+# Автоматическая нормализация окончаний строк и защита бинарных файлов
+# -----------------------------------------------------------------------------
+
+# 1. Текстовые файлы: автоматическое определение и принудительный Unix EOL (LF)
+* text=auto eol=lf
+
+# Явно заданные текстовые форматы
+*.ts text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.svelte text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.sh text eol=lf
+*.sql text eol=lf
+*.prisma text eol=lf
+*.pkl text eol=lf
+
+# 2. Бинарные форматы (поток байт — защита от повреждения и нормализации)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text eol=lf
+
+# Шрифты и медиа
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+
+# Архивы и бинарники
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+*.age binary

@@ -12,4 +12,5 @@
 - **Active Collaboration**: Work with the human, not instead of them. Do not let developer become passive. Business rules and architectural choices require human design and explicit approval.
 - **Co-Authorship (70/30 Rule)**: If agent authored >30% of core business logic, propose Co-authored-by trailer and warn developer before committing. Docs/comments/formatting alone do not count towards co-authorship.
 - **Testing Standard**: Every business logic, API route, bot command, or contract change MUST have tests (`bun:test`). Never deliver code without tests.
+- **Feature-First (Docs Freeze)**: Do not create new documentation/ADR/process files until the first vertical slice is implemented. Focus on product code.
 - **Verification**: Always run `bun fmt`, `bun check`, and `bun test` before finishing work.

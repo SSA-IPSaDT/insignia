@@ -1,0 +1,26 @@
+# Insignia Code Ownership Configuration
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# -----------------------------------------------------------------------------
+# Базовый владелец: Все файлы репозитория по умолчанию принадлежат Lead Architect
+# -----------------------------------------------------------------------------
+* @naylour
+
+# -----------------------------------------------------------------------------
+# Зона ответственности сервиса Telegram-бота
+# Изменения могут предлагаться контрибьютором бота, но с обязательным участием Lead
+# -----------------------------------------------------------------------------
+/apps/bot/ @segn1s @naylour
+
+# -----------------------------------------------------------------------------
+# Критическая инфраструктура, секреты и безопасность (эксклюзивно @naylour)
+# -----------------------------------------------------------------------------
+/.github/ @naylour
+/infra/ @naylour
+/packages/database/ @naylour
+/packages/contracts/ @naylour
+/fnox.toml @naylour
+/fnox.*.toml @naylour
+/mise.toml @naylour
+/bunfig.toml @naylour
+/package.json @naylour
