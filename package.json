@@ -33,7 +33,8 @@
     ],
     "workspaces": [
         "apps/*",
-        "packages/*"
+        "packages/*",
+        "infra/env"
     ],
     "packageManager": "bun@1.4.4",
     "engines": {

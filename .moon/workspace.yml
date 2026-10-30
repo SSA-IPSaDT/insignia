@@ -1,4 +1,4 @@
-projects: ['apps/*', 'packages/*']
+projects: ['apps/*', 'packages/*', 'infra/env']
 
 vcs:
     defaultBranch: 'master'
