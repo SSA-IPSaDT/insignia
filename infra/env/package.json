@@ -29,7 +29,7 @@
     },
     "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/infra/env#readme",
     "dependencies": {
-        "zod": "^3.24.2"
+        "zod": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",

@@ -17,8 +17,8 @@ export const parseEnv = <T extends z.ZodTypeAny>(
     const result = schema.safeParse(source);
 
     if (!result.success) {
-        const errorMessages = result.error.errors.map((err) => {
-            const field = err.path.join('.');
+        const errorMessages = result.error.issues.map((err) => {
+            const field = err.path.map((segment) => String(segment)).join('.');
             return `  ❌ [${field}]: ${err.message}`;
         });
 
@@ -29,26 +29,26 @@ export const parseEnv = <T extends z.ZodTypeAny>(
         );
 
         throw new Error(
-            `Некорректная конфигурация окружения: ${result.error.errors.length} ошибок.`,
+            `Некорректная конфигурация окружения: ${result.error.issues.length} ошибок.`,
         );
     }
 
     return result.data;
 };
 
-export const createLazyEnv = <T extends z.ZodTypeAny>(
+export const createLazyEnv = <T extends z.ZodType<object>>(
     schema: T,
 ): z.infer<T> => {
     let cached: z.infer<T> | undefined;
 
-    return new Proxy({} as z.infer<T>, {
+    return new Proxy({} as object, {
         get: (_, prop: string | symbol) => {
             if (!cached) {
                 cached = parseEnv(schema, Bun.env);
             }
             return (cached as Record<string | symbol, unknown>)[prop];
         },
-    });
+    }) as z.infer<T>;
 };
 
 export const env: BaseEnv = createLazyEnv(baseEnvSchema);

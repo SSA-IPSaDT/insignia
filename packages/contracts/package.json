@@ -42,7 +42,11 @@
     "scripts": {
         "typecheck": "bun check"
     },
+    "dependencies": {
+        "zod": "catalog:"
+    },
     "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4"
     }
 }

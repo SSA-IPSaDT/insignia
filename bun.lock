@@ -14,21 +14,43 @@
     "apps/api": {
       "name": "@insignia/api",
       "version": "0.1.0",
+      "dependencies": {
+        "@insignia/contracts": "workspace:*",
+        "@insignia/database": "workspace:*",
+        "@insignia/env": "workspace:*",
+        "@insignia/logger": "workspace:*",
+        "zod": "catalog:",
+      },
       "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4",
       },
     },
     "apps/bot": {
       "name": "@insignia/bot",
       "version": "0.1.0",
+      "dependencies": {
+        "@insignia/contracts": "workspace:*",
+        "@insignia/env": "workspace:*",
+        "@insignia/logger": "workspace:*",
+        "zod": "catalog:",
+      },
       "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4",
       },
     },
     "apps/web": {
       "name": "@insignia/web",
       "version": "0.1.0",
+      "dependencies": {
+        "@insignia/contracts": "workspace:*",
+        "@insignia/env": "workspace:*",
+        "@insignia/logger": "workspace:*",
+        "zod": "catalog:",
+      },
       "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@sveltejs/adapter-auto": "^8.0.0",
         "@sveltejs/kit": "^3.0.0",
         "@sveltejs/vite-plugin-svelte": "^7.2.0",
@@ -42,7 +64,7 @@
       "name": "@insignia/env",
       "version": "0.1.0",
       "dependencies": {
-        "zod": "^3.24.2",
+        "zod": "catalog:",
       },
       "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
@@ -52,7 +74,11 @@
     "packages/contracts": {
       "name": "@insignia/contracts",
       "version": "0.1.0",
+      "dependencies": {
+        "zod": "catalog:",
+      },
       "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4",
       },
     },
@@ -60,9 +86,10 @@
       "name": "@insignia/database",
       "version": "0.1.0",
       "dependencies": {
-        "@insignia/contracts": "workspace:*",
+        "@insignia/env": "workspace:*",
       },
       "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4",
       },
     },
@@ -81,6 +108,9 @@
       "name": "@insignia/tsconfig",
       "version": "0.1.0",
     },
+  },
+  "catalog": {
+    "zod": "^4.6.7",
   },
   "packages": {
     "@colors/colors": ["@colors/colors@1.6.0", "", {}, "sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA=="],
@@ -357,7 +387,7 @@
 
     "zimmerframe": ["zimmerframe@1.1.5", "", {}, "sha512-msJxIvYDYcoNL+PJsu+7qmpDWsYmAxTY+2TNYXXF0hzBzBk0BMecOqDOG/EckUoKCuKwObfbugIl8QpqHDXeFA=="],
 
-    "zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
+    "zod": ["zod@4.6.7", "", {}, "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg=="],
 
     "@insignia/web/svelte-check": ["svelte-check@4.7.7", "", { "dependencies": { "@jridgewell/trace-mapping": "^0.3.25", "@sveltejs/load-config": "^0.2.3", "chokidar": "^4.0.1", "fdir": "^6.2.0", "picocolors": "^1.0.0", "sade": "^1.7.4" }, "peerDependencies": { "svelte": "^4.0.0 || ^5.0.0-next.0", "typescript": "^5.0.0 || ^6.0.0" }, "bin": { "svelte-check": "bin/svelte-check" } }, "sha512-Ge2IMdeTpbJuzNFGRiiMg0RWgbScysKQu7xwcyFJ22+DU9F5nPX51+Q3gHmGqRxYQMx2knreVWt5oCtfe0vf2g=="],
 

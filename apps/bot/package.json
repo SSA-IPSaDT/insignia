@@ -44,7 +44,14 @@
         "build": "bun build src/index.ts --outdir dist --target bun",
         "typecheck": "bun check"
     },
+    "dependencies": {
+        "@insignia/contracts": "workspace:*",
+        "@insignia/env": "workspace:*",
+        "@insignia/logger": "workspace:*",
+        "zod": "catalog:"
+    },
     "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4"
     }
 }

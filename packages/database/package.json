@@ -43,9 +43,10 @@
         "typecheck": "bun check"
     },
     "dependencies": {
-        "@insignia/contracts": "workspace:*"
+        "@insignia/env": "workspace:*"
     },
     "devDependencies": {
+        "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4"
     }
 }
