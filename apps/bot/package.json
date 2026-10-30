@@ -24,13 +24,13 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/organization/insignia.git",
+        "url": "https://github.com/SSA-IPSaDT/insignia.git",
         "directory": "apps/bot"
     },
     "bugs": {
-        "url": "https://github.com/organization/insignia/issues"
+        "url": "https://github.com/SSA-IPSaDT/insignia/issues"
     },
-    "homepage": "https://github.com/organization/insignia/tree/master/apps/bot#readme",
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/apps/bot#readme",
     "keywords": [
         "bot",
         "telegram",

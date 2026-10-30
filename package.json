@@ -24,12 +24,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/organization/insignia.git"
+        "url": "https://github.com/SSA-IPSaDT/insignia.git"
     },
     "bugs": {
-        "url": "https://github.com/organization/insignia/issues"
+        "url": "https://github.com/SSA-IPSaDT/insignia/issues"
     },
-    "homepage": "https://github.com/organization/insignia#readme",
+    "homepage": "https://github.com/SSA-IPSaDT/insignia#readme",
     "keywords": [
         "monorepo",
         "bun",

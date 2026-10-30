@@ -19,6 +19,15 @@
             "url": "https://github.com/naylour"
         }
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SSA-IPSaDT/insignia.git",
+        "directory": "infra/env"
+    },
+    "bugs": {
+        "url": "https://github.com/SSA-IPSaDT/insignia/issues"
+    },
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/infra/env#readme",
     "dependencies": {
         "zod": "^3.24.2"
     },

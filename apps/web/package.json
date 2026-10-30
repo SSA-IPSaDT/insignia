@@ -19,13 +19,13 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/organization/insignia.git",
+        "url": "https://github.com/SSA-IPSaDT/insignia.git",
         "directory": "apps/web"
     },
     "bugs": {
-        "url": "https://github.com/organization/insignia/issues"
+        "url": "https://github.com/SSA-IPSaDT/insignia/issues"
     },
-    "homepage": "https://github.com/organization/insignia/tree/master/apps/web#readme",
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/apps/web#readme",
     "keywords": [
         "svelte",
         "sveltekit",

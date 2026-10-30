@@ -51,7 +51,7 @@ _(Подробнее см. на [официальном сайте Mise](https:/
 Клонируйте репозиторий и перейдите в его корень:
 
 ```bash
-git clone <URL_РЕПОЗИТОРИЯ> insignia
+git clone https://github.com/SSA-IPSaDT/insignia.git
 cd insignia
 ```
 

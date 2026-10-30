@@ -162,7 +162,7 @@ insignia/
 1. **Клонируйте репозиторий:**
 
     ```bash
-    git clone <URL_РЕПОЗИТОРИЯ>
+    git clone https://github.com/SSA-IPSaDT/insignia.git
     cd insignia
     ```
 

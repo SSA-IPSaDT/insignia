@@ -19,6 +19,15 @@
             "url": "https://github.com/naylour"
         }
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SSA-IPSaDT/insignia.git",
+        "directory": "packages/logger"
+    },
+    "bugs": {
+        "url": "https://github.com/SSA-IPSaDT/insignia/issues"
+    },
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/master/packages/logger#readme",
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4"
