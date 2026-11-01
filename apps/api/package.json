@@ -42,10 +42,19 @@
         "typecheck": "bun check"
     },
     "dependencies": {
+        "@bogeychan/elysia-etag": "^0.1.0",
+        "@chneau/elysia-compression": "^1.0.12",
+        "@elysia/cors": "^1.4.2",
+        "@elysia/cron": "^1.4.2",
+        "@elysia/openapi": "^1.4.16",
+        "@elysia/opentelemetry": "^1.4.12",
+        "@elysia/server-timing": "^1.4.1",
         "@insignia/contracts": "workspace:*",
         "@insignia/database": "workspace:*",
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
+        "elysia": "^1.4.30",
+        "elysiajs-helmet": "^1.0.5",
         "zod": "catalog:"
     },
     "devDependencies": {
