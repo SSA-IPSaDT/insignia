@@ -1,6 +1,9 @@
 [providers.default]
 type = "age"
-recipients = ["age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9"]
+recipients = [
+    "age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9",
+    "age1l5n5mpyujqr7whakw9qhzym3cdcgnf548hvmauaqxzjc0yaxwdzsep2wew",
+]
 
 [providers.plain]
 type = "plain"
