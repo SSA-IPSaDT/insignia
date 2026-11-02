@@ -1,5 +1,5 @@
 import { serverTiming } from '@elysia/server-timing';
-import { env } from '@insignia/env';
+import { apiEnv } from '@insignia/env';
 import { Elysia } from 'elysia';
 
 import { modules } from '#modules';
@@ -11,12 +11,14 @@ export const app = new Elysia()
     .use(docsPlugin)
     .use(
         serverTiming({
-            enabled: env.NODE_ENV !== 'production',
+            enabled: apiEnv.NODE_ENV !== 'production',
         }),
     )
     .use(modules)
     .onStart((f) => {
-        f.decorator.logger.info(`API initialized in ${env.NODE_ENV} mode.`);
+        f.decorator.logger.info(
+            `API running at http://${apiEnv.API_HOST}:${apiEnv.API_PORT} in ${apiEnv.NODE_ENV} mode.`,
+        );
     })
     .onStop((f) => {
         f.decorator.logger.info(`API stopped.`);

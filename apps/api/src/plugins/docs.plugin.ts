@@ -1,4 +1,5 @@
 import { openapi } from '@elysia/openapi';
+import { apiEnv } from '@insignia/env';
 
 export const docsPlugin = openapi({
     provider: 'scalar',
@@ -21,7 +22,7 @@ export const docsPlugin = openapi({
         },
         servers: [
             {
-                url: 'http://localhost:3000',
+                url: `http://${apiEnv.API_HOST}:${apiEnv.API_PORT}`,
                 description: 'Локальное окружение разработки (Development)',
             },
             // {
