@@ -1,8 +1,9 @@
 import { serverTiming } from '@elysia/server-timing';
 import { env } from '@insignia/env';
-import { modules } from '@modules';
-import { corsPlugin, docsPlugin, loggerPlugin } from '@plugins';
 import { Elysia } from 'elysia';
+
+import { modules } from '#modules';
+import { corsPlugin, docsPlugin, loggerPlugin } from '#plugins';
 
 export const app = new Elysia()
     .use(corsPlugin)

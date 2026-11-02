@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 export const baseEnvSchema = z.object({
     NODE_ENV: z
-        .enum(['development', 'staging', 'production'])
+        .enum(['development', 'staging', 'production', 'test'])
         .default('development'),
-    MODE: z.enum(['development', 'production']).default('development'),
+    MODE: z.enum(['development', 'production', 'test']).default('development'),
     LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
 });
 

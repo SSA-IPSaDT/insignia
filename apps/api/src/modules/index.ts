@@ -1,3 +1,5 @@
 import Elysia from 'elysia';
 
-export const modules = new Elysia();
+import { healthController } from './health';
+
+export const modules = new Elysia().use(healthController);
