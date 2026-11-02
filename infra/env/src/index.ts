@@ -2,15 +2,22 @@ import { z } from 'zod';
 
 export const baseEnvSchema = z.object({
     NODE_ENV: z
-        .enum(['development', 'staging', 'production'])
+        .enum(['development', 'staging', 'production', 'test'])
         .default('development'),
-    MODE: z.enum(['development', 'production']).default('development'),
+    MODE: z.enum(['development', 'production', 'test']).default('development'),
     LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
 });
 
 export type BaseEnv = z.infer<typeof baseEnvSchema>;
 
-export const parseEnv = <T extends z.ZodTypeAny>(
+export const apiEnvSchema = baseEnvSchema.extend({
+    API_PORT: z.coerce.number().default(3000),
+    API_HOST: z.string().default('0.0.0.0'),
+});
+
+export type ApiEnv = z.infer<typeof apiEnvSchema>;
+
+export const parseEnv = <T extends z.ZodType>(
     schema: T,
     source: Record<string, string | undefined> = Bun.env,
 ): z.infer<T> => {
@@ -52,3 +59,5 @@ export const createLazyEnv = <T extends z.ZodType<object>>(
 };
 
 export const env: BaseEnv = createLazyEnv(baseEnvSchema);
+
+export const apiEnv: ApiEnv = createLazyEnv(apiEnvSchema);

@@ -1,14 +1,8 @@
-import type { HealthResponse } from '@insignia/contracts';
-import { env } from '@insignia/env';
-import { createLogger } from '@insignia/logger';
+import { apiEnv } from '@insignia/env';
 
-const logger = createLogger('api');
+import { app } from './app';
 
-export const getHealth = (): HealthResponse => {
-    return {
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-    };
-};
-
-logger.info(`API initialized in ${env.NODE_ENV} mode.`);
+app.listen({
+    port: apiEnv.API_PORT,
+    hostname: apiEnv.API_HOST,
+});

@@ -39,13 +39,19 @@
         "dev": "bun run --watch src/index.ts",
         "build": "bun build src/index.ts --outdir dist --target bun",
         "check": "bun check",
-        "typecheck": "bun check"
+        "typecheck": "bun check",
+        "test": "bun test"
     },
     "dependencies": {
+        "@elysia/cors": "^1.4.2",
+        "@elysia/openapi": "^1.4.16",
+        "@elysia/server-timing": "^1.4.1",
         "@insignia/contracts": "workspace:*",
         "@insignia/database": "workspace:*",
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
+        "elysia": "^1.4.30",
+        "elysiajs-helmet": "^1.0.5",
         "zod": "catalog:"
     },
     "devDependencies": {

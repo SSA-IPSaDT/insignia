@@ -9,3 +9,5 @@ recipients = [
 type = "plain"
 
 [secrets]
+API_PORT = { provider = "plain", value = "51000" }
+API_HOST = { provider = "plain", value = "localhost" }

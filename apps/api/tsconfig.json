@@ -1,5 +1,17 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "@insignia/tsconfig/bun.json",
-    "include": ["src/**/*"]
+    "compilerOptions": {
+        "paths": {
+            "#plugins": ["./src/plugins/index.ts"],
+            "#plugins/*": ["./src/plugins/*"],
+            "#": ["./src/index.ts"],
+            "#/*": ["./src/*"],
+            "#modules": ["./src/modules/index.ts"],
+            "#modules/*": ["./src/modules/*"],
+            "#common": ["./src/common/index.ts"],
+            "#common/*": ["./src/common/*"]
+        }
+    },
+    "include": ["src/**/*", "tests/**/*"]
 }
