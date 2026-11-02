@@ -1,5 +1,11 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "@insignia/tsconfig/base.json",
+    "compilerOptions": {
+        "paths": {
+            "#common": ["./src/common/index.ts"],
+            "#common/*": ["./src/common/*"]
+        }
+    },
     "include": ["src/**/*"]
 }
