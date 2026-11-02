@@ -236,3 +236,4 @@ insignia/
     - [ADR 0000: Шаблон архитектурного решения](docs/adr/0000-template.md)
     - [ADR 0001: Выбор монорепозитория на базе Bun и Moonrepo](docs/adr/0001-monorepo-bun.md)
     - [ADR 0002: Межсервисное взаимодействие на локальном сервере (HTTP TCP vs UNIX Domain Sockets)](docs/adr/0002-local-ipc-uds-vs-http.md)
+    - [ADR 0003: Архитектура и границы функционала MVP платформы Insignia](docs/adr/0003-mvp-architecture-and-scope.md)
