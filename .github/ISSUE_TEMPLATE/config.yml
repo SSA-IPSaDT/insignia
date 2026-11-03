@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+    - name: По вопросам безопасности (Security)
+      url: https://github.com/SSA-IPSaDT/insignia/security/advisories/new
+      about: Пожалуйста, сообщайте об уязвимостях через закрытый канал безопасности.
+    - name: Вопросы и обсуждения (Discussions)
+      url: https://github.com/SSA-IPSaDT/insignia/discussions
+      about: Задавайте вопросы по архитектуре и делитесь идеями в обсуждениях.
