@@ -56,6 +56,15 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-bun-
 
+            - name: Cache Moonrepo
+              uses: actions/cache@v4
+              with:
+                  path: .moon/cache
+                  key: ${{ runner.os }}-moon-${{ hashFiles('**/bun.lock', '.moon/**/*.yml') }}-${{ github.sha }}
+                  restore-keys: |
+                      ${{ runner.os }}-moon-${{ hashFiles('**/bun.lock', '.moon/**/*.yml') }}-
+                      ${{ runner.os }}-moon-
+
             - name: Install dependencies
               run: bun install --frozen-lockfile
 
