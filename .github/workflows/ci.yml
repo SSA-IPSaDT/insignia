@@ -12,7 +12,7 @@ concurrency:
 
 env:
     DATABASE_HOST: localhost
-    DATABASE_PORT: 5432
+    DATABASE_PORT: 52000
     DATABASE_USER: insignia
     DATABASE_PASSWORD: insignia_password
     DATABASE_NAME: insignia
@@ -30,7 +30,7 @@ jobs:
                     POSTGRES_PASSWORD: insignia_password
                     POSTGRES_DB: insignia
                 ports:
-                    - 5432:5432
+                    - 52000:5432
                 options: >-
                     --health-cmd "pg_isready -U insignia -d insignia"
                     --health-interval 5s
