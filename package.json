@@ -72,7 +72,13 @@
         "hk:install": "hk install",
         "setup": "bun run scripts/setup.ts",
         "create-key": "bun run scripts/create-key.ts",
-        "fnox:set": "bun run scripts/fnox-set.ts"
+        "fnox:set": "bun run scripts/fnox-set.ts",
+        "compose:up": "fnox exec -- docker compose up -d",
+        "compose:down": "docker compose down",
+        "compose:stop": "docker compose stop",
+        "compose:restart": "fnox exec -- docker compose restart",
+        "compose:logs": "docker compose logs -f",
+        "db:init": "fnox exec -- moon run database:db-init"
     },
     "devDependencies": {
         "@types/bun": "^1.4.4"
