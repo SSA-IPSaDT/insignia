@@ -1,0 +1,38 @@
+version: 2
+
+updates:
+    # Автоматическое обновление версий экшенов GitHub Actions
+    - package-ecosystem: 'github-actions'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+          time: '06:00'
+          timezone: 'Europe/Moscow'
+      open-pull-requests-limit: 3
+      commit-message:
+          prefix: 'ci(deps)'
+      assignees:
+          - 'naylour'
+      groups:
+          github-actions:
+              patterns:
+                  - '*'
+
+    # Автоматическое обновление зависимостей Bun монорепозитория
+    - package-ecosystem: 'bun'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+          time: '06:00'
+          timezone: 'Europe/Moscow'
+      open-pull-requests-limit: 5
+      commit-message:
+          prefix: 'chore(deps)'
+      assignees:
+          - 'naylour'
+      groups:
+          dependencies:
+              patterns:
+                  - '*'
