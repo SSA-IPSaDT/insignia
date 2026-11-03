@@ -25,6 +25,12 @@ export const loggerPlugin = new Elysia({
     })
     .onError(({ request, error, code, logger }) => {
         const url = new URL(request.url).pathname;
+
+        if (code === 'NOT_FOUND') {
+            logger.warn(`Not Found: ${request.method} ${url}`);
+            return;
+        }
+
         logger.error(
             `Error on ${request.method} ${url} [${code}]: ${(error as { message: string }).message}`,
             error,

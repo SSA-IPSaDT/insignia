@@ -41,3 +41,11 @@ fnox.*.local.toml
 
 # system generated skills
 skills/system/
+
+
+# Prisma 8 AI Agent Skills (синхронизируются локально через prisma skills sync)
+.agents/skills/prisma-*
+.cursor/skills/prisma-*
+skills/prisma-*
+packages/database/.agents
+packages/database/.cursor

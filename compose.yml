@@ -1,0 +1,28 @@
+name: ${COMPOSE_PROJECT_NAME:-insignia}
+
+services:
+    postgres:
+        image: postgres:18-alpine
+        container_name: ${DATABASE_CONTAINER_NAME:-insignia-postgres}
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${DATABASE_USER:-insignia}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-insignia_password}
+            POSTGRES_DB: ${DATABASE_NAME:-insignia}
+        ports:
+            - '${DATABASE_PORT:-52000}:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'pg_isready -U ${DATABASE_USER:-insignia} -d ${DATABASE_NAME:-insignia}',
+                ]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+volumes:
+    postgres_data:
+        name: ${COMPOSE_PROJECT_NAME:-insignia}_postgres_data
