@@ -39,17 +39,17 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   fetch-depth: 0
 
             - name: Setup toolchain from mise.toml
-              uses: jdx/mise-action@v2
+              uses: jdx/mise-action@v4
               with:
                   cache: true
 
             - name: Cache Bun dependencies
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.bun/install/cache
                   key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
@@ -57,7 +57,7 @@ jobs:
                       ${{ runner.os }}-bun-
 
             - name: Cache Moonrepo
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: .moon/cache
                   key: ${{ runner.os }}-moon-${{ hashFiles('**/bun.lock', '.moon/**/*.yml') }}-${{ github.sha }}
