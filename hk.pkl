@@ -1,14 +1,38 @@
 amends "package://github.com/jdx/hk/releases/download/v2.9.0/hk@2.9.0#/Config.pkl"
 import "package://github.com/jdx/hk/releases/download/v2.9.0/hk@2.9.0#/Builtins.pkl"
 
-local linters = new Mapping {
+steps {
     ["check_case_conflict"] = Builtins.check_case_conflict
     ["check_merge_conflict"] = Builtins.check_merge_conflict
     ["check_added_large_files"] = Builtins.check_added_large_files
     ["detect_private_key"] = Builtins.detect_private_key
     ["check_symlinks"] = Builtins.check_symlinks
     ["mixed_line_ending"] = Builtins.mixed_line_ending
+    ["trailing_whitespace"] = Builtins.trailing_whitespace
     ["check_executables_have_shebangs"] = Builtins.check_executables_have_shebangs
-}
 
-steps = linters
+    ["bun_fmt"] {
+        types = List("typescript", "javascript", "json", "markdown")
+        check = "bun fmt --check {{files}}"
+        fix = "bun fmt {{files}}"
+    }
+
+    ["bun_check"] {
+        types = List("typescript", "javascript")
+        check = "bun check"
+    }
+}
+hooks {
+    // Защита от прямого коммита в ветки main и master
+    ["pre-commit"] {
+        steps {
+            ["no_commit_to_main"] = Builtins.no_commit_to_branch
+        }
+    }
+
+    ["commit-msg"] {
+        steps {
+            ["conventional_commits"] = Builtins.check_conventional_commit
+        }
+    }
+}
