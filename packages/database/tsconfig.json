@@ -1,5 +1,11 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "@insignia/tsconfig/bun.json",
-    "include": ["src/**/*"]
+    "include": ["src/**/*", "tests/*"],
+    "compilerOptions": {
+        "module": "preserve",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "types": ["bun", "node"]
+    }
 }

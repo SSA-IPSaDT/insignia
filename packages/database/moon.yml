@@ -13,3 +13,27 @@ tasks:
         inputs:
             - 'src/**/*'
             - 'tsconfig.json'
+
+    test:
+        command: 'bun test tests'
+        inputs:
+            - 'src/**/*'
+            - 'tests/**/*'
+            - 'tsconfig.json'
+
+    contract-emit:
+        command: 'bun x prisma contract emit'
+        inputs:
+            - 'src/prisma/contract.prisma'
+            - 'prisma.config.ts'
+        outputs:
+            - 'src/prisma/contract.json'
+            - 'src/prisma/contract.d.ts'
+
+    db-init:
+        command: 'bun x prisma db init'
+        inputs:
+            - 'src/prisma/contract.json'
+            - 'prisma.config.ts'
+        options:
+            cache: false
