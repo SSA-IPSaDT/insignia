@@ -14,6 +14,9 @@ export const app = new Elysia()
             enabled: apiEnv.NODE_ENV !== 'production',
         }),
     )
+    .get('/favicon.ico', ({ set }) => {
+        set.status = 204;
+    })
     .use(modules)
     .onStart((f) => {
         f.decorator.logger.info(
