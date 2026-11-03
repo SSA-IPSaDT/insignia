@@ -78,7 +78,8 @@
         "compose:stop": "docker compose stop",
         "compose:restart": "fnox exec -- docker compose restart",
         "compose:logs": "docker compose logs -f",
-        "db:init": "fnox exec -- moon run database:db-init"
+        "db:init": "fnox exec -- moon run database:db-init",
+        "db:skills": "bun x --cwd packages/database prisma skills sync"
     },
     "devDependencies": {
         "@types/bun": "^1.4.4"
