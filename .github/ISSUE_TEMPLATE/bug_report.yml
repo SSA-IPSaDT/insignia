@@ -1,0 +1,78 @@
+name: 🐛 Отчёт об ошибке (Bug Report)
+description: Создать отчёт о неполадке или некорректном поведении платформы
+title: 'fix(<модуль>): краткое описание проблемы'
+labels: ['bug', 'triage']
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Спасибо, что помогаете улучшать **Insignia**! Пожалуйста, заполните форму ниже, чтобы мы могли воспроизвести и устранить проблему.
+
+    - type: dropdown
+      id: affected_module
+      attributes:
+          label: Затронутый модуль
+          description: Укажите приложение или пакет, в котором проявляется ошибка
+          multiple: true
+          options:
+              - apps/api (Бэкенд REST API)
+              - apps/bot (Telegram-бот)
+              - apps/web (Веб-интерфейс SvelteKit)
+              - packages/contracts (Схемы Zod / DTO)
+              - packages/database (Prisma 8 / PostgreSQL)
+              - packages/logger (Логирование)
+              - infra/env (Переменные окружения)
+              - infra/docker (Docker Compose)
+              - tooling (Mise / Moonrepo / Hk / Fnox)
+      validations:
+          required: true
+
+    - type: textarea
+      id: description
+      attributes:
+          label: Описание проблемы
+          description: Чёткое и лаконичное описание того, что работает не так
+          placeholder: При выполнении запроса GET /health происходит...
+      validations:
+          required: true
+
+    - type: textarea
+      id: steps
+      attributes:
+          label: Шаги для воспроизведения
+          description: Последовательность действий, приводящая к ошибке
+          placeholder: |
+              1. Запустить БД: `bun run compose:up`
+              2. Запустить API: `bun run dev:api`
+              3. Выполнить команду...
+      validations:
+          required: true
+
+    - type: textarea
+      id: expected
+      attributes:
+          label: Ожидаемое поведение
+          description: Что должно было произойти при нормальной работе системы
+          placeholder: Ожидался ответ со статусом 200 OK...
+      validations:
+          required: true
+
+    - type: textarea
+      id: logs
+      attributes:
+          label: Логи и стек-трейс
+          description: Прикрепите логи консоли или файл logs/<service>.log
+          render: shell
+
+    - type: textarea
+      id: environment
+      attributes:
+          label: Окружение
+          description: Версии инструментов и ОС
+          value: |
+              - ОС: Linux / macOS / Windows
+              - Bun: (bun --version)
+              - Mise: (mise --version)
+              - Node: (node --version)
+      validations:
+          required: true

@@ -1,0 +1,60 @@
+name: 💡 Предложение функциональности (Feature Request)
+description: Предложить новую фичу, улучшение архитектуры или интеграцию
+title: 'feat(<модуль>): краткое описание фичи'
+labels: ['enhancement']
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Предложите новую идею или улучшение для платформы **Insignia**.
+
+    - type: dropdown
+      id: target_module
+      attributes:
+          label: Целевой модуль
+          description: В каком компоненте планируется реализация
+          multiple: true
+          options:
+              - apps/api (Бэкенд REST API)
+              - apps/bot (Telegram-бот)
+              - apps/web (Веб-интерфейс SvelteKit)
+              - packages/contracts (Схемы Zod / DTO)
+              - packages/database (Prisma 8 / PostgreSQL)
+              - packages/logger (Логирование)
+              - infra/env (Переменные окружения)
+              - tooling (Mise / Moonrepo / Hk / Fnox)
+              - docs (Документация и стандарты)
+      validations:
+          required: true
+
+    - type: textarea
+      id: problem
+      attributes:
+          label: Какую проблему решает предложение?
+          description: Опишите контекст и мотивацию («Мне неудобно делать X, потому что...»)
+      validations:
+          required: true
+
+    - type: textarea
+      id: proposal
+      attributes:
+          label: Предлагаемое решение
+          description: Подробное описание того, как должна работать фича или API
+      validations:
+          required: true
+
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Рассматриваемые альтернативы
+          description: Были ли другие варианты реализации и почему они отклонены?
+
+    - type: checkboxes
+      id: architecture
+      attributes:
+          label: Архитектурные требования
+          description: Проверьте соответствие правилам AGENTS.md
+          options:
+              - label: Потребуется изменение схемы базы данных (Prisma 8 / миграция)
+              - label: Потребуется обновление сетевых контрактов (packages/contracts)
+              - label: Потребуются новые переменные окружения (infra/env)
