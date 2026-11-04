@@ -3,6 +3,7 @@ type = "age"
 recipients = [
     "age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9",
     "age1l5n5mpyujqr7whakw9qhzym3cdcgnf548hvmauaqxzjc0yaxwdzsep2wew",
+    "age1ew87ttdxqcrtmtz3p8q96j578jyh02yx8ktmw6m2cr2tkydty4lqdk5xgh",
 ]
 
 [secrets]
