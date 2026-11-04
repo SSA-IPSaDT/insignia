@@ -22,10 +22,10 @@ description: Verifies adherence to Insignia code conventions including arrow fun
 
 2. **Работа с переменными окружения (`@insignia/env`)**:
     - Никогда не использовать сырые `process.env` или `Bun.env` напрямую в сервисах.
-    - Импортировать прокси-синглтон из `@insignia/env`:
+    - Импортировать единый прокси-синглтон из `@insignia/env`:
         ```typescript
-        import { apiEnv } from '@insignia/env';
-        console.log(apiEnv.API_PORT);
+        import env from '@insignia/env';
+        console.log(env.API_PORT);
         ```
 
 3. **Логирование (`@insignia/logger`)**:
