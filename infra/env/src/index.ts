@@ -1,4 +1,6 @@
-export * from './base';
-export * from './api';
-export * from './database';
-export * from './admin';
+import { createLazyEnv } from './common.js';
+import { type Env, envSchema } from './schema.js';
+
+export const env: Env = createLazyEnv(envSchema);
+export default env;
+export type { Env };
