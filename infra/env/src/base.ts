@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
-import { createLazyEnv } from './common';
+import { booleanEnv } from './utils.js';
 
-export const baseEnvSchema = z.object({
+export const baseRawSchema = z.object({
     NODE_ENV: z
         .enum(['development', 'staging', 'production', 'test'])
         .default('development'),
-    MODE: z.enum(['development', 'production', 'test']).default('development'),
     LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+    ROOT_DOMAIN: z.string().default('insignia.tech'),
+    TRUST_PROXY: booleanEnv(false),
+    BODY_SIZE: z.coerce.number().default(1024 * 1024 * 25),
 });
 
-export type BaseEnv = z.infer<typeof baseEnvSchema>;
-
-export const env: BaseEnv = createLazyEnv(baseEnvSchema);
+export type BaseRawEnv = z.infer<typeof baseRawSchema>;
