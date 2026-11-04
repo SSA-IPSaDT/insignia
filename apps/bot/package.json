@@ -43,12 +43,14 @@
         "dev": "bun run --watch src/index.ts",
         "build": "bun build src/index.ts --outdir dist --target bun",
         "check": "bun check",
-        "typecheck": "bun check"
+        "typecheck": "bun check",
+        "test": "bun test"
     },
     "dependencies": {
         "@insignia/contracts": "workspace:*",
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
+        "grammy": "^1.46.0",
         "zod": "catalog:"
     },
     "devDependencies": {

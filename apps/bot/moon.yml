@@ -31,4 +31,12 @@ tasks:
         command: 'bun check'
         inputs:
             - 'src/**/*'
+            - 'tests/**/*'
             - 'tsconfig.json'
+
+    test:
+        command: 'bun test'
+        inputs:
+            - 'src/**/*'
+            - 'tests/**/*'
+            - 'package.json'
