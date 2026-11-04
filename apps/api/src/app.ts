@@ -1,5 +1,5 @@
 import { serverTiming } from '@elysia/server-timing';
-import { apiEnv } from '@insignia/env';
+import env from '@insignia/env';
 import { Elysia } from 'elysia';
 
 import { modules } from '#modules';
@@ -11,7 +11,7 @@ export const app = new Elysia()
     .use(docsPlugin)
     .use(
         serverTiming({
-            enabled: apiEnv.NODE_ENV !== 'production',
+            enabled: env.NODE_ENV !== 'production',
         }),
     )
     .get('/favicon.ico', ({ set }) => {
@@ -20,7 +20,7 @@ export const app = new Elysia()
     .use(modules)
     .onStart((f) => {
         f.decorator.logger.info(
-            `API running at http://${apiEnv.API_HOST}:${apiEnv.API_PORT} in ${apiEnv.NODE_ENV} mode.`,
+            `API running at ${env.PUBLIC_API_URL} in ${env.NODE_ENV} mode.`,
         );
     })
     .onStop((f) => {

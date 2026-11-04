@@ -1,4 +1,4 @@
-import { databaseEnv } from '@insignia/env';
+import env from '@insignia/env';
 import postgres from '@prisma/orm-postgres/runtime';
 import { contractFromJson } from '@prisma/orm-postgres/static';
 
@@ -9,5 +9,5 @@ export const contract = contractFromJson<Contract>(contractJson);
 
 export const db = postgres({
     contract,
-    url: databaseEnv.DATABASE_URL,
+    url: env.DATABASE_URL,
 });
