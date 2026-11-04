@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
+import { adminEnvSchema } from '../src/admin';
 import { apiEnvSchema } from '../src/api';
 import { baseEnvSchema } from '../src/base';
 import { createLazyEnv, parseEnv } from '../src/common';
@@ -60,6 +61,26 @@ describe('API Environment Schema', () => {
 
         expect(parsed.API_PORT).toBe(51000);
         expect(parsed.API_HOST).toBe('127.0.0.1');
+    });
+});
+
+describe('Admin Environment Schema', () => {
+    test('adminEnvSchema sets correct defaults and inherits base schema', () => {
+        const parsed = adminEnvSchema.parse({});
+
+        expect(parsed.NODE_ENV).toBe('development');
+        expect(parsed.ADMIN_HOST).toBe('localhost');
+        expect(parsed.ADMIN_PORT).toBe(51002);
+    });
+
+    test('adminEnvSchema coerces string ADMIN_PORT to number', () => {
+        const parsed = adminEnvSchema.parse({
+            ADMIN_PORT: '51002',
+            ADMIN_HOST: '0.0.0.0',
+        });
+
+        expect(parsed.ADMIN_PORT).toBe(51002);
+        expect(parsed.ADMIN_HOST).toBe('0.0.0.0');
     });
 });
 
