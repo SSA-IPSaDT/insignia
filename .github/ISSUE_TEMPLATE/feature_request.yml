@@ -15,6 +15,7 @@ body:
           description: В каком компоненте планируется реализация
           multiple: true
           options:
+              - apps/admin (Панель администратора SvelteKit)
               - apps/api (Бэкенд REST API)
               - apps/bot (Telegram-бот)
               - apps/web (Веб-интерфейс SvelteKit)

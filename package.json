@@ -37,6 +37,7 @@
         "svelte",
         "sveltekit",
         "typescript",
+        "admin",
         "api",
         "bot",
         "contracts",
@@ -58,6 +59,7 @@
     "scripts": {
         "dev": "fnox exec -- moon run web:dev",
         "dev:all": "fnox exec -- moon run :dev",
+        "dev:admin": "fnox exec -- moon run admin:dev",
         "dev:api": "fnox exec -- moon run api:dev",
         "dev:bot": "fnox exec -- moon run bot:dev",
         "dev:web": "fnox exec -- moon run web:dev",
