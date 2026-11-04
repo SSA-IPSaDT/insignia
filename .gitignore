@@ -47,5 +47,16 @@ skills/system/
 .agents/skills/prisma-*
 .cursor/skills/prisma-*
 skills/prisma-*
-packages/database/.agents
-packages/database/.cursor
+
+# Svelte AI Agent Skills (симлинки на .gemini/skills)
+.agents/skills/svelte-*
+.cursor/skills/svelte-*
+skills/svelte-*
+
+# Workspace AI Agent symlinks
+packages/*/.agents
+packages/*/.cursor
+packages/*/.gemini
+apps/*/.agents
+apps/*/.cursor
+apps/*/.gemini

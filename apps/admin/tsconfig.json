@@ -1,0 +1,17 @@
+{
+    "extends": ["@insignia/tsconfig/web.json", "$app/tsconfig"],
+    "compilerOptions": {
+        "strict": true,
+        "paths": {
+            "#lib": ["./src/lib/index.ts"],
+            "#lib/*": ["./src/lib/*"],
+            "#styles": ["./src/lib/styles/index.css"],
+            "#styles/*": ["./src/lib/styles/*"],
+            "#components": ["./src/lib/components/index.ts"],
+            "#components/*": ["./src/lib/components/*"],
+            "#sections": ["./src/lib/sections/index.ts"],
+            "#sections/*": ["./src/lib/sections/*"]
+        }
+    },
+    "include": ["src", "vite.config.ts"]
+}

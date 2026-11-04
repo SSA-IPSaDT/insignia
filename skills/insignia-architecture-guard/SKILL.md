@@ -47,7 +47,7 @@ description: Enforces architectural boundaries, dependency direction (DAG), and 
 При анализе и генерации кода агент обязан проверять:
 
 1. **Изоляция приложений (`apps/*`)**:
-    - Ни один файл в `apps/web` не должен импортировать ничего из `apps/api` или `apps/bot`.
+    - Ни один файл в `apps/web` или `apps/admin` не должен импортировать ничего из `apps/api` или `apps/bot`.
     - Взаимодействие происходит только по сети через `@insignia/contracts` и HTTP (Ky) или сокеты (ADR-0002).
 
 2. **Чистота контрактов (`packages/contracts`)**:
