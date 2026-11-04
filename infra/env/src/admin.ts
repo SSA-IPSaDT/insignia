@@ -1,13 +1,9 @@
 import { z } from 'zod';
 
-import { baseEnvSchema } from './base';
-import { createLazyEnv } from './common';
-
-export const adminEnvSchema = baseEnvSchema.extend({
+export const adminRawSchema = z.object({
     ADMIN_PORT: z.coerce.number().default(51002),
     ADMIN_HOST: z.string().default('localhost'),
+    ADMIN_DOMAIN_SUB: z.string().default('admin'),
 });
 
-export type AdminEnv = z.infer<typeof adminEnvSchema>;
-
-export const adminEnv: AdminEnv = createLazyEnv(adminEnvSchema);
+export type AdminRawEnv = z.infer<typeof adminRawSchema>;

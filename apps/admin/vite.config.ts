@@ -1,4 +1,4 @@
-import { adminEnv } from '@insignia/env';
+import { env } from '@insignia/env';
 import adapter from '@sveltejs/adapter-bun';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
@@ -23,11 +23,11 @@ export default defineConfig({
                 envPrefix: 'ADMIN_',
 
                 serverOptions: {
-                    port: adminEnv.ADMIN_PORT,
-                    hostname: adminEnv.ADMIN_HOST,
+                    port: env.ADMIN_PORT,
+                    hostname: env.ADMIN_HOST,
                     reusePort: true,
                     idleTimeout: 30,
-                    maxRequestBodySize: 1024 * 1024 * 25,
+                    maxRequestBodySize: env.BODY_SIZE,
                 },
             }),
             preprocess: [mdsvex({ extensions: ['.svx', '.md'] })],
@@ -36,9 +36,9 @@ export default defineConfig({
         }),
     ],
     server: {
-        port: adminEnv.ADMIN_PORT,
+        port: env.ADMIN_PORT,
         strictPort: true,
-        host: adminEnv.ADMIN_HOST,
+        host: env.ADMIN_HOST,
         fs: {
             allow: ['../..'],
         },
@@ -52,9 +52,9 @@ export default defineConfig({
         },
     },
     preview: {
-        port: adminEnv.ADMIN_PORT,
+        port: env.ADMIN_PORT,
         strictPort: true,
-        host: adminEnv.ADMIN_HOST,
+        host: env.ADMIN_HOST,
     },
     build: {
         target: 'esnext',

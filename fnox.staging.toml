@@ -1,6 +1,9 @@
 [providers.default]
 type = "age"
-recipients = ["age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9"]
+recipients = [
+    "age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9",
+    "age1l5n5mpyujqr7whakw9qhzym3cdcgnf548hvmauaqxzjc0yaxwdzsep2wew",
+]
 
 [secrets]
-APP_ENV = { provider = "plain", value = "staging" }
+TELEGRAM_WEBHOOK_SECRET = { value = "306b7c7663b18a7d6f62c60dffb54f67483bdb51c8521d396f80e4f61f9ff53a", default = "306b7c7663b18a7d6f62c60dffb54f67483bdb51c8521d396f80e4f61f9ff53a" }

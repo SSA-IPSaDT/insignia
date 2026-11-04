@@ -1,5 +1,5 @@
 import { openapi } from '@elysia/openapi';
-import { apiEnv } from '@insignia/env';
+import env from '@insignia/env';
 
 export const docsPlugin = openapi({
     provider: 'scalar',
@@ -22,13 +22,9 @@ export const docsPlugin = openapi({
         },
         servers: [
             {
-                url: `http://${apiEnv.API_HOST}:${apiEnv.API_PORT}`,
-                description: 'Локальное окружение разработки (Development)',
+                url: env.PUBLIC_API_URL,
+                description: `${env.NODE_ENV} environment (${env.API_DOMAIN})`,
             },
-            // {
-            //     url: 'https://api.insignia.local',
-            //     description: 'Боевой сервер (Production)',
-            // },
         ],
 
         tags: [
@@ -46,17 +42,7 @@ export const docsPlugin = openapi({
             },
         ],
 
-        components: {
-            // securitySchemes: {
-            //     bearerAuth: {
-            //         type: 'http',
-            //         scheme: 'bearer',
-            //         bearerFormat: 'JWT',
-            //         description:
-            //             'Введите JWT access-токен в формате: Bearer <token>',
-            //     },
-            // },
-        },
+        components: {},
     },
 
     scalar: {
