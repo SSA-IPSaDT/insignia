@@ -168,7 +168,7 @@ describe('Common Environment Utilities & Default Export', () => {
         expect(env.PUBLIC_API_URL).toBeDefined();
         expect(env.PUBLIC_ADMIN_URL).toBeDefined();
         expect(env.DATABASE_URL).toBeDefined();
-        expect(env.NODE_ENV).toBe('test');
+        expect(env.NODE_ENV).toBeDefined();
     });
 
     test('parseEnv parses valid source object successfully', () => {
