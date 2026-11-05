@@ -1,7 +1,6 @@
-import { createLogger } from '@insignia/logger';
 import { type Bot, webhookCallback } from 'grammy';
 
-const logger = createLogger('bot');
+import { botLogger } from './logger.js';
 
 export type WebhookServerOptions = {
     bot: Bot;
@@ -36,7 +35,7 @@ export const startWebhookServer = ({
         },
     });
 
-    logger.info(
+    botLogger.info(
         `Webhook server started on http://${host}:${server.port}/webhooks/telegram`,
     );
 

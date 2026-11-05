@@ -1,10 +1,7 @@
-import { createLogger } from '@insignia/logger';
-
 import { createBot } from './bot.js';
 import { readBotConfig } from './config.js';
+import { botLogger } from './logger.js';
 import { startWebhookServer } from './server.js';
-
-const logger = createLogger('bot');
 
 const run = async (): Promise<void> => {
     const config = readBotConfig();
@@ -22,7 +19,7 @@ const run = async (): Promise<void> => {
             secret_token: config.webhookSecret,
         });
 
-        logger.info(`Bot started in webhook mode: ${config.webhookUrl}`);
+        botLogger.info(`Bot started in webhook mode: ${config.webhookUrl}`);
 
         const stop = (): void => {
             server.stop();
@@ -43,11 +40,11 @@ const run = async (): Promise<void> => {
     process.once('SIGTERM', stop);
 
     await bot.api.deleteWebhook();
-    logger.info('Bot started in polling mode.');
+    botLogger.info('Bot started in polling mode.');
     await bot.start();
 };
 
 run().catch((error: unknown) => {
-    logger.error('Bot failed to start', error);
+    botLogger.error('Bot failed to start', error);
     process.exit(1);
 });

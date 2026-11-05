@@ -23,11 +23,6 @@ export type BotConfig = {
 
 export const readBotConfig = (source: BotEnv = env): BotConfig => {
     const token = source.TELEGRAM_BOT_TOKEN.trim();
-
-    if (token === '') {
-        throw new Error('TELEGRAM_BOT_TOKEN не задан');
-    }
-
     const webhookSecret = source.TELEGRAM_WEBHOOK_SECRET.trim();
 
     if (source.BOT_WEBHOOK_ENABLED && webhookSecret === '') {

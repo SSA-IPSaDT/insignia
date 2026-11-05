@@ -61,6 +61,19 @@ describe('Raw Schemas Isolation', () => {
         expect(parsed.TELEGRAM_WEBHOOK_SECRET).toBe('');
     });
 
+    test('botRawSchema validates the Telegram token format when provided', () => {
+        const parsed = botRawSchema.parse({
+            TELEGRAM_BOT_TOKEN: '123456:ABC-DEF_ghi',
+        });
+
+        expect(parsed.TELEGRAM_BOT_TOKEN).toBe('123456:ABC-DEF_ghi');
+        expect(() =>
+            botRawSchema.parse({
+                TELEGRAM_BOT_TOKEN: 'not-a-telegram-token',
+            }),
+        ).toThrow();
+    });
+
     test('databaseRawSchema defines Database connection parameters', () => {
         const parsed = databaseRawSchema.parse({});
 

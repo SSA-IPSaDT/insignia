@@ -1,14 +1,13 @@
-import { buildStartMessage, getStartPayload } from './messages.js';
+import type { CommandContext, Context, MiddlewareFn } from 'grammy';
 
-export type Reply = (text: string) => Promise<unknown>;
+import { buildStartMessage } from './messages.js';
+import { getStartPayload } from './utils.js';
 
-export const handleStart = async (
-    reply: Reply,
-    firstName?: string,
-    text = '',
-): Promise<void> => {
-    const payload = getStartPayload(text);
-    const message = buildStartMessage(firstName, payload);
+export const handleStart: MiddlewareFn<CommandContext<Context>> = async (
+    ctx,
+) => {
+    const payload = getStartPayload(ctx.message?.text ?? '');
+    const message = buildStartMessage(ctx.from?.first_name, payload);
 
-    await reply(message);
+    await ctx.reply(message);
 };

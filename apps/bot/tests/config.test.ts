@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import { type BotEnv, readBotConfig } from '../src/config';
 
 const baseEnv: BotEnv = {
-    TELEGRAM_BOT_TOKEN: '123:abc',
+    TELEGRAM_BOT_TOKEN: '123456:ABC-DEF_ghi',
     TELEGRAM_BOT_USERNAME: 'insignia_dev_bot',
     BOT_WEBHOOK_ENABLED: false,
     BOT_WEBHOOK_HOST: 'localhost',
@@ -16,18 +16,9 @@ describe('readBotConfig', () => {
     test('reads polling configuration', () => {
         const config = readBotConfig(baseEnv);
 
-        expect(config.token).toBe('123:abc');
+        expect(config.token).toBe('123456:ABC-DEF_ghi');
         expect(config.username).toBe('insignia_dev_bot');
         expect(config.webhookEnabled).toBe(false);
-    });
-
-    test('throws when the token is empty', () => {
-        expect(() =>
-            readBotConfig({
-                ...baseEnv,
-                TELEGRAM_BOT_TOKEN: '   ',
-            }),
-        ).toThrow('TELEGRAM_BOT_TOKEN');
     });
 
     test('throws when webhook is enabled without a secret', () => {
