@@ -10,6 +10,7 @@ import { loadCachedBotInfoSync, saveCachedBotInfoSync } from '#telegram/cache';
 import type { BotContext, SessionData } from '#telegram/context';
 import { initialSessionData } from '#telegram/context';
 import commands, { setTelegramCommands } from '#telegram/handlers';
+import { autoChatAction } from '#telegram/plugins';
 import { logger } from '#utils/logger';
 
 export const createTelegramBot = (): Bot<BotContext> => {
@@ -27,6 +28,7 @@ export const createTelegramBot = (): Bot<BotContext> => {
     bot.api.config.use(apiThrottler());
 
     bot.use(hydrate());
+    bot.use(autoChatAction());
 
     bot.use(
         session<SessionData, BotContext>({
