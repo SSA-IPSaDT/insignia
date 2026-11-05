@@ -53,23 +53,32 @@ describe('Raw Schemas Isolation', () => {
     test('botRawSchema defines Telegram and Webhook raw parameters', () => {
         const parsed = botRawSchema.parse({});
 
-        expect(parsed.TELEGRAM_BOT_TOKEN).toBe('');
-        expect(parsed.TELEGRAM_BOT_USERNAME).toBe('');
+        expect(parsed.TELEGRAM_BOT_TOKEN).toBe(
+            '0000000000:AAFakeTestTokenForDevAndTestingOnly',
+        );
+        expect(parsed.TELEGRAM_TEST_ENVIRONMENT).toBe(false);
+        expect(parsed.BOT_PORT).toBe(51004);
+        expect(parsed.BOT_HOST).toBe('localhost');
+        expect(parsed.BOT_DOMAIN_SUB).toBe('bot');
         expect(parsed.BOT_WEBHOOK_ENABLED).toBe(false);
-        expect(parsed.BOT_WEBHOOK_PORT).toBe(51004);
-        expect(parsed.BOT_WEBHOOK_HOST).toBe('localhost');
         expect(parsed.TELEGRAM_WEBHOOK_SECRET).toBe('');
     });
 
     test('botRawSchema validates the Telegram token format when provided', () => {
+        const validToken = '1234567890:AAFakeTestTokenForDevAndTestingOnly';
         const parsed = botRawSchema.parse({
-            TELEGRAM_BOT_TOKEN: '123456:ABC-DEF_ghi',
+            TELEGRAM_BOT_TOKEN: validToken,
         });
 
-        expect(parsed.TELEGRAM_BOT_TOKEN).toBe('123456:ABC-DEF_ghi');
+        expect(parsed.TELEGRAM_BOT_TOKEN).toBe(validToken);
         expect(() =>
             botRawSchema.parse({
                 TELEGRAM_BOT_TOKEN: 'not-a-telegram-token',
+            }),
+        ).toThrow();
+        expect(() =>
+            botRawSchema.parse({
+                TELEGRAM_BOT_TOKEN: '',
             }),
         ).toThrow();
     });
@@ -94,18 +103,14 @@ describe('Unified Dynamic Environment Transformation', () => {
         expect(parsed.PUBLIC_API_URL).toBe('http://localhost:51000');
         expect(parsed.PUBLIC_ADMIN_URL).toBe('http://localhost:51002');
         expect(parsed.PUBLIC_WEB_URL).toBe('http://localhost:51001');
+        expect(parsed.PUBLIC_BOT_URL).toBe('http://localhost:51004');
         expect(parsed.ADMIN_ORIGIN).toBe('http://localhost:51002');
         expect(parsed.WEB_ORIGIN).toBe('http://localhost:51001');
-        expect(parsed.TELEGRAM_MINI_APP_URL).toBe('http://localhost:51001');
 
         // CORS
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain('http://localhost:51001');
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain('http://localhost:51002');
-
-        // Webhook URL
-        expect(parsed.TELEGRAM_WEBHOOK_URL).toBe(
-            'http://localhost:51004/webhooks/telegram',
-        );
+        expect(parsed.CORS_ALLOWED_ORIGINS).toContain('http://localhost:51004');
 
         // Database URL
         expect(parsed.DATABASE_URL).toBe(
@@ -119,21 +124,23 @@ describe('Unified Dynamic Environment Transformation', () => {
             ROOT_DOMAIN: 'insignia.tech',
             API_HOST: '0.0.0.0',
             ADMIN_HOST: '0.0.0.0',
+            BOT_HOST: '0.0.0.0',
         });
 
         expect(parsed.PUBLIC_API_URL).toBe('https://api.insignia.tech');
         expect(parsed.PUBLIC_ADMIN_URL).toBe('https://admin.insignia.tech');
         expect(parsed.PUBLIC_WEB_URL).toBe('https://app.insignia.tech');
+        expect(parsed.PUBLIC_BOT_URL).toBe('https://bot.insignia.tech');
         expect(parsed.ADMIN_ORIGIN).toBe('https://admin.insignia.tech');
         expect(parsed.WEB_ORIGIN).toBe('https://app.insignia.tech');
-        expect(parsed.TELEGRAM_WEBHOOK_URL).toBe(
-            'https://api.insignia.tech/webhooks/telegram',
-        );
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain(
             'https://app.insignia.tech',
         );
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain(
             'https://admin.insignia.tech',
+        );
+        expect(parsed.CORS_ALLOWED_ORIGINS).toContain(
+            'https://bot.insignia.tech',
         );
     });
 
