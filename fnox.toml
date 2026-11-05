@@ -3,6 +3,7 @@ type = "age"
 recipients = [
     "age1qh2xqt9394fk0rqph5ax5fh64rffs6hd2ylqyqjn7kt9qr3fksqqy2ndx9",
     "age1l5n5mpyujqr7whakw9qhzym3cdcgnf548hvmauaqxzjc0yaxwdzsep2wew",
+    "age1ew87ttdxqcrtmtz3p8q96j578jyh02yx8ktmw6m2cr2tkydty4lqdk5xgh",
 ]
 
 [providers.plain]
@@ -12,7 +13,7 @@ type = "plain"
 API_PORT = { provider = "plain", value = "51000" }
 API_HOST = { provider = "plain", value = "localhost" }
 DATABASE_NAME = { provider = "plain", value = "insignia", default = "insignia" }
-DATABASE_PASSWORD = { provider = "default", value = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvNENnS016QVB6U3FSQW5CVVdvMEJQVDVMQU1UbmtBMVFyZUxzOStGaEJzClRibXgrUTNDQ3l5Nk1RWVpsYUtydFI4NCt6TzFkb2tTc0p1NUVSOGU3V0kKLT4gWDI1NTE5IGs2YUNRWFJkR2FIVFgvdGF5WkdqcGxjR0hFMHV5bEJEd3lkZG16WmFmencKbERxRmxkOGtJV0NUYnpLWHRTeVhrOFFHTm0wTnduRXFDL29yWEhLc0IxRQotPiBRRS1ncmVhc2UgMGgqYwp5cU1nSGI5UG5PTnJtUkViV1hYZVZjZHpWMGV1K3hWbktvY3pYUHdxVXFHajJlYk85REtNL2hwZ21iTUkzT2E1ClZiUlBETVozUHhIUnRBTFIxeFN1azcvMFZ6NU5JWko2cUNVZm40aWJkVkZzczJFS2xoUQotLS0ga0UydG9oTFJiaU1VdjRsc1dCMDBUMkt0aHE2M09ndS81MGlmeVMxVDZqRQo5aykmOniKbSSNpLB70sw0V+WQzKRa1Z8CZF0yrWtjO4AE4HJ210CeRD84A73gdfICykiEVGAOA2yTGkNMM222iHbDOg==", default = "insignia_password" }
+DATABASE_PASSWORD = { provider = "default", value = "fnox-age-batch-v1:YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA2Z2lyZUlLK0VLbFE4WFdkbVJBL1JFY1NKemhnNXJXd3JlbUdUQlF5UVFJCnc1RytCQzVQZDdhNmpOS2E1OXNIMExkd2RtMzhJRngyYkw4S1libm9rNG8KLT4gWDI1NTE5IDN1bFFJSWdjd3ppNGZ2WW9tMGlHaXIxMG9nWkRueVRxV1o0YUcyR0c1ancKNVJIelNhcHBXakwvYUFVdmU5aFA4eitEc3hHNVNHSGdoUkswVmcrYVhlYwotPiBYMjU1MTkgRHlkUXpZOHFqd1MwU1owVTZaT1NKZWhFWWg3Mkg1TGI5U0w1QiswSUJucwpUdHUzNXc4SDZxczFlek9OTUlXSkUxMjZhdnpWUERFRGwvTGxhL0lKeTN3Ci0+IF93QFp5eS1ncmVhc2UgOgpqNGh4aG5JcHhnZlVWY1R6RVR3VG5wVkF3MGU4R3J1T2tINmN4SEhVdlhQbUM5UC9zNmdYRHRwWDQyUkJXUkZ4CjN4dFB0ZmVkVFlwZitZcmhnb2gyZXFDRWdGeGJSQzQKLS0tIExrNG5qejgzaWl2NGFJOGpvREtxVlJxSnVzeS9FSk9VczYxWUZFT3IvR2sKkZdOksPZjZsd7XKeoNDF8PpwuPo92SBP3yVlTgP4qXgx/7/9ulZIvT4wSEtTDgYZfOFd+s4hw8afE0iBMkwAUBhOI/SoUxyNzvQDRg==:G7Oz8mueCENDJk9nRMX22O95vcIX1iRY20kpx7rll8Og0gHeKN2gMcbbloSNXmF8b5PxmFCqzpSc/QPcHtdI4g==", default = "insignia_password" }
 DATABASE_USER = { provider = "plain", value = "insignia", default = "insignia" }
 DATABASE_PORT = { provider = "plain", value = "52000" }
 DATABASE_HOST = { provider = "plain", value = "localhost" }
