@@ -1,50 +1,19 @@
-import { createBot } from './bot.js';
-import { readBotConfig } from './config.js';
-import { botLogger } from './logger.js';
-import { startWebhookServer } from './server.js';
+import { logger } from '#utils/logger';
 
-const run = async (): Promise<void> => {
-    const config = readBotConfig();
-    const bot = createBot(config.token);
+import { BotService } from './service.js';
 
-    if (config.webhookEnabled) {
-        const server = startWebhookServer({
-            bot,
-            host: config.webhookHost,
-            port: config.webhookPort,
-            secretToken: config.webhookSecret,
-        });
+const service = new BotService();
 
-        await bot.api.setWebhook(config.webhookUrl, {
-            secret_token: config.webhookSecret,
-        });
-
-        botLogger.info(`Bot started in webhook mode: ${config.webhookUrl}`);
-
-        const stop = (): void => {
-            server.stop();
-            process.exit(0);
-        };
-
-        process.once('SIGINT', stop);
-        process.once('SIGTERM', stop);
-
-        return;
-    }
-
-    const stop = (): void => {
-        void bot.stop();
-    };
-
-    process.once('SIGINT', stop);
-    process.once('SIGTERM', stop);
-
-    await bot.api.deleteWebhook();
-    botLogger.info('Bot started in polling mode.');
-    await bot.start();
+const shutdown = async (): Promise<void> => {
+    logger.info('Stopping bot service...');
+    await service.stop();
+    process.exit(0);
 };
 
-run().catch((error: unknown) => {
-    botLogger.error('Bot failed to start', error);
+process.once('SIGINT', () => void shutdown());
+process.once('SIGTERM', () => void shutdown());
+
+service.start().catch((error: unknown) => {
+    logger.error('Failed to start bot service', error);
     process.exit(1);
 });
