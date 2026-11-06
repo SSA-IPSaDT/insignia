@@ -1,5 +1,17 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "@insignia/tsconfig/bun.json",
-    "include": ["src/**/*"]
+    "compilerOptions": {
+        "paths": {
+            "#telegram": ["./src/telegram/index.ts"],
+            "#telegram/*": ["./src/telegram/*"],
+            "#core": ["./src/core/index.ts"],
+            "#core/*": ["./src/core/*"],
+            "#utils": ["./src/utils/index.ts"],
+            "#utils/*": ["./src/utils/*"],
+            "#types": ["./src/core/types/index.ts"],
+            "#types/*": ["./src/core/types/*"]
+        }
+    },
+    "include": ["src/**/*", "tests/*"]
 }

@@ -33,10 +33,12 @@ WEB_HOST = { provider = "plain", value = "localhost" }
 WEB_DOMAIN_SUB = { provider = "plain", value = "app" }
 ENABLE_PWA = { provider = "plain", value = "true" }
 TELEGRAM_MINI_APP_MODE = { provider = "plain", value = "false" }
-TELEGRAM_BOT_USERNAME = { provider = "plain", value = "insignia_dev_bot" }
+TELEGRAM_BOT_TOKEN = { provider = "plain", value = "0000000000:AAFakeTestTokenForDevAndTestingOnly" }
+TELEGRAM_TEST_ENVIRONMENT = { provider = "plain", value = "false" }
+BOT_PORT = { provider = "plain", value = "51004" }
+BOT_HOST = { provider = "plain", value = "localhost" }
+BOT_DOMAIN_SUB = { provider = "plain", value = "bot" }
 BOT_WEBHOOK_ENABLED = { provider = "plain", value = "false" }
-BOT_WEBHOOK_PORT = { provider = "plain", value = "51004" }
-BOT_WEBHOOK_HOST = { provider = "plain", value = "localhost" }
 AUTH_PASSWORD_PEPPER = { value = "e462ed098cf96baf4c2f33db5dbce42b3e4959963e2e3f4c314c738a4c681d7f", default = "e462ed098cf96baf4c2f33db5dbce42b3e4959963e2e3f4c314c738a4c681d7f" }
 JWT_ACCESS_SECRET = { value = "57498e63ee06b90f6dba37b96ae79ca0423fbcad7142656a98d562190ae5a5e7", default = "57498e63ee06b90f6dba37b96ae79ca0423fbcad7142656a98d562190ae5a5e7" }
 JWT_REFRESH_SECRET = { value = "f7a4c9aeea468ba7803920d84d3ae78d64846e4eddd6c41e82f83cb255e8c94b", default = "f7a4c9aeea468ba7803920d84d3ae78d64846e4eddd6c41e82f83cb255e8c94b" }

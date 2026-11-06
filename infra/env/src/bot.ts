@@ -5,18 +5,25 @@ import { booleanEnv } from './utils.js';
 const telegramBotTokenSchema = z
     .string()
     .regex(
-        /^\d+:[A-Za-z0-9_-]+$/,
-        'TELEGRAM_BOT_TOKEN должен быть в формате 123456:ABC-DEF_ghi',
+        /^\d{8,12}:[A-Za-z0-9_-]{35}$/,
+        'TELEGRAM_BOT_TOKEN должен соответствовать официальному формату Telegram Bot API (<8-12 цифр>:<35 символов>)',
     );
 
 export const botRawSchema = z.object({
-    TELEGRAM_BOT_TOKEN: telegramBotTokenSchema.or(z.literal('')).default(''),
-    TELEGRAM_BOT_USERNAME: z.string().default(''),
+    TELEGRAM_BOT_TOKEN: telegramBotTokenSchema.default(
+        '0000000000:AAFakeTestTokenForDevAndTestingOnly',
+    ),
+
+    // Переключение на тестовую среду Telegram (Test DC)
+    TELEGRAM_TEST_ENVIRONMENT: booleanEnv(false),
+
+    // Сетевые настройки сервиса bot
+    BOT_PORT: z.coerce.number().default(51004),
+    BOT_HOST: z.string().default('localhost'),
+    BOT_DOMAIN_SUB: z.string().default('bot'),
 
     // Вебхуки для Telegram (Prod / Staging)
     BOT_WEBHOOK_ENABLED: booleanEnv(false),
-    BOT_WEBHOOK_PORT: z.coerce.number().default(51004),
-    BOT_WEBHOOK_HOST: z.string().default('localhost'),
     TELEGRAM_WEBHOOK_SECRET: z.string().default(''),
 });
 

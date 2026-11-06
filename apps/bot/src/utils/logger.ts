@@ -1,3 +1,3 @@
 import { createLogger } from '@insignia/logger';
 
-export const botLogger = createLogger('bot');
+export const logger = createLogger('bot');
