@@ -1,2 +1,2 @@
-export * from './prisma/db';
-export type { Contract } from './prisma/contract.d';
+export * from './db';
+export type { Contract } from './schemas/contract';

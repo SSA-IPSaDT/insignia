@@ -42,6 +42,12 @@
     "scripts": {
         "typecheck": "bun check",
         "contract:emit": "prisma contract emit",
+        "db:update:dry": "prisma db update --dry-run",
+        "db:update": "prisma db update",
+        "db:migrate:plan": "prisma migration plan",
+        "db:migrate:status": "prisma migration status",
+        "db:migrate": "prisma db migrate",
+        "db:verify": "prisma db verify",
         "db:init": "prisma db init"
     },
     "dependencies": {

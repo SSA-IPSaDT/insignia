@@ -1,0 +1,32 @@
+// use prisma-8
+namespace Organization {
+  model Event {
+    id             String               @id @onCreate(nanoid(12))
+
+    slug           String?              @map("slug")
+    name           String               @map("name")
+
+    description    String?              @map("description")
+
+    status         EventStatus          @default(DRAFT) @map("status")
+
+    startsAt       TimestamptzTemporal? @map("starts_at")
+    endsAt         TimestamptzTemporal? @map("ends_at")
+    location       String?              @map("location")
+
+    organizationId Uuid                 @map("organization_id")
+    Organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+    +Timestamps
+    +SoftDelete
+
+    @@check(expression: sql`slug IS NULL OR (length(slug) >= 3 AND slug ~ '^[a-z0-9_-]+$')`, name: "events_slug_format")
+    @@check(expression: sql`starts_at IS NULL OR ends_at IS NULL OR ends_at >= starts_at`, name: "events_date_order_valid")
+
+    @@index([organizationId])
+
+    @@index([slug], unique: true, where: sql`deleted_at IS NULL`, name: "events_slug_active_unique")
+
+    @@map("events")
+  }
+}

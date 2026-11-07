@@ -24,16 +24,16 @@ tasks:
     contract-emit:
         command: 'bun x prisma contract emit'
         inputs:
-            - 'src/prisma/contract.prisma'
+            - 'src/schemas/**/*.prisma'
             - 'prisma.config.ts'
         outputs:
-            - 'src/prisma/contract.json'
-            - 'src/prisma/contract.d.ts'
+            - 'src/schemas/contract.json'
+            - 'src/schemas/contract.d.ts'
 
     db-init:
         command: 'bun x prisma db init'
         inputs:
-            - 'src/prisma/contract.json'
+            - 'src/schemas/contract.json'
             - 'prisma.config.ts'
         options:
             cache: false

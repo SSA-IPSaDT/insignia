@@ -1,0 +1,18 @@
+// use prisma-8
+namespace Admin {
+  model Admin {
+    id     Uuid      @id @onCreate(uuid(7))
+
+    userId Uuid      @map("user_id")
+    User   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    role   AdminRole @default(ADMIN)
+
+    +Timestamps
+    +SoftDelete
+
+    @@index([userId], unique: true, where: sql`deleted_at IS NULL`, name: "admins_user_id_active_unique")
+
+    @@map("admins")
+  }
+}

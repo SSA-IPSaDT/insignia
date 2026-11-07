@@ -1,0 +1,19 @@
+// use prisma-8
+namespace Forms {
+  model Screen {
+    id          Uuid       @id @onCreate(uuid(7))
+
+    formId      Nanoid     @map("form_id")
+    Form        Form       @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+    title       String
+    description String?
+    order       Numeric(2)
+
+    +Timestamps
+
+    @@index([formId, order])
+
+    @@map("screens")
+  }
+}

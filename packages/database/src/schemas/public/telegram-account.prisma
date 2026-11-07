@@ -1,0 +1,31 @@
+// use prisma-8
+model TelegramAccount {
+  id              Uuid         @id @onCreate(uuid(7))
+
+  photoUrl        String?      @map("photo_url")
+
+  telegramId      BigInt       @unique @map("telegram_id")
+
+  lastName        String?      @map("last_name")
+  firstName       String       @map("first_name")
+
+  userName        String?      @map("user_name")
+
+  isBot           Boolean      @default(false) @map("is_bot")
+  isPremium       Boolean      @default(false) @map("is_premium")
+  languageCode    VarChar(10)? @default("ru") @map("language_code")
+  allowsWriteToPm Boolean      @default(true) @map("allows_write_to_pm")
+
+  userId          Uuid         @unique @map("user_id")
+  User            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  +Timestamps
+
+  @@check(expression: sql`telegram_id > 0`, name: "telegram_accounts_telegram_id_positive")
+  @@check(expression: sql`length(trim(first_name)) > 0`, name: "telegram_accounts_first_name_not_empty")
+  @@check(expression: sql`user_name IS NULL OR (length(user_name) >= 4 AND user_name ~ '^[A-Za-z0-9_]+$')`, name: "telegram_accounts_user_name_valid")
+
+  @@index(expression: sql`lower(user_name)`, unique: true, where: sql`user_name IS NOT NULL`, name: "telegram_accounts_user_name_lower_unique")
+
+  @@map("telegram_accounts")
+}

@@ -1,0 +1,6 @@
+// use prisma-8
+enum AdminRole {
+  @@type("pg/text@1")
+  SUPER_ADMIN = "super_admin"
+  ADMIN = "admin"
+}

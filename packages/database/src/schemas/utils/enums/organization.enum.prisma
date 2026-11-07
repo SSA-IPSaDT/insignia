@@ -1,0 +1,19 @@
+// use prisma-8
+enum OrganizationRole {
+  @@type("pg/text@1")
+  ADMIN = "admin"
+  MODERATOR = "moderator"
+  MEMBER = "member"
+}
+
+enum OrganizationStatus {
+  @@type("pg/text@1")
+  +BaseStatus
+}
+
+enum EventStatus {
+  @@type("pg/text@1")
+  +BaseStatus
+  DRAFT = "draft"
+  MODERATION = "moderation"
+}

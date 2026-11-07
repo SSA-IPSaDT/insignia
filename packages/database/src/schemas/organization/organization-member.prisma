@@ -1,0 +1,21 @@
+// use prisma-8
+namespace Organization {
+  model OrganizationMember {
+    id             Uuid             @id @onCreate(uuid(7))
+
+    organizationId Uuid             @map("organization_id")
+    Organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+    userId         Uuid             @map("user_id")
+    User           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    role           OrganizationRole @default(MEMBER) @map("role")
+    title          String?          @map("title")
+
+    +Timestamps
+
+    @@index([organizationId, userId], unique: true, name: "org_members_org_user_unique")
+
+    @@map("organization_members")
+  }
+}
