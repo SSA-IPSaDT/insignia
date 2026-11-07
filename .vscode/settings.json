@@ -5,17 +5,14 @@
     "files.eol": "\n",
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
-
     // TypeScript
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "typescript.preferences.includePackageJsonAutoImports": "on",
-
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
+    "js/ts.preferences.includePackageJsonAutoImports": "on",
     // File associations
     "files.associations": {
         "*.pkl": "plaintext",
         "*.toml": "toml"
     },
-
     // Markdown
     "[markdown]": {
         "files.trimTrailingWhitespace": false

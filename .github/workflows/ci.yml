@@ -74,11 +74,17 @@ jobs:
             - name: Check code formatting
               run: bun run fmt:check
 
+            - name: Emit Prisma database contract
+              run: bun --filter @insignia/database contract:emit
+
             - name: Typecheck all projects
               run: bun run check
 
             - name: Initialize database schema
               run: bun run db:init
+
+            - name: Verify database schema integrity
+              run: bun --filter @insignia/database db:verify
 
             - name: Run automated test suite
               run: bun run test
