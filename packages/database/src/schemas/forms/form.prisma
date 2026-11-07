@@ -1,0 +1,35 @@
+// use prisma-8
+namespace Forms {
+  model Form {
+    id             Nanoid                     @id @onCreate(nanoid(12))
+
+    slug           String?
+    title          String
+    description    String?
+    coverUrl       String?                    @map("cover_url")
+    isPublished    Boolean                    @default(false) @map("is_published")
+
+    authorId       Uuid                       @map("author_id")
+    Author         User                       @relation(fields: [authorId], references: [id])
+
+    eventId        String?                    @map("event_id")
+    Event          Organization.Event?        @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+    organizationId Uuid?                      @map("organization_id")
+    Organization   Organization.Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+    +Timestamps
+    +SoftDelete
+
+    @@check(expression: sql`slug IS NULL OR (length(slug) >= 3 AND slug ~ '^[a-z0-9_-]+$')`, name: "forms_slug_format")
+    @@check(expression: sql`event_id IS NULL OR organization_id IS NOT NULL`, name: "forms_event_requires_org")
+
+    @@index([organizationId])
+    @@index([eventId])
+    @@index([authorId])
+
+    @@index([slug], unique: true, where: sql`deleted_at IS NULL`, name: "forms_slug_active_unique")
+
+    @@map("forms")
+  }
+}

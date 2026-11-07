@@ -1,0 +1,32 @@
+// use prisma-8
+namespace Organization {
+  model Organization {
+    id          Uuid                 @id @onCreate(uuid(7))
+
+    logoUrl     String?              @map("logo_url")
+
+    name        String               @map("name")
+    slug        String?              @map("slug")
+
+    description String?              @map("description")
+    isVerified  Boolean              @default(false) @map("is_verified")
+
+    ownerId     Uuid?                @map("owner_id")
+    Owner       User?                @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+    status      OrganizationStatus   @default(ACTIVE) @map("status")
+
+    members     OrganizationMember[]
+
+    +Timestamps
+    +SoftDelete
+
+    @@check(expression: sql`slug IS NULL OR (length(slug) >= 3 AND slug ~ '^[a-z0-9_-]+$')`, name: "organizations_slug_format")
+
+    @@index([ownerId])
+
+    @@index([slug], unique: true, where: sql`deleted_at IS NULL`, name: "organizations_slug_active_unique")
+
+    @@map("organizations")
+  }
+}

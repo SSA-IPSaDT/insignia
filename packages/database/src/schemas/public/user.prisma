@@ -1,0 +1,35 @@
+// use prisma-8
+model User {
+  id                       Uuid                              @id @onCreate(uuid(7))
+
+  avatarUrl                String?                           @map("avatar_url")
+
+  lastName                 String?                           @map("last_name")
+  firstName                String                            @default("Anonymous") @map("first_name")
+  patronymic               String?                           @map("patronymic")
+
+  email                    String?                           @map("email")
+  userName                 String?                           @map("user_name")
+  phone                    String?                           @map("phone")
+
+  birthDate                DateTemporal?                     @map("birth_date")
+
+  maxOrganizationCanCreate SmallInt                          @default(0) @map("max_organization_can_create")
+
+  memberInOrganizations    Organization.OrganizationMember[]
+  // admin                    Admin.Admin?
+  telegramAccount          TelegramAccount?
+  ownerInOrganizations     Organization.Organization[]
+
+  +Timestamps
+  +SoftDelete
+
+  @@check(expression: sql`birth_date >= '1940-01-01'`, name: "users_birth_date_after_1940")
+  @@check(expression: sql`max_organization_can_create >= 0`, name: "users_max_org_non_negative")
+
+  @@index([email], unique: true, where: sql`deleted_at IS NULL`, name: "users_email_active_unique")
+  @@index([userName], unique: true, where: sql`deleted_at IS NULL`, name: "users_user_name_active_unique")
+  @@index([phone], unique: true, where: sql`deleted_at IS NULL`, name: "users_phone_active_unique")
+
+  @@map("users")
+}

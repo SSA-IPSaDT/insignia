@@ -65,6 +65,25 @@
                     "arguments": ["fmt", "--stdin-filepath", "{buffer_path}"]
                 }
             }
+        },
+        "Prisma": {
+            "format_on_save": "on",
+            "tab_size": 4,
+            "hard_tabs": false
+        }
+    },
+    "lsp": {
+        "prisma-language-server": {
+            "settings": {
+                "prisma": {
+                    // "auto" (по умолчанию), "prisma8" или "legacy"
+                    "serverMode": "prisma8",
+                    // Для проектов на Prisma 6 (в legacy режиме)
+                    "pinToPrisma6": false,
+                    // Включение/отключение диагностики
+                    "enableDiagnostics": true
+                }
+            }
         }
     }
 }

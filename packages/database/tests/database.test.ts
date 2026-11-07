@@ -10,8 +10,8 @@ describe('Database Connection & Contract', () => {
     test('contract is loaded and contains models', () => {
         expect(contract).toBeDefined();
         expect(contract.target).toBe('postgres');
-        expect(contract.roots.User).toBeDefined();
-        expect(contract.roots.Post).toBeDefined();
+        expect(contract.roots.users).toBeDefined();
+        expect(contract.roots.forms).toBeDefined();
     });
 
     test('executes raw SQL ping against PostgreSQL', async () => {

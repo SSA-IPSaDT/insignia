@@ -9,8 +9,9 @@ ignorePatterns = [
     "dist/**",
     "out/**",
     "old/**",
-    "prisma/generated/**",
-    "prisma/migrations/**",
-    "prisma/schemas/**",
+    "**/migrations/**",
+    "**/snapshots/**",
+    "**/contract.json",
+    "**/contract.d.ts",
     "bun.lock",
 ]

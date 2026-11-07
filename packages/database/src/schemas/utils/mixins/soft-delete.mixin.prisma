@@ -1,0 +1,4 @@
+// use prisma-8
+model mixin SoftDelete {
+  deletedAt TimestamptzTemporal? @map("deleted_at")
+}

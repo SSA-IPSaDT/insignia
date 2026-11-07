@@ -1,0 +1,7 @@
+// use prisma-8
+model mixin Timestamps {
+  updatedAt temporal.UpdatedAt @map("updated_at")
+  createdAt temporal.CreatedAt @map("created_at")
+
+  @@index([createdAt])
+}
