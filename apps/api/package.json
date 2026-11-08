@@ -52,7 +52,8 @@
         "@insignia/logger": "workspace:*",
         "elysia": "catalog:server",
         "elysiajs-helmet": "^1.0.5",
-        "zod": "catalog:"
+        "zod": "catalog:",
+        "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",

@@ -1,19 +1,27 @@
 import {
-    createErrorResponse,
-    createSuccessResponse,
-} from '@insignia/contracts/common';
-import {
     type HealthDTO,
     type HealthErrorCode,
     healthErrorResponseSchema,
     healthResponseSchema,
     type SystemServices,
 } from '@insignia/contracts/health';
+import {
+    createErrorResponse,
+    createSuccessResponse,
+} from '@insignia/contracts/response';
 import Elysia from 'elysia';
 
 import { checkDatabase, checkRedis } from './health.service';
 
-export const healthController = new Elysia({ prefix: '/health' }).get(
+export const healthController = new Elysia({
+    name: 'health',
+    prefix: '/health',
+    detail: {
+        tags: ['System'],
+        description:
+            'Системный мониторинг и проверка доступности инфраструктуры',
+    },
+}).get(
     '',
     async ({ set }) => {
         const [dbResult, redisResult] = await Promise.allSettled([

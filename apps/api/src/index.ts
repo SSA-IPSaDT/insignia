@@ -1,3 +1,4 @@
+import './polyfills';
 import env from '@insignia/env';
 
 import { app } from './app';
