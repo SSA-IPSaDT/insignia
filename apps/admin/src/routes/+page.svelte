@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { resolve } from '$app/paths';
+    import ActivityIcon from '@lucide/svelte/icons/activity';
     import BellIcon from '@lucide/svelte/icons/bell';
     import MoonIcon from '@lucide/svelte/icons/moon';
     import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
@@ -62,6 +64,16 @@
                 <BellIcon class="size-4" />
                 <span>Проверить уведомление</span>
             </button>
+        </div>
+
+        <div class="pt-1">
+            <a
+                href={resolve('/health')}
+                class="border-border hover:bg-accent hover:text-accent-foreground inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+            >
+                <ActivityIcon class="size-4" />
+                <span>Проверить статус API (Health Check)</span>
+            </a>
         </div>
     </div>
 </main>

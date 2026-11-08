@@ -38,7 +38,7 @@
     ],
     "scripts": {
         "dev": "vite dev",
-        "build": "vite build",
+        "build": "bun --bun vite build",
         "preview": "vite preview",
         "prepare": "bun --bun svelte-kit sync || echo ''",
         "check": "bun --bun svelte-kit sync && bun --bun svelte-check --tsconfig ./tsconfig.json",
@@ -48,7 +48,8 @@
         "@insignia/contracts": "workspace:*",
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
-        "@lucide/svelte": "^1.68.0",
+        "@insignia/sdk": "workspace:*",
+        "@lucide/svelte": "^1.70.0",
         "clsx": "^2.1.1",
         "lucide-svelte": "^1.0.1",
         "mode-watcher": "^1.1.0",
