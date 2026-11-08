@@ -1017,7 +1017,7 @@
                 }
               },
               "languageCode": {
-                "nullable": true,
+                "nullable": false,
                 "type": {
                   "codecId": "sql/varchar@1",
                   "kind": "scalar",
@@ -2226,9 +2226,14 @@
             "telegram_accounts": {
               "checks": [
                 {
-                  "expression": "length(trim(first_name)) > 0",
-                  "name": "telegram_accounts_first_name_not_empty_82c94c32",
-                  "prefix": "telegram_accounts_first_name_not_empty"
+                  "expression": "length(trim(first_name)) > 0 AND length(first_name) <= 64",
+                  "name": "telegram_accounts_first_name_length_62e5301a",
+                  "prefix": "telegram_accounts_first_name_length"
+                },
+                {
+                  "expression": "last_name IS NULL OR (length(trim(last_name)) > 0 AND length(last_name) <= 64)",
+                  "name": "telegram_accounts_last_name_length_2e491ea3",
+                  "prefix": "telegram_accounts_last_name_length"
                 },
                 {
                   "expression": "telegram_id > 0",
@@ -2236,8 +2241,8 @@
                   "prefix": "telegram_accounts_telegram_id_positive"
                 },
                 {
-                  "expression": "user_name IS NULL OR (length(user_name) >= 4 AND user_name ~ '^[A-Za-z0-9_]+$')",
-                  "name": "telegram_accounts_user_name_valid_fbee6763",
+                  "expression": "user_name IS NULL OR (length(user_name) >= 4 AND length(user_name) <= 32 AND user_name ~ '^[A-Za-z0-9_]+$')",
+                  "name": "telegram_accounts_user_name_valid_3e9dd5e9",
                   "prefix": "telegram_accounts_user_name_valid"
                 }
               ],
@@ -2294,7 +2299,7 @@
                     "kind": "literal",
                     "value": "ru"
                   },
-                  "nullable": true,
+                  "nullable": false,
                   "typeParams": {
                     "length": 10
                   }
@@ -2400,9 +2405,39 @@
                   "prefix": "users_birth_date_after_1940"
                 },
                 {
-                  "expression": "max_organization_can_create >= 0",
-                  "name": "users_max_org_non_negative_3715d9df",
-                  "prefix": "users_max_org_non_negative"
+                  "expression": "email IS NULL OR length(email) <= 255",
+                  "name": "users_email_length_8c6ae839",
+                  "prefix": "users_email_length"
+                },
+                {
+                  "expression": "length(trim(first_name)) > 0 AND length(first_name) <= 64",
+                  "name": "users_first_name_length_62e5301a",
+                  "prefix": "users_first_name_length"
+                },
+                {
+                  "expression": "last_name IS NULL OR (length(trim(last_name)) > 0 AND length(last_name) <= 64)",
+                  "name": "users_last_name_length_2e491ea3",
+                  "prefix": "users_last_name_length"
+                },
+                {
+                  "expression": "max_organization_can_create >= 0 AND max_organization_can_create <= 8",
+                  "name": "users_max_org_range_2ff3ebe0",
+                  "prefix": "users_max_org_range"
+                },
+                {
+                  "expression": "patronymic IS NULL OR (length(trim(patronymic)) > 0 AND length(patronymic) <= 64)",
+                  "name": "users_patronymic_length_a29f815b",
+                  "prefix": "users_patronymic_length"
+                },
+                {
+                  "expression": "phone IS NULL OR phone ~ '^\\+[1-9][0-9]{9,14}$'",
+                  "name": "users_phone_e164_format_0e87e514",
+                  "prefix": "users_phone_e164_format"
+                },
+                {
+                  "expression": "user_name IS NULL OR (length(user_name) >= 3 AND length(user_name) <= 32 AND user_name ~ '^[a-zA-Z0-9_-]+$')",
+                  "name": "users_user_name_valid_241b4161",
+                  "prefix": "users_user_name_valid"
                 }
               ],
               "columns": {
@@ -2570,7 +2605,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "6391772caa136310008d9a18551ec0a6b29805a3e242fc0a814abaf643c59520"
+    "storageHash": "99da5deed440e332cb3886745090eaa5580740251ae4716f59ffa47a24a2c722"
   },
   "execution": {
     "executionHash": "7bd5b11dd700b59d0668d047806056e85389331f55b741ff33997b33f38d6799",
