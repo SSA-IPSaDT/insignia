@@ -1,17 +1,19 @@
 import { z } from 'zod';
 import type { ZodType } from 'zod';
 
-export const commonErrorCodeSchema = z.enum([
-    'BAD_REQUEST',
-    'VALIDATION_ERROR',
-    'UNAUTHORIZED',
-    'FORBIDDEN',
-    'NOT_FOUND',
-    'CONFLICT',
-    'INTERNAL_SERVER_ERROR',
-    'SERVICE_UNAVAILABLE',
-    'DATABASE_ERROR',
-]);
+export const commonErrorCodeSchema = z
+    .enum([
+        'BAD_REQUEST',
+        'VALIDATION_ERROR',
+        'UNAUTHORIZED',
+        'FORBIDDEN',
+        'NOT_FOUND',
+        'CONFLICT',
+        'INTERNAL_SERVER_ERROR',
+        'SERVICE_UNAVAILABLE',
+        'DATABASE_ERROR',
+    ])
+    .describe('Стандартизированный код ошибки API платформы Insignia');
 
 export type CommonErrorCode = z.infer<typeof commonErrorCodeSchema>;
 
@@ -27,30 +29,35 @@ export const COMMON_ERROR_MESSAGES: Record<CommonErrorCode, string> = {
     DATABASE_ERROR: 'Ошибка при взаимодействии с базой данных.',
 } as const;
 
-export const createApiResponseSchema = <T extends ZodType>(dataSchema: T) =>
-    z.object({
-        success: z.literal(true),
-        data: dataSchema,
-    });
-
-export type ApiResponse<TData> = {
-    success: true;
-    data: TData;
-};
-
 export const createApiErrorResponseSchema = <
     TCode extends ZodType = typeof commonErrorCodeSchema,
+    TDetails extends ZodType = z.ZodOptional<z.ZodUnknown>,
 >(
     codeSchema?: TCode,
+    detailsSchema?: TDetails,
 ) =>
-    z.object({
-        success: z.literal(false),
-        error: z.object({
-            code: codeSchema ?? commonErrorCodeSchema,
-            message: z.string(),
-            details: z.unknown().optional(),
-        }),
-    });
+    z
+        .object({
+            success: z
+                .literal(false)
+                .describe('Флаг успешности ответа (всегда false при ошибке)'),
+            error: z
+                .object({
+                    code: (
+                        (codeSchema ?? commonErrorCodeSchema) as TCode
+                    ).describe('Машиночитаемый код категории ошибки'),
+                    message: z
+                        .string()
+                        .describe('Понятное человеку описание причины ошибки'),
+                    details: (
+                        (detailsSchema ?? z.unknown().optional()) as TDetails
+                    ).describe(
+                        'Дополнительные контекстные данные или детализация ошибки',
+                    ),
+                })
+                .describe('Объект с подробностями возникшей ошибки'),
+        })
+        .describe('Стандартный конверт ответа API с ошибкой');
 
 export const apiErrorResponseSchema = createApiErrorResponseSchema();
 
@@ -62,6 +69,7 @@ export type ApiErrorResponse<TCode extends string = CommonErrorCode> = {
         details?: unknown;
     };
 };
+
 export const createErrorResponse = <TCode extends string = CommonErrorCode>(
     code: TCode,
     message?: string,
@@ -82,8 +90,3 @@ export const createErrorResponse = <TCode extends string = CommonErrorCode>(
         },
     };
 };
-
-export const createSuccessResponse = <T>(data: T): ApiResponse<T> => ({
-    success: true,
-    data,
-});

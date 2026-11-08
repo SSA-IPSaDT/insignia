@@ -9,6 +9,10 @@ import {
     createApiResponseSchema,
     createErrorResponse,
     createSuccessResponse,
+    createValidationErrorResponse,
+    DEFAULT_VALIDATION_ERROR_MESSAGE,
+    validationErrorDetailsSchema,
+    validationErrorResponseSchema,
 } from '../src/index';
 
 describe('Response Contract - Success Envelope', () => {
@@ -159,5 +163,62 @@ describe('Response Contract - Error Envelope', () => {
         const response = createErrorResponse('CUSTOM_NEW_ERROR');
 
         expect(response.error.message).toBe('Ошибка: CUSTOM_NEW_ERROR');
+    });
+});
+
+describe('Response Contract - Validation Error Envelope', () => {
+    test('validationErrorResponseSchema validates correct validation error format', () => {
+        const payload = {
+            success: false,
+            error: {
+                code: 'VALIDATION_ERROR',
+                message: 'Ошибка валидации входящих данных.',
+                details: {
+                    fields: {
+                        email: 'Некорректный адрес электронной почты',
+                        firstName: 'Имя не может быть пустым',
+                    },
+                },
+            },
+        };
+
+        const result = validationErrorResponseSchema.safeParse(payload);
+        expect(result.success).toBe(true);
+        if (result.success) {
+            expect(result.data.error.code).toBe('VALIDATION_ERROR');
+            expect(result.data.error.details.fields.email).toBe(
+                'Некорректный адрес электронной почты',
+            );
+        }
+    });
+
+    test('validationErrorResponseSchema rejects error code other than VALIDATION_ERROR', () => {
+        const payload = {
+            success: false,
+            error: {
+                code: 'BAD_REQUEST',
+                message: 'Ошибка валидации',
+                details: {
+                    fields: { name: 'Ошибка' },
+                },
+            },
+        };
+
+        const result = validationErrorResponseSchema.safeParse(payload);
+        expect(result.success).toBe(false);
+    });
+
+    test('createValidationErrorResponse creates properly formatted payload with default message', () => {
+        const fields = { username: 'Слишком короткое имя' };
+        const response = createValidationErrorResponse(fields);
+
+        expect(response).toEqual({
+            success: false,
+            error: {
+                code: 'VALIDATION_ERROR',
+                message: DEFAULT_VALIDATION_ERROR_MESSAGE,
+                details: { fields },
+            },
+        });
     });
 });

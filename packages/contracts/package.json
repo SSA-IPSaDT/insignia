@@ -39,13 +39,17 @@
     "exports": {
         ".": "./src/index.ts",
         "./common": "./src/common/index.ts",
-        "./health": "./src/health.ts"
+        "./health": "./src/health.ts",
+        "./response": "./src/response/index.ts",
+        "./users": "./src/users/index.ts"
     },
     "scripts": {
         "typecheck": "bun check"
     },
     "dependencies": {
-        "zod": "catalog:"
+        "libphonenumber-js": "^1.13.15",
+        "zod": "catalog:",
+        "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
