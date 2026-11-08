@@ -23,8 +23,13 @@
 
 ## 📦 Взаимодействие в монорепозитории
 
-- Зависит от `packages/contracts`.
-- Взаимодействует с `apps/api` по HTTP/RPC.
+- Зависит от:
+    - `packages/contracts` (типы DTO)
+    - `packages/sdk` (клиентский изоморфный SDK для вызовов API)
+    - `packages/logger` (структурированное логирование)
+    - `infra/env` (типизированные переменные окружения)
+    - `packages/tsconfig` (общие настройки компилятора)
+- Взаимодействует с `apps/api` через клиентский SDK `@insignia/sdk` по HTTP/RPC.
 
 ---
 

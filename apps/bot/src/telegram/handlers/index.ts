@@ -4,12 +4,14 @@ import type { Bot } from 'grammy';
 import type { BotContext } from '#telegram/context';
 import { logger } from '#utils/logger';
 
+import healthHandle from './health.handle';
 import startHandle from './start.handle';
 
 export const commands = new CommandGroup<BotContext>({
     ignoreCase: true,
 });
 commands.command('start', 'Начать работу / Перезапустить', startHandle);
+commands.command('health', 'Проверить состояние API сервисов', healthHandle);
 
 export default commands;
 
