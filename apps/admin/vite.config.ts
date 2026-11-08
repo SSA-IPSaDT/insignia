@@ -1,9 +1,12 @@
-import { env } from '@insignia/env';
+import { env, populateProcessEnv } from '@insignia/env';
 import adapter from '@sveltejs/adapter-bun';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { mdsvex } from 'mdsvex';
 import { defineConfig } from 'vite';
+
+// Экспортируем все вычисленные переменные монорепозитория (PUBLIC_API_URL и др.) в process.env для SvelteKit
+populateProcessEnv(env);
 
 export default defineConfig({
     plugins: [

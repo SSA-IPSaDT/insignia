@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
-const getEnvSource = (): Record<string, string | undefined> =>
-    typeof Bun !== 'undefined' ? Bun.env : process.env;
+const getEnvSource = (): Record<string, string | undefined> => {
+    if (typeof Bun !== 'undefined') return Bun.env;
+    if (typeof process !== 'undefined') return process.env;
+    return {};
+};
 
 export const parseEnv = <T extends z.ZodType>(
     schema: T,
@@ -29,6 +32,23 @@ export const parseEnv = <T extends z.ZodType>(
     return result.data;
 };
 
+export const populateProcessEnv = (source: Record<string, unknown>): void => {
+    if (typeof process !== 'undefined' && process.env) {
+        for (const [key, val] of Object.entries(source)) {
+            if (val !== undefined && val !== null && typeof val !== 'object') {
+                process.env[key] = String(val);
+            }
+        }
+    }
+    if (typeof Bun !== 'undefined' && Bun.env) {
+        for (const [key, val] of Object.entries(source)) {
+            if (val !== undefined && val !== null && typeof val !== 'object') {
+                Bun.env[key] = String(val);
+            }
+        }
+    }
+};
+
 export const createLazyEnv = <T extends z.ZodType<object>>(
     schema: T,
 ): z.infer<T> => {
@@ -39,6 +59,7 @@ export const createLazyEnv = <T extends z.ZodType<object>>(
         if (!cached) {
             cached = parseEnv(schema, getEnvSource());
             Object.assign(target, cached);
+            populateProcessEnv(cached as Record<string, unknown>);
         }
         return cached;
     };

@@ -7,6 +7,16 @@ dependsOn:
     - 'tsconfig'
 
 tasks:
+    build:
+        command: 'bun run build.ts'
+        inputs:
+            - 'src/**/*'
+            - 'tsconfig.json'
+            - 'tsconfig.build.json'
+            - 'build.ts'
+        outputs:
+            - 'dist/**/*'
+
     check:
         command: 'bun check'
         inputs:

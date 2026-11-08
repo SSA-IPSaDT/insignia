@@ -56,6 +56,7 @@
         "@insignia/contracts": "workspace:*",
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
+        "@insignia/sdk": "workspace:*",
         "elysia": "catalog:server",
         "grammy": "^1.46.0",
         "zod": "catalog:"

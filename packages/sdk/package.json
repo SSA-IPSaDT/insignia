@@ -1,0 +1,87 @@
+{
+    "name": "@insignia/sdk",
+    "version": "0.1.0",
+    "description": "Клиентский изоморфный SDK платформы Insignia на базе Ky и контрактов",
+    "private": true,
+    "type": "module",
+    "license": "UNLICENSED",
+    "author": {
+        "name": "naylour",
+        "email": "naylour@tuta.io",
+        "url": "https://github.com/naylour"
+    },
+    "contributors": [
+        {
+            "name": "naylour",
+            "email": "naylour@tuta.io",
+            "url": "https://github.com/naylour"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SSA-IPSaDT/insignia.git",
+        "directory": "packages/sdk"
+    },
+    "bugs": {
+        "url": "https://github.com/SSA-IPSaDT/insignia/issues"
+    },
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/main/packages/sdk#readme",
+    "keywords": [
+        "sdk",
+        "client",
+        "api",
+        "http",
+        "ky",
+        "contracts",
+        "typescript",
+        "insignia"
+    ],
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "imports": {
+        "#errors": {
+            "types": "./dist/errors.d.ts",
+            "default": "./src/errors.ts"
+        },
+        "#types": {
+            "types": "./dist/types.d.ts",
+            "default": "./src/types.d.ts"
+        },
+        "#http/modules/base": {
+            "types": "./dist/http/modules/base.d.ts",
+            "default": "./src/http/modules/base.ts"
+        },
+        "#http/resolver": {
+            "types": "./dist/http/resolver.d.ts",
+            "default": "./src/http/resolver.ts"
+        },
+        "#": {
+            "types": "./dist/index.d.ts",
+            "default": "./src/index.ts"
+        }
+    },
+    "scripts": {
+        "build": "bun run build.ts",
+        "check": "bun check",
+        "typecheck": "bun check",
+        "test": "bun test tests"
+    },
+    "dependencies": {
+        "ky": "^2.2.0"
+    },
+    "devDependencies": {
+        "@insignia/contracts": "workspace:*",
+        "@insignia/tsconfig": "workspace:*",
+        "@types/bun": "^1.4.4"
+    }
+}

@@ -42,6 +42,7 @@ insignia/
 │   ├── contracts/                # Контракты данных, DTO, схемы валидации и типы
 │   ├── database/                 # Доступ к данным, схемы моделей (Prisma), миграции
 │   ├── logger/                   # Структурированное логирование с неймспейсами
+│   ├── sdk/                      # @insignia/sdk — клиентский изоморфный SDK (Ky, Result Pattern)
 │   └── tsconfig/                 # Базовые разделяемые конфигурации TypeScript
 │
 ├── docs/                         # Проектная документация и база знаний
@@ -78,6 +79,7 @@ insignia/
 | **`packages/contracts`** | Единый источник правды (Single Source of Truth) для интерфейсов, схем данных и API-контрактов. Исключает рассинхронизацию между клиентом и сервером. |
 | **`packages/database`**  | Модуль работы с БД, содержащий схемы данных, миграции и типизированный клиент доступа к данным.                                                      |
 | **`packages/logger`**    | Модуль структурированного логирования с неймспейсами, форматированием и записью в файлы.                                                             |
+| **`packages/sdk`**       | Клиентский изоморфный SDK (Ky, Result Pattern) для приложений монорепозитория и внешних интеграций.                                                  |
 | **`packages/tsconfig`**  | Единая эталонная конфигурация компилятора TypeScript для всех подпроектов (пресеты base, bun, web).                                                  |
 | **`infra/env`**          | Пакет строгой типизации и Zod-валидации переменных окружения (`@insignia/env`).                                                                      |
 | **`infra/docker`**       | Конфигурации контейнеризации (Dockerfile и Docker Compose).                                                                                          |
@@ -249,3 +251,6 @@ insignia/
     - [ADR 0001: Выбор монорепозитория на базе Bun и Moonrepo](docs/adr/0001-monorepo-bun.md)
     - [ADR 0002: Межсервисное взаимодействие на локальном сервере (HTTP TCP vs UNIX Domain Sockets)](docs/adr/0002-local-ipc-uds-vs-http.md)
     - [ADR 0003: Архитектура и границы функционала MVP платформы Insignia](docs/adr/0003-mvp-architecture-and-scope.md)
+    - [ADR 0004: Выбор ORM Prisma 8 для доступа к данным](docs/adr/0004-orm-choice-prisma-8.md)
+    - [ADR 0005: Стратегия окружений разработки и тестирования Telegram-бота и Mini App](docs/adr/0005-telegram-development-and-testing-environments.md)
+    - [ADR 0006: Стратегия упаковки публичного SDK и инлайнинга типов контрактов](docs/adr/0006-public-sdk-packaging-and-type-inlining.md)

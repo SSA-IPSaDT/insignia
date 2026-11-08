@@ -74,6 +74,9 @@ jobs:
             - name: Check code formatting
               run: bun run fmt:check
 
+            - name: Build applications and packages
+              run: bun run build
+
             - name: Emit Prisma database contract
               run: bun --filter @insignia/database contract:emit
 
@@ -88,6 +91,3 @@ jobs:
 
             - name: Run automated test suite
               run: bun run test
-
-            - name: Build applications
-              run: bun run build

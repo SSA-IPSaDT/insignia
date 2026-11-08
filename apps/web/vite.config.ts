@@ -1,6 +1,10 @@
+import { env, populateProcessEnv } from '@insignia/env';
 import adapter from '@sveltejs/adapter-auto';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+
+// Экспортируем все вычисленные переменные монорепозитория (PUBLIC_API_URL и др.) в process.env для SvelteKit
+populateProcessEnv(env);
 
 export default defineConfig({
     plugins: [

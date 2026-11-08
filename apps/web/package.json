@@ -52,6 +52,7 @@
         "@insignia/contracts": "workspace:*",
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
+        "@insignia/sdk": "workspace:*",
         "zod": "catalog:"
     },
     "devDependencies": {

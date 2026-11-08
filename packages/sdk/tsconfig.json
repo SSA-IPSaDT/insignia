@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "@insignia/tsconfig/base.json",
+    "compilerOptions": {
+        "lib": ["DOM", "ESNext"],
+        "types": ["bun"],
+        "paths": {
+            "#errors": ["./src/errors.ts"],
+            "#types": ["./src/types.d.ts"],
+            "#http/modules/base": ["./src/http/modules/base.ts"],
+            "#http/resolver": ["./src/http/resolver.ts"],
+            "#": ["./src/index.ts"]
+        }
+    },
+    "include": ["src/**/*", "tests/**/*"]
+}
