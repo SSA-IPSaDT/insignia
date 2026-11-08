@@ -3,11 +3,12 @@ import env from '@insignia/env';
 import { Elysia } from 'elysia';
 
 import { modules } from '#modules';
-import { corsPlugin, docsPlugin, loggerPlugin } from '#plugins';
+import { corsPlugin, docsPlugin, errorPlugin, loggerPlugin } from '#plugins';
 
 export const app = new Elysia()
     .use(corsPlugin)
     .use(loggerPlugin)
+    .use(errorPlugin)
     .use(docsPlugin)
     .use(
         serverTiming({
