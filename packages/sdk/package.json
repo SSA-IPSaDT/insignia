@@ -82,6 +82,7 @@
     "devDependencies": {
         "@insignia/contracts": "workspace:*",
         "@insignia/tsconfig": "workspace:*",
+        "temporal-polyfill": "catalog:",
         "@types/bun": "^1.4.4"
     }
 }

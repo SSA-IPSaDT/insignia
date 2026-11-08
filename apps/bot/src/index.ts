@@ -1,3 +1,4 @@
+import './polyfills';
 import { logger } from '#utils/logger';
 
 import { BotService } from './service.js';
