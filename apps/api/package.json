@@ -45,8 +45,8 @@
         "test": "bun test"
     },
     "dependencies": {
-        "@elysia/cors": "^1.4.2",
-        "@elysia/openapi": "^1.4.16",
+        "@elysia/cors": "^1.4.3",
+        "@elysia/openapi": "^1.4.17",
         "@elysia/server-timing": "^1.4.1",
         "@insignia/contracts": "workspace:*",
         "@insignia/database": "workspace:*",

@@ -21,6 +21,9 @@ tasks:
 
     build:
         command: 'bun run --bun vite build'
+        deps:
+            - 'env:build'
+            - 'sdk:build'
         inputs:
             - 'src/**/*'
             - 'static/**/*'
