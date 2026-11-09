@@ -89,5 +89,8 @@ jobs:
             - name: Verify database schema integrity
               run: bun --filter @insignia/database db:verify
 
+            - name: Seed database with test dataset
+              run: bun --filter @insignia/database db:seed
+
             - name: Run automated test suite
               run: bun run test

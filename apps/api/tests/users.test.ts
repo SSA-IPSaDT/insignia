@@ -1,4 +1,4 @@
-import { describe, expect, it, spyOn } from 'bun:test';
+import { beforeAll, describe, expect, it, spyOn } from 'bun:test';
 
 import { notImplementedResponseSchema } from '@insignia/contracts/response';
 import {
@@ -7,12 +7,17 @@ import {
     takeUsersResponseSchema,
     USER_ERROR_MESSAGES,
 } from '@insignia/contracts/users';
+import { seedUsers } from '@insignia/database/seed';
 
 import { app } from '#/app';
 import * as usersService from '#modules/v1/users/users.service';
 
 describe('Users API Endpoints', () => {
     const validUserId = '018f2780-2396-7a8e-a9d5-7389a0f69a53';
+
+    beforeAll(async () => {
+        await seedUsers();
+    });
 
     it('GET /v1/users/me returns 404 when no user identifier is provided in headers', async () => {
         const response = await app.handle(
