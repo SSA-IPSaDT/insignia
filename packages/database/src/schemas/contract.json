@@ -46,11 +46,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "deletedAt": {
@@ -83,11 +80,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "userId": {
@@ -164,11 +158,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "deletedAt": {
@@ -233,11 +224,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               }
             },
@@ -339,11 +327,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "description": {
@@ -390,11 +375,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               }
             },
@@ -453,11 +435,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "deletedAt": {
@@ -539,11 +518,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               }
             },
@@ -613,11 +589,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "deletedAt": {
@@ -692,11 +665,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               }
             },
@@ -778,11 +748,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "id": {
@@ -822,11 +789,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "userId": {
@@ -981,11 +945,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "firstName": {
@@ -1050,11 +1011,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "userId": {
@@ -1155,11 +1113,8 @@
               "createdAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "deletedAt": {
@@ -1221,11 +1176,8 @@
               "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamptz-date@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
                 }
               },
               "userName": {
@@ -1349,12 +1301,9 @@
               ],
               "columns": {
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "deleted_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -1382,12 +1331,9 @@
                   }
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "user_id": {
                   "codecId": "pg/uuid@1",
@@ -1484,12 +1430,9 @@
                   "nullable": true
                 },
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "deleted_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -1539,12 +1482,9 @@
                   "nullable": false
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -1661,12 +1601,9 @@
             "screens": {
               "columns": {
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "description": {
                   "codecId": "pg/text@1",
@@ -1700,12 +1637,9 @@
                   "nullable": false
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -1792,12 +1726,9 @@
               ],
               "columns": {
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "deleted_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -1860,12 +1791,9 @@
                   }
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -1934,12 +1862,9 @@
               ],
               "columns": {
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "id": {
                   "codecId": "pg/uuid@1",
@@ -1972,12 +1897,9 @@
                   "nullable": true
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "user_id": {
                   "codecId": "pg/uuid@1",
@@ -2084,12 +2006,9 @@
               ],
               "columns": {
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "deleted_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -2151,12 +2070,9 @@
                   }
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -2257,12 +2173,9 @@
                   "nullable": false
                 },
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "first_name": {
                   "codecId": "pg/text@1",
@@ -2320,12 +2233,9 @@
                   "nullable": false
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "user_id": {
                   "codecId": "pg/uuid@1",
@@ -2452,12 +2362,9 @@
                   "nullable": true
                 },
                 "created_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "deleted_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -2508,12 +2415,9 @@
                   "nullable": true
                 },
                 "updated_at": {
-                  "codecId": "pg/timestamptz-date@1",
+                  "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 3
-                  }
+                  "nullable": false
                 },
                 "user_name": {
                   "codecId": "pg/text@1",
@@ -2547,6 +2451,34 @@
                   "name": "users_phone_active_unique_943ab5d2",
                   "prefix": "users_phone_active_unique",
                   "unique": true,
+                  "where": "deleted_at IS NULL"
+                },
+                {
+                  "columns": [
+                    "last_name",
+                    "first_name",
+                    "patronymic",
+                    "email"
+                  ],
+                  "name": "users_search_1bbce416",
+                  "options": {
+                    "language": "russian",
+                    "weightGroups": [
+                      [
+                        "last_name",
+                        "first_name"
+                      ],
+                      [
+                        "patronymic"
+                      ],
+                      [
+                        "email"
+                      ]
+                    ]
+                  },
+                  "prefix": "users_search",
+                  "type": "fullText",
+                  "unique": false,
                   "where": "deleted_at IS NULL"
                 },
                 {
@@ -2605,19 +2537,16 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "99da5deed440e332cb3886745090eaa5580740251ae4716f59ffa47a24a2c722"
+    "storageHash": "c05561db47bb004c7c8bc79539f89636a8e71dc424d97659472ed9b1395070c6"
   },
   "execution": {
-    "executionHash": "7bd5b11dd700b59d0668d047806056e85389331f55b741ff33997b33f38d6799",
+    "executionHash": "5729e41f1e844216af9ca305a8baeab4ab30697d53ab57a416377bbb7f045797",
     "mutations": {
       "defaults": [
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "admins",
@@ -2638,18 +2567,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "admins",
@@ -2659,11 +2582,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "forms",
@@ -2687,18 +2607,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "forms",
@@ -2708,11 +2622,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "screens",
@@ -2733,18 +2644,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "screens",
@@ -2754,11 +2659,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "events",
@@ -2782,18 +2684,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "events",
@@ -2803,11 +2699,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "organization_members",
@@ -2828,18 +2721,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "organization_members",
@@ -2849,11 +2736,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "organizations",
@@ -2874,18 +2758,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "organizations",
@@ -2895,11 +2773,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "telegram_accounts",
@@ -2920,18 +2795,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "telegram_accounts",
@@ -2941,11 +2810,8 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "users",
@@ -2966,18 +2832,12 @@
         },
         {
           "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 3
-            }
+            "id": "instantNow",
+            "kind": "generator"
           },
           "ref": {
             "entry": "users",

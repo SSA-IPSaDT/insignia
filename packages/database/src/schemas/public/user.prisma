@@ -17,7 +17,6 @@ model User {
   maxOrganizationCanCreate SmallInt                          @default(0) @map("max_organization_can_create")
 
   memberInOrganizations    Organization.OrganizationMember[]
-  // admin                    Admin.Admin?
   telegramAccount          TelegramAccount?
   ownerInOrganizations     Organization.Organization[]
 
@@ -36,6 +35,8 @@ model User {
   @@index([email], unique: true, where: sql`deleted_at IS NULL`, name: "users_email_active_unique")
   @@index([userName], unique: true, where: sql`deleted_at IS NULL`, name: "users_user_name_active_unique")
   @@index([phone], unique: true, where: sql`deleted_at IS NULL`, name: "users_phone_active_unique")
+
+  @@fullTextIndex([[lastName, firstName], patronymic, email], language: "russian", where: sql`deleted_at IS NULL`, name: "users_search")
 
   @@map("users")
 }

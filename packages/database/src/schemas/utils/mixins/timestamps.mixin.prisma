@@ -1,7 +1,7 @@
 // use prisma-8
 model mixin Timestamps {
-  updatedAt temporal.UpdatedAt @map("updated_at")
-  createdAt temporal.CreatedAt @map("created_at")
+  updatedAt TimestamptzTemporal @onCreate(now()) @onUpdate(now()) @map("updated_at")
+  createdAt TimestamptzTemporal @onCreate(now()) @map("created_at")
 
   @@index([createdAt])
 }
