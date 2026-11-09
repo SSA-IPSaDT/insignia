@@ -8,8 +8,40 @@ import {
     type SdkNetworkErrorCode,
 } from '#errors';
 
+import { Paginator, type PaginatorFetcher } from '../paginator';
+
 export abstract class BaseModule {
     constructor(protected readonly http: KyInstance) {}
+
+    /**
+     * Создание переиспользуемого ленивого пагинатора для пагинированных ручек API.
+     */
+    protected createPaginator = <TItem, TCode extends string = CommonErrorCode>(
+        fetcher: PaginatorFetcher<TItem, TCode>,
+        initialLimit?: number,
+    ): Paginator<TItem, TCode> => {
+        return new Paginator(fetcher, initialLimit);
+    };
+
+    /**
+     * Безопасное преобразование объекта параметров в плоский объект для searchParams в Ky.
+     * Исключает undefined и null значения.
+     */
+    protected toSearchParams = (
+        params?: Record<string, unknown>,
+    ): Record<string, string | number> | undefined => {
+        if (!params) return undefined;
+        const result: Record<string, string | number> = {};
+        for (const [key, value] of Object.entries(params)) {
+            if (value !== undefined && value !== null) {
+                result[key] =
+                    typeof value === 'object'
+                        ? JSON.stringify(value)
+                        : (value as string | number);
+            }
+        }
+        return result;
+    };
 
     /**
      * Безопасное выполнение HTTP-запроса в формате Result Pattern (дискриминированное объединение)

@@ -5,6 +5,7 @@
     import MoonIcon from '@lucide/svelte/icons/moon';
     import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
     import SunIcon from '@lucide/svelte/icons/sun';
+    import UserIcon from '@lucide/svelte/icons/user';
     import { mode, toggleMode } from 'mode-watcher';
     import { toast } from 'svelte-sonner';
 
@@ -73,6 +74,15 @@
             >
                 <ActivityIcon class="size-4" />
                 <span>Проверить статус API (Health Check)</span>
+            </a>
+        </div>
+        <div class="pt-1">
+            <a
+                href={resolve('/users')}
+                class="border-border hover:bg-accent hover:text-accent-foreground inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+            >
+                <UserIcon class="size-4" />
+                <span>Просмотреть пользователей</span>
             </a>
         </div>
     </div>

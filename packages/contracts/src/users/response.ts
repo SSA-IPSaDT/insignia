@@ -92,6 +92,24 @@ export type UserProfileResponse = ApiResponse<UserProfileDTO>;
 export const createUserProfileResponse = userProfileResponse.create;
 
 /**
+ * Контракт маршрута GET v1/users/me (получение полного профиля текущего пользователя).
+ */
+export const takeMeEndpoint = createDomainEndpoint({
+    detail: {
+        tags: ['Users'],
+        summary: 'Получить профиль текущего пользователя',
+        description:
+            'Возвращает полный профиль текущего пользователя платформы Insignia',
+    },
+    response: {
+        200: userProfileResponseSchema,
+        404: userNotFoundErrorResponseSchema,
+    },
+});
+
+export const takeMeResponseSchema = takeMeEndpoint.response;
+
+/**
  * Контракт маршрута v1/users/:id (take-by-id)
  */
 export const takeUserByIdEndpoint = createDomainEndpoint({

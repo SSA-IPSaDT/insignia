@@ -17,11 +17,12 @@ export const takePublicUserById = (id: UserBase['id']) =>
         )
         .first();
 
-export const takeMeById = async (
-    id: UserBase['id'],
-): Promise<UserDto | null> => {
-    return null;
-};
+export const takeMeById = (id: UserBase['id']) =>
+    db.orm.public.User.where({
+        id,
+    })
+        .with(activeOnly)
+        .first();
 
 export const takeUsers = async (query: TakeUsersQuery) => {
     const { page, limit, search, sortBy, sortOrder } = query;

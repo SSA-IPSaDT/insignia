@@ -3,7 +3,9 @@ import {
     createPaginatedPublicUsersResponse,
     createPublicUserResponse,
     createUserNotFoundErrorResponse,
+    createUserProfileResponse,
     deleteUserEndpoint,
+    takeMeEndpoint,
     takeUserByIdEndpoint,
     takeUsersEndpoint,
     updateUserEndpoint,
@@ -22,6 +24,28 @@ export const users = new Elysia({
     },
 })
     .use(accounts)
+    .get(
+        '/me',
+        async ({ headers, status }) => {
+            const userId =
+                headers['x-user-id'] ||
+                headers['insignia-signet'] ||
+                headers['authorization']?.replace(/^Bearer\s+/i, '');
+
+            if (!userId) {
+                return status(404, createUserNotFoundErrorResponse());
+            }
+
+            const user = await usersService.takeMeById(userId);
+
+            if (!user) {
+                return status(404, createUserNotFoundErrorResponse());
+            }
+
+            return createUserProfileResponse(user);
+        },
+        takeMeEndpoint,
+    )
     .get(
         '/:id',
         async ({ params: { id }, status }) => {
