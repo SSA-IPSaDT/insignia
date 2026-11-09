@@ -19,6 +19,9 @@ const result = await Bun.build({
         '@insignia/contracts',
         '@insignia/contracts/common',
         '@insignia/contracts/health',
+        '@insignia/contracts/users',
+        '@insignia/contracts/organizations',
+        '@insignia/contracts/response',
     ],
 });
 

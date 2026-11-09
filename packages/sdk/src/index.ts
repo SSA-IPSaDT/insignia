@@ -19,4 +19,5 @@ export type {
     HostPortOptions,
     AutoResolveOptions,
 } from './types';
+export { Paginator, type PaginatorFetcher } from './http/paginator';
 export * from './http/modules';
