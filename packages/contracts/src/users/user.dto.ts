@@ -1,90 +1,55 @@
 import { z } from 'zod';
 
+import { nullToUndefined } from '../common';
 import { userBaseSchema } from './base';
 
-const base = userBaseSchema.shape;
-
-export const publicUserDtoSchema = z
-    .object({
-        id: base.id.describe('Уникальный идентификатор пользователя (UUIDv7)'),
-
-        lastName: base.lastName
-            .unwrap()
-            .optional()
-            .describe('Фамилия пользователя (опционально)'),
-        firstName: base.firstName.describe('Имя пользователя'),
-        patronymic: base.patronymic
-            .unwrap()
-            .optional()
-            .describe('Отчество пользователя (опционально)'),
-        avatarUrl: base.avatarUrl
-            .unwrap()
-            .optional()
-            .describe('Ссылка на публичный аватар пользователя'),
-        userName: base.userName
-            .unwrap()
-            .optional()
-            .describe('Публичное имя пользователя (юзернейм)'),
-    })
-    .describe(
-        'Публичный профиль пользователя для отображения другим участникам платформы',
-    );
+export const publicUserDtoSchema = nullToUndefined(
+    userBaseSchema.pick({
+        id: true,
+        lastName: true,
+        firstName: true,
+        patronymic: true,
+        avatarUrl: true,
+        userName: true,
+    }),
+).describe('Публичный профиль пользователя');
 
 export type PublicUserDto = z.infer<typeof publicUserDtoSchema>;
 
-export const userProfileDtoSchema = z
-    .object({
-        id: base.id.describe('Уникальный идентификатор пользователя (UUIDv7)'),
+export const userProfileDtoSchema = nullToUndefined(
+    userBaseSchema.omit({
+        deletedAt: true,
+    }),
+).describe('Полный профиль пользователя');
 
-        avatarUrl: base.avatarUrl
-            .unwrap()
-            .optional()
-            .describe('Ссылка на аватар пользователя'),
-
-        lastName: base.lastName
-            .unwrap()
-            .optional()
-            .describe('Фамилия пользователя'),
-        firstName: base.firstName.describe('Имя пользователя'),
-        patronymic: base.patronymic
-            .unwrap()
-            .optional()
-            .describe('Отчество пользователя'),
-
-        userName: base.userName
-            .unwrap()
-            .optional()
-            .describe('Уникальное имя пользователя (юзернейм)'),
-        email: base.email
-            .unwrap()
-            .optional()
-            .describe('Адрес электронной почты пользователя'),
-        phone: base.phone
-            .unwrap()
-            .optional()
-            .describe(
-                'Номер телефона пользователя в международном формате E.164',
-            ),
-
-        birthDate: base.birthDate
-            .unwrap()
-            .optional()
-            .describe('Календарная дата рождения пользователя'),
-
-        maxOrganizationCanCreate: base.maxOrganizationCanCreate.describe(
-            'Максимальное количество организаций, доступное для создания данным пользователем',
-        ),
-
-        createdAt: base.createdAt.describe(
-            'Временная метка регистрации профиля (ISO-8601 UTC)',
-        ),
-        updatedAt: base.updatedAt.describe(
-            'Временная метка последнего обновления профиля (ISO-8601 UTC)',
-        ),
-    })
-    .describe(
-        'Полный профиль текущего авторизованного пользователя платформы Insignia',
-    );
 export type UserProfileDTO = z.infer<typeof userProfileDtoSchema>;
 export const userDtoSchema = userProfileDtoSchema;
 export type UserDto = UserProfileDTO;
+
+export const updateUserDtoSchema = z
+    .object({
+        firstName: userBaseSchema.shape.firstName.optional(),
+        lastName: userBaseSchema.shape.lastName.optional(),
+        patronymic: userBaseSchema.shape.patronymic.optional(),
+        avatarUrl: userBaseSchema.shape.avatarUrl.optional(),
+        userName: userBaseSchema.shape.userName.optional(),
+        email: userBaseSchema.shape.email.optional(),
+        phone: userBaseSchema.shape.phone.optional(),
+        birthDate: userBaseSchema.shape.birthDate.optional(),
+    })
+    .describe('Данные для частичного обновления профиля пользователя');
+
+export type UpdateUserDto = z.infer<typeof updateUserDtoSchema>;
+
+export const deleteUserDtoSchema = z
+    .object({
+        id: z
+            .uuidv7(
+                'Некорректный идентификатор пользователя (ожидается UUIDv7)',
+            )
+            .describe('Идентификатор удаленного пользователя'),
+        deleted: z.boolean().describe('Флаг подтверждения удаления'),
+    })
+    .describe('Результат удаления профиля пользователя');
+
+export type DeleteUserDto = z.infer<typeof deleteUserDtoSchema>;
