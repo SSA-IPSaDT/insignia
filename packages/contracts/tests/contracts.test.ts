@@ -2,7 +2,10 @@ import { describe, expect, test } from 'bun:test';
 
 import {
     type ApiResponse,
+    createHealthErrorResponse,
+    createHealthResponse,
     type HealthDTO,
+    healthEndpoint,
     healthErrorResponseSchema,
     healthResponseSchema,
 } from '../src/index';
@@ -95,5 +98,35 @@ describe('Health Contracts Schema Validation', () => {
 
         const result = healthErrorResponseSchema.safeParse(invalidPayload);
         expect(result.success).toBe(false);
+    });
+
+    test('createHealthResponse formats valid payload with success: true', () => {
+        const res = createHealthResponse({
+            status: 'ok',
+            timestamp: '2026-11-09T03:00:00.000Z',
+            uptime: 120,
+            services: { database: 'healthy' },
+        });
+
+        expect(res.success).toBe(true);
+        expect(res.data.status).toBe('ok');
+        expect(res.data.services.database).toBe('healthy');
+    });
+
+    test('createHealthErrorResponse formats valid error payload with default message', () => {
+        const res = createHealthErrorResponse('DATABASE_UNAVAILABLE');
+
+        expect(res.success).toBe(false);
+        expect(res.error.code).toBe('DATABASE_UNAVAILABLE');
+        expect(res.error.message).toBe('Недоступно подключение к базе данных.');
+    });
+
+    test('healthEndpoint defines 200, 422, 500, 501, 503 response schemas and detail tags', () => {
+        expect(healthEndpoint.response[200]).toBe(healthResponseSchema);
+        expect(healthEndpoint.response[422]).toBeDefined();
+        expect(healthEndpoint.response[500]).toBeDefined();
+        expect(healthEndpoint.response[501]).toBeDefined();
+        expect(healthEndpoint.response[503]).toBe(healthErrorResponseSchema);
+        expect(healthEndpoint.detail?.tags).toEqual(['System']);
     });
 });

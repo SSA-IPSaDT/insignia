@@ -53,7 +53,8 @@
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
         "@insignia/sdk": "workspace:*",
-        "zod": "catalog:"
+        "zod": "catalog:",
+        "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",

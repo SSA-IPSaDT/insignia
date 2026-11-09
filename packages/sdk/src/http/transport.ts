@@ -5,6 +5,8 @@ import { InsigniaApiError } from '#errors';
 import { resolveBaseUrl } from '#http/resolver';
 import type { InsigniaClientOptions } from '#types';
 
+import { parseInsigniaJson, stringifyInsigniaJson } from './json';
+
 export const createHttpTransport = (
     options?: InsigniaClientOptions,
 ): KyInstance => {
@@ -59,5 +61,8 @@ export const createHttpTransport = (
                 },
             ],
         },
+
+        parseJson: parseInsigniaJson,
+        stringifyJson: stringifyInsigniaJson,
     });
 };

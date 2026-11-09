@@ -17,13 +17,14 @@ tasks:
             runInCI: false
 
     build:
-        command: 'bun build src/index.ts --outdir dist --target bun'
+        command: 'bun run build.ts'
         inputs:
             - 'src/**/*'
             - 'package.json'
             - 'tsconfig.json'
+            - 'build.ts'
         outputs:
-            - 'dist'
+            - 'dist/**/*'
 
     check:
         command: 'bun check'
