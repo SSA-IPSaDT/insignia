@@ -2,6 +2,7 @@ import { describe, expect, it, spyOn } from 'bun:test';
 
 import { notImplementedResponseSchema } from '@insignia/contracts/response';
 import {
+    takeMeResponseSchema,
     takeUserByIdResponseSchema,
     takeUsersResponseSchema,
     USER_ERROR_MESSAGES,
@@ -12,6 +13,84 @@ import * as usersService from '#modules/v1/users/users.service';
 
 describe('Users API Endpoints', () => {
     const validUserId = '018f2780-2396-7a8e-a9d5-7389a0f69a53';
+
+    it('GET /v1/users/me returns 404 when no user identifier is provided in headers', async () => {
+        const response = await app.handle(
+            new Request('http://localhost/v1/users/me'),
+        );
+
+        expect(response.status).toBe(404);
+
+        const body = await response.json();
+        const parsed = takeMeResponseSchema[404].parse(body);
+
+        expect(parsed.success).toBe(false);
+        expect(parsed.error.code).toBe('USER_NOT_FOUND');
+    });
+
+    it('GET /v1/users/me returns 404 with USER_NOT_FOUND when user does not exist in database', async () => {
+        const meSpy = spyOn(usersService, 'takeMeById').mockResolvedValue(null);
+
+        const response = await app.handle(
+            new Request('http://localhost/v1/users/me', {
+                headers: { 'x-user-id': validUserId },
+            }),
+        );
+
+        expect(response.status).toBe(404);
+
+        const body = await response.json();
+        const parsed = takeMeResponseSchema[404].parse(body);
+
+        expect(parsed.success).toBe(false);
+        expect(parsed.error.code).toBe('USER_NOT_FOUND');
+        expect(parsed.error.message).toBe(USER_ERROR_MESSAGES.USER_NOT_FOUND);
+
+        meSpy.mockRestore();
+    });
+
+    it('GET /v1/users/me returns 200 with UserProfileDTO and strips null fields to undefined', async () => {
+        const mockRawDbUser = {
+            id: validUserId,
+            firstName: 'Александр',
+            lastName: 'Смирнов',
+            patronymic: null,
+            avatarUrl: null,
+            userName: 'alex_smirnov',
+            email: 'alex.smirnov@insignia.dev',
+            phone: '+79991234567',
+            birthDate: '1990-05-15',
+            maxOrganizationCanCreate: 3,
+            createdAt: '2026-11-09T00:00:00.000Z',
+            updatedAt: '2026-11-09T00:00:00.000Z',
+            deletedAt: null,
+        };
+
+        const meSpy = spyOn(usersService, 'takeMeById').mockResolvedValue(
+            mockRawDbUser as any,
+        );
+
+        const response = await app.handle(
+            new Request('http://localhost/v1/users/me', {
+                headers: { 'x-user-id': validUserId },
+            }),
+        );
+
+        expect(response.status).toBe(200);
+
+        const body = await response.json();
+        const parsed = takeMeResponseSchema[200].parse(body);
+
+        expect(parsed.success).toBe(true);
+        expect(parsed.data.id).toBe(validUserId);
+        expect(parsed.data.firstName).toBe('Александр');
+        expect(parsed.data.lastName).toBe('Смирнов');
+        expect(parsed.data.email).toBe('alex.smirnov@insignia.dev');
+        expect('patronymic' in parsed.data).toBe(false);
+        expect('avatarUrl' in parsed.data).toBe(false);
+
+        meSpy.mockRestore();
+    });
 
     it('GET /v1/users/:id returns 422 when id is not a valid UUIDv7', async () => {
         const response = await app.handle(
@@ -224,6 +303,12 @@ describe('Users API Endpoints', () => {
         };
         const usersListEndpoint = schema.paths['/v1/users'];
         const userEndpoint = schema.paths['/v1/users/{id}'];
+        const meEndpoint = schema.paths['/v1/users/me'];
+
+        expect(meEndpoint).toBeDefined();
+        expect(meEndpoint?.get).toBeDefined();
+        expect(meEndpoint?.get?.responses['200']).toBeDefined();
+        expect(meEndpoint?.get?.responses['404']).toBeDefined();
 
         expect(usersListEndpoint).toBeDefined();
         expect(usersListEndpoint?.get).toBeDefined();
