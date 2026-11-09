@@ -21,6 +21,9 @@ tasks:
 
     build:
         command: 'bun build src/index.ts --outdir dist --target bun'
+        deps:
+            - 'env:build'
+            - 'sdk:build'
         inputs:
             - 'src/**/*'
             - 'package.json'
