@@ -37,7 +37,9 @@
     ],
     "scripts": {
         "dev": "bun run --watch src/index.ts",
-        "build": "bun build src/index.ts --outdir dist --target bun",
+        "start": "bun run dist/index.js",
+        "build": "bun run build.ts",
+        "build:prod": "bun run build.ts --prod",
         "check": "bun check",
         "typecheck": "bun check",
         "test": "bun test"
@@ -52,7 +54,8 @@
         "@insignia/logger": "workspace:*",
         "elysia": "catalog:server",
         "elysiajs-helmet": "^1.0.5",
-        "zod": "catalog:"
+        "zod": "catalog:",
+        "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",

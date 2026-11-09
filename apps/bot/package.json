@@ -59,7 +59,8 @@
         "@insignia/sdk": "workspace:*",
         "elysia": "catalog:server",
         "grammy": "^1.46.0",
-        "zod": "catalog:"
+        "zod": "catalog:",
+        "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",

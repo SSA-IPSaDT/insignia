@@ -55,7 +55,8 @@
         "mode-watcher": "^1.1.0",
         "svelte-sonner": "^1.2.3",
         "tailwind-merge": "^3.7.0",
-        "zod": "catalog:"
+        "zod": "catalog:",
+        "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",

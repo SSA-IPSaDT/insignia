@@ -17,7 +17,6 @@ model User {
   maxOrganizationCanCreate SmallInt                          @default(0) @map("max_organization_can_create")
 
   memberInOrganizations    Organization.OrganizationMember[]
-  // admin                    Admin.Admin?
   telegramAccount          TelegramAccount?
   ownerInOrganizations     Organization.Organization[]
 
@@ -25,11 +24,19 @@ model User {
   +SoftDelete
 
   @@check(expression: sql`birth_date >= '1940-01-01'`, name: "users_birth_date_after_1940")
-  @@check(expression: sql`max_organization_can_create >= 0`, name: "users_max_org_non_negative")
+  @@check(expression: sql`max_organization_can_create >= 0 AND max_organization_can_create <= 8`, name: "users_max_org_range")
+  @@check(expression: sql`phone IS NULL OR phone ~ '^\+[1-9][0-9]{9,14}$'`, name: "users_phone_e164_format")
+  @@check(expression: sql`length(trim(first_name)) > 0 AND length(first_name) <= 64`, name: "users_first_name_length")
+  @@check(expression: sql`last_name IS NULL OR (length(trim(last_name)) > 0 AND length(last_name) <= 64)`, name: "users_last_name_length")
+  @@check(expression: sql`patronymic IS NULL OR (length(trim(patronymic)) > 0 AND length(patronymic) <= 64)`, name: "users_patronymic_length")
+  @@check(expression: sql`user_name IS NULL OR (length(user_name) >= 3 AND length(user_name) <= 32 AND user_name ~ '^[a-zA-Z0-9_-]+$')`, name: "users_user_name_valid")
+  @@check(expression: sql`email IS NULL OR length(email) <= 255`, name: "users_email_length")
 
   @@index([email], unique: true, where: sql`deleted_at IS NULL`, name: "users_email_active_unique")
   @@index([userName], unique: true, where: sql`deleted_at IS NULL`, name: "users_user_name_active_unique")
   @@index([phone], unique: true, where: sql`deleted_at IS NULL`, name: "users_phone_active_unique")
+
+  @@fullTextIndex([[lastName, firstName], patronymic, email], language: "russian", where: sql`deleted_at IS NULL`, name: "users_search")
 
   @@map("users")
 }

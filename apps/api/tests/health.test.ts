@@ -29,6 +29,7 @@ describe('System Health API', () => {
         expect(body.data.services).toEqual({
             database: 'healthy',
             redis: 'healthy',
+            storage: 'healthy',
         });
     });
 
@@ -82,5 +83,28 @@ describe('System Health API', () => {
 
         dbSpy.mockRestore();
         redisSpy.mockRestore();
+    });
+
+    it('GET /docs/json includes /health with 200, 422, 500, and 503 response schemas', async () => {
+        const response = await app.handle(
+            new Request('http://localhost/docs/json'),
+        );
+
+        expect(response.status).toBe(200);
+
+        const schema = (await response.json()) as {
+            paths: Record<
+                string,
+                { get: { responses: Record<string, unknown> } }
+            >;
+        };
+
+        const healthEndpointDoc = schema.paths['/health'];
+        expect(healthEndpointDoc).toBeDefined();
+        expect(healthEndpointDoc?.get).toBeDefined();
+        expect(healthEndpointDoc?.get?.responses['200']).toBeDefined();
+        expect(healthEndpointDoc?.get?.responses['422']).toBeDefined();
+        expect(healthEndpointDoc?.get?.responses['500']).toBeDefined();
+        expect(healthEndpointDoc?.get?.responses['503']).toBeDefined();
     });
 });

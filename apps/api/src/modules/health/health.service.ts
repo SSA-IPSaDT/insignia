@@ -61,3 +61,6 @@ export const checkDatabase = async (): Promise<boolean> => {
 export const checkRedis = async (): Promise<boolean> => {
     return true;
 };
+export const checkStorage = async (): Promise<boolean> => {
+    return true;
+};

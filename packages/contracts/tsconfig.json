@@ -4,7 +4,11 @@
     "compilerOptions": {
         "paths": {
             "#common": ["./src/common/index.ts"],
-            "#common/*": ["./src/common/*"]
+            "#common/*": ["./src/common/*"],
+            "#response": ["./src/response/index.ts"],
+            "#response/*": ["./src/response/*"],
+            "#users": ["./src/users/index.ts"],
+            "#users/*": ["./src/users/*"]
         }
     },
     "include": ["src/**/*"]

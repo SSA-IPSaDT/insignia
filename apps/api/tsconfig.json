@@ -13,5 +13,5 @@
             "#common/*": ["./src/common/*"]
         }
     },
-    "include": ["src/**/*", "tests/**/*"]
+    "include": ["src/**/*", "tests/**/*", "build.ts"]
 }
