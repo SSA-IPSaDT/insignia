@@ -1,65 +1,94 @@
 import { z } from 'zod';
 
 import {
-    createApiErrorResponseSchema,
-    createApiResponseSchema,
+    type ApiResponse,
+    createDomainEndpoint,
+    createDomainErrors,
+    createDomainResponse,
 } from './response';
-
-export const healthErrorCodeSchema = z
-    .enum(['SERVICES_UNAVAILABLE', 'DATABASE_UNAVAILABLE', 'CACHE_UNAVAILABLE'])
-    .describe('Код системной ошибки недоступности инфраструктурных сервисов');
-
-export type HealthErrorCode = z.infer<typeof healthErrorCodeSchema>;
 
 export const servicesStatusSchema = z
     .enum(['healthy', 'unhealthy'])
-    .describe('Статус работоспособности инфраструктурного сервиса');
+    .describe('Статус работоспособности сервиса');
 
 export const systemServicesSchema = z
     .object({
         database: servicesStatusSchema.describe(
-            'Статус подключения к основной базе данных PostgreSQL',
+            'Статус подключения к PostgreSQL',
         ),
         redis: servicesStatusSchema
             .optional()
-            .describe(
-                'Статус подключения к кэшу и брокеру очередей Redis/Dragonfly',
-            ),
+            .describe('Статус подключения к Redis'),
         storage: servicesStatusSchema
             .optional()
-            .describe('Статус подключения к объектному хранилищу S3/MinIO'),
+            .describe('Статус подключения к S3'),
     })
-    .describe('Сводное состояние ключевых зависимостей инфраструктуры');
+    .describe('Состояние инфраструктурных сервисов');
 
 export type SystemServices = z.infer<typeof systemServicesSchema>;
 
 export const healthDTOSchema = z
     .object({
-        status: z
-            .literal('ok')
-            .describe('Общий статус работоспособности ядра сервиса'),
-        timestamp: z
-            .string()
-            .describe(
-                'Временная метка генерации отчёта в формате ISO-8601 (UTC)',
-            ),
-        uptime: z
-            .number()
-            .describe('Время непрерывной работы процесса API в секундах'),
+        status: z.literal('ok').describe('Общий статус ядра сервиса'),
+        timestamp: z.string().describe('Временная метка отчёта'),
+        uptime: z.number().describe('Время работы сервиса в секундах'),
         services: systemServicesSchema.describe(
-            'Диагностика доступности критических системных сервисов',
+            'Диагностика системных сервисов',
         ),
     })
-    .describe('Диагностический отчёт о здоровье и доступности сервиса API');
+    .describe('Диагностический отчёт о здоровье сервиса');
 
 export type HealthDTO = z.infer<typeof healthDTOSchema>;
 
-export const healthResponseSchema = createApiResponseSchema(
-    healthDTOSchema,
-).describe('Успешный ответ проверки доступности сервиса (HTTP 200 OK)');
+/**
+ * Фабрика ошибок системных сервисов и инфраструктуры.
+ */
+export const healthErrors = createDomainErrors({
+    domain: 'системных сервисов',
+    messages: {
+        SERVICES_UNAVAILABLE: 'Недоступны системные сервисы.',
+        DATABASE_UNAVAILABLE: 'Недоступно подключение к базе данных.',
+        CACHE_UNAVAILABLE:
+            'Недоступно подключение к сервису кэширования (Redis).',
+        STORAGE_UNAVAILABLE:
+            'Недоступно подключение к объектному хранилищу (S3).',
+    } as const,
+});
 
-export const healthErrorResponseSchema = createApiErrorResponseSchema(
-    healthErrorCodeSchema,
-).describe(
-    'Ответ об ошибке при деградации системных сервисов (HTTP 503 Service Unavailable)',
+export const healthErrorCodeSchema = healthErrors.codeSchema;
+export type HealthErrorCode = z.infer<typeof healthErrorCodeSchema>;
+export const HEALTH_ERROR_MESSAGES = healthErrors.messages;
+export const healthErrorResponseSchema = healthErrors.errorResponseSchema;
+export type HealthErrorResponse = z.infer<typeof healthErrorResponseSchema>;
+export const createHealthErrorResponse = healthErrors.createError;
+
+/**
+ * Конверт и конструктор успешного ответа проверки состояния сервиса.
+ */
+export const healthResponse = createDomainResponse(
+    healthDTOSchema,
+    'отчётом о доступности и состоянии сервиса',
 );
+
+export const healthResponseSchema = healthResponse.schema;
+export type HealthResponse = ApiResponse<HealthDTO>;
+export const createHealthResponse = healthResponse.create;
+
+/**
+ * Контракт маршрута GET /health (системный мониторинг и проверка доступности).
+ * Автоматически наследует стандартные серверные ошибки (500, 422).
+ */
+export const healthEndpoint = createDomainEndpoint({
+    response: {
+        200: healthResponseSchema,
+        503: healthErrorResponseSchema,
+    },
+    detail: {
+        tags: ['System'],
+        summary: 'Комплексная проверка состояния сервиса и зависимостей',
+        description:
+            'Возвращает диагностический отчёт о здоровье системы и статусе подключений инфраструктурных сервисов',
+    },
+});
+
+export const healthResponseSchemas = healthEndpoint.response;

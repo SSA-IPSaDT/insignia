@@ -21,9 +21,7 @@ export const inputTemporalSchema = z
             }
         }),
     ])
-    .describe(
-        'Входящая календарная дата (строка YYYY-MM-DD или Temporal.PlainDate)',
-    );
+    .describe('Входящая календарная дата');
 
 /**
  * Строгая схема для DTO/ответов API.
@@ -37,9 +35,7 @@ export const plainTemporalDtoSchema = z
             .regex(/^\d{4}-\d{2}-\d{2}$/)
             .transform((val) => Temporal.PlainDate.from(val)),
     ])
-    .describe(
-        'Календарная дата в формате ISO-8601 (YYYY-MM-DD), объект Temporal.PlainDate',
-    );
+    .describe('Календарная дата');
 
 /** Для меток времени со временем и таймзоной (ISO-8601 -> Temporal.Instant) */
 export const instantTemporalDtoSchema = z
@@ -47,6 +43,4 @@ export const instantTemporalDtoSchema = z
         z.instanceof(Temporal.Instant),
         z.iso.datetime().transform((val) => Temporal.Instant.from(val)),
     ])
-    .describe(
-        'Метка точного времени в формате ISO-8601 UTC, объект Temporal.Instant',
-    );
+    .describe('Метка точного времени');

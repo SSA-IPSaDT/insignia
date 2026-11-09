@@ -10,31 +10,30 @@ export const DEFAULT_INVALID_FIELD_MESSAGE = 'Некорректное знач�
 /** Словарь ошибок валидации: имя_поля -> понятный текст ошибки */
 export const validationFieldsSchema = z
     .record(z.string(), z.string())
-    .describe(
-        'Словарь ошибок валидации полей: имя_поля -> понятный текст ошибки',
-    );
+    .describe('Словарь ошибок валидации полей');
 export type ValidationFields = z.infer<typeof validationFieldsSchema>;
 
 export const validationErrorDetailsSchema = z
     .object({
         fields: validationFieldsSchema.describe(
-            'Список полей, не прошедших валидацию входящих данных',
+            'Список полей с ошибками валидации',
         ),
     })
-    .describe('Детализированный контекст ошибки валидации');
+    .describe('Контекст ошибки валидации');
 export type ValidationErrorDetails = z.infer<
     typeof validationErrorDetailsSchema
 >;
 
 /** Схема ответа при ошибке валидации для API контроллеров */
-export const validationErrorResponseSchema = createApiErrorResponseSchema(
-    z
-        .literal('VALIDATION_ERROR')
-        .describe('Код ошибки валидации входящих данных'),
-    validationErrorDetailsSchema,
-).describe(
-    'Ответ API с ошибкой валидации входящих данных (HTTP 422 Unprocessable Content)',
-);
+export const validationErrorResponseSchema = createApiErrorResponseSchema({
+    codeSchema: z.literal('VALIDATION_ERROR').describe('Код ошибки валидации'),
+    detailsSchema: validationErrorDetailsSchema,
+    messageSchema: z
+        .string()
+        .describe(DEFAULT_VALIDATION_ERROR_MESSAGE)
+        .default(DEFAULT_VALIDATION_ERROR_MESSAGE),
+    description: 'Ответ API с ошибкой валидации',
+});
 
 export type ValidationErrorResponse = z.infer<
     typeof validationErrorResponseSchema

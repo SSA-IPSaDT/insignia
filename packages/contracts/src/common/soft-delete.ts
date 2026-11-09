@@ -6,8 +6,6 @@ export const softDeleteSchema = z
     .object({
         deletedAt: plainTemporalDtoSchema
             .nullable()
-            .describe(
-                'Дата мягкого удаления сущности (null, если запись активна)',
-            ),
+            .describe('Дата мягкого удаления сущности'),
     })
     .describe('Метка мягкого удаления сущности');

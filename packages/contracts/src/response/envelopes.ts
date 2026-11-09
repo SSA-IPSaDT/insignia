@@ -1,17 +1,29 @@
 import { z } from 'zod';
 import type { ZodType } from 'zod';
 
-export const createApiResponseSchema = <T extends ZodType>(dataSchema: T) =>
-    z
+export const createApiResponseSchema = <T extends ZodType>(
+    dataSchema: T,
+    description: string = 'Стандартный конверт успешного ответа API',
+) => {
+    const dataProperty = dataSchema.description
+        ? dataSchema
+        : dataSchema.describe('Полезная нагрузка ответа API');
+
+    return z
         .object({
             success: z
                 .literal(true)
-                .describe('Флаг успешности выполнения запроса (всегда true)'),
-            data: dataSchema.describe('Полезная нагрузка ответа API'),
+                .describe('Флаг успешности выполнения запроса'),
+            data: dataProperty,
         })
-        .describe('Стандартный конверт успешного ответа API');
+        .describe(description);
+};
 
-export type ApiResponse<TData> = {
+export const apiResponseSchema = createApiResponseSchema(
+    z.unknown().describe('Полезная нагрузка ответа API'),
+);
+
+export type ApiResponse<TData = unknown> = {
     success: true;
     data: TData;
 };
