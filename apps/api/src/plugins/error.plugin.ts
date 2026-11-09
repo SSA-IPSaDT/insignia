@@ -95,6 +95,36 @@ export const errorPlugin = new Elysia({ name: 'error-handler' })
             );
         }
 
+        const errorObj =
+            typeof error === 'object' && error !== null
+                ? (error as Record<string, unknown>)
+                : {};
+
+        const isDatabaseError =
+            errorObj.kind === 'sql_query' ||
+            (typeof errorObj.code === 'string' &&
+                (errorObj.code.startsWith('CONTRACT.') ||
+                    errorObj.code === '28P01' ||
+                    errorObj.code === 'ECONNREFUSED')) ||
+            errorObj.name === 'SqlQueryError' ||
+            errorObj.name === 'SqlConnectionError' ||
+            errorObj.name === 'CliStructuredError';
+
+        if (isDatabaseError) {
+            set.status = 503;
+            return createErrorResponse(
+                'SERVICE_UNAVAILABLE',
+                COMMON_ERROR_MESSAGES.SERVICE_UNAVAILABLE,
+            );
+        }
+
+        if (set.status === 501) {
+            return createErrorResponse(
+                'NOT_IMPLEMENTED',
+                COMMON_ERROR_MESSAGES.NOT_IMPLEMENTED,
+            );
+        }
+
         // Общий fallback для необработанных внутренних серверных ошибок (500)
         set.status =
             typeof set.status === 'number' && set.status >= 400
