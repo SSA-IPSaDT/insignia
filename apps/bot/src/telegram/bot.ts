@@ -11,16 +11,26 @@ import type { BotContext, SessionData } from '#telegram/context';
 import { initialSessionData } from '#telegram/context';
 import commands, { setTelegramCommands } from '#telegram/handlers';
 import { autoChatAction } from '#telegram/plugins';
+import { resolveAppUrl } from '#utils/app-url';
 import { logger } from '#utils/logger';
 
 export const createTelegramBot = (): Bot<BotContext> => {
     const token = env.TELEGRAM_BOT_TOKEN;
-    const botInfo = loadCachedBotInfoSync(token) ?? undefined;
+    const isTestEnv = env.TELEGRAM_TEST_ENVIRONMENT;
+    const dcTag = isTestEnv ? 'Test DC' : 'Production DC';
+    const envKey = isTestEnv ? 'test' : 'prod';
+    const botInfo = loadCachedBotInfoSync(token, envKey) ?? undefined;
+
+    if (botInfo) {
+        logger.info(
+            `Loaded cached Telegram bot info for @${botInfo.username} (ID: ${botInfo.id}) [${dcTag}]`,
+        );
+    }
 
     const bot = new Bot<BotContext>(token, {
         ...(botInfo ? { botInfo } : {}),
         client: {
-            environment: env.TELEGRAM_TEST_ENVIRONMENT ? 'test' : 'prod',
+            environment: isTestEnv ? 'test' : 'prod',
             fetch: Bun.fetch,
         },
     });
@@ -75,14 +85,24 @@ export const createTelegramWebhookHandler = (
 
 export const startTelegramBot = async (bot: Bot<BotContext>): Promise<void> => {
     const token = bot.token;
+    const isTestEnv = env.TELEGRAM_TEST_ENVIRONMENT;
+    const dcLabel = isTestEnv
+        ? 'Telegram Test Environment (Test DC)'
+        : 'Telegram Production (Production DC)';
+
+    logger.info(`Starting Telegram bot in ${dcLabel}...`);
 
     if (!bot.isInited()) {
         try {
             await bot.init();
-            saveCachedBotInfoSync(token, bot.botInfo);
+            const envKey = isTestEnv ? 'test' : 'prod';
+            saveCachedBotInfoSync(token, bot.botInfo, envKey);
+            logger.info(
+                `Telegram bot @${bot.botInfo.username} (ID: ${bot.botInfo.id}) initialized successfully [${dcLabel}]`,
+            );
         } catch (error) {
             logger.error(
-                `Failed to initialize Telegram bot (${env.TELEGRAM_TEST_ENVIRONMENT ? 'Test DC' : 'Production DC'}). Please check TELEGRAM_BOT_TOKEN and verify it matches the environment.`,
+                `Failed to initialize Telegram bot (${dcLabel}). Please check TELEGRAM_BOT_TOKEN and verify it matches the environment.`,
                 error,
             );
             throw error;
@@ -91,23 +111,48 @@ export const startTelegramBot = async (bot: Bot<BotContext>): Promise<void> => {
 
     await setTelegramCommands(bot);
 
+    const appUrl = resolveAppUrl();
+    try {
+        await bot.api.setChatMenuButton({
+            menu_button: {
+                type: 'web_app',
+                text: 'Открыть App',
+                web_app: {
+                    url: appUrl,
+                },
+            },
+        });
+        logger.info(
+            `Telegram chat menu button synchronized with URL: ${appUrl} [${dcLabel}]`,
+        );
+    } catch (error) {
+        logger.warn('Failed to sync Telegram chat menu button', error);
+    }
+
     if (env.BOT_WEBHOOK_ENABLED) {
         const webhookUrl = `${env.PUBLIC_BOT_URL}/webhooks/telegram`;
         await bot.api.setWebhook(webhookUrl, {
             secret_token: env.TELEGRAM_WEBHOOK_SECRET,
         });
-        logger.info(`Telegram webhook set to: ${webhookUrl}`);
+        logger.info(`Telegram webhook set to: ${webhookUrl} [${dcLabel}]`);
     } else {
         await bot.api.deleteWebhook();
-        logger.info('Starting Telegram bot in Long Polling mode (dev)...');
+        logger.info(
+            `Starting Telegram bot in Long Polling mode [${dcLabel}]...`,
+        );
         void bot.start({
             onStart: (info) =>
-                logger.info(`Bot @${info.username} started successfully`),
+                logger.info(
+                    `Bot @${info.username} (ID: ${info.id}) started successfully in ${dcLabel} mode (Long Polling)`,
+                ),
         });
     }
 };
 
 export const stopTelegramBot = async (bot: Bot<BotContext>): Promise<void> => {
+    const isTestEnv = env.TELEGRAM_TEST_ENVIRONMENT;
+    const dcLabel = isTestEnv ? 'Test DC' : 'Production DC';
+    logger.info(`Stopping Telegram bot [${dcLabel}]...`);
     if (!env.BOT_WEBHOOK_ENABLED) {
         await bot.stop();
     }

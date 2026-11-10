@@ -19,10 +19,12 @@ describe('Bot HTTP Server', () => {
             status: string;
             service: string;
             mode: string;
+            telegramEnvironment: string;
         };
         expect(data.status).toBe('ok');
         expect(data.service).toBe('bot');
         expect(data.mode).toBeDefined();
+        expect(data.telegramEnvironment).toBeDefined();
     });
 
     test('createTelegramWebhookHandler defines /webhooks/telegram endpoint', () => {
