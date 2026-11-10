@@ -12,7 +12,7 @@
     <h1>API Health Check (SSR)</h1>
     <p>
         Проверка работоспособности бэкенда через SDK на стороне SvelteKit
-        сервера в <code>apps/web</code>.
+        сервера в <code>apps/app</code>.
     </p>
 
     <div

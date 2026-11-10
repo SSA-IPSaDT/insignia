@@ -1,7 +1,7 @@
 {
-    "name": "@insignia/web",
+    "name": "@insignia/app",
     "version": "0.1.0",
-    "description": "Клиентский веб-интерфейс платформы Insignia на базе Svelte 5 и SvelteKit",
+    "description": "Клиентское приложение платформы Insignia (Mini App / PWA) на базе Svelte 5 и SvelteKit",
     "private": true,
     "type": "module",
     "license": "UNLICENSED",
@@ -25,12 +25,12 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/SSA-IPSaDT/insignia.git",
-        "directory": "apps/web"
+        "directory": "apps/app"
     },
     "bugs": {
         "url": "https://github.com/SSA-IPSaDT/insignia/issues"
     },
-    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/main/apps/web#readme",
+    "homepage": "https://github.com/SSA-IPSaDT/insignia/tree/main/apps/app#readme",
     "keywords": [
         "svelte",
         "sveltekit",
