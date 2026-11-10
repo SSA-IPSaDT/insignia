@@ -4,7 +4,7 @@ import { defineConfig as ormConfig } from '@prisma/orm-postgres/config';
 
 export default definePrismaConfig({
     skills: {
-        agents: ['cursor', 'agents'],
+        agents: ['agents'],
     },
     orm: ormConfig({
         contract: './src/schemas/**/*.prisma',
