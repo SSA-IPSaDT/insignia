@@ -6,6 +6,7 @@ import { appRawSchema } from './app.js';
 import { baseRawSchema } from './base.js';
 import { botRawSchema } from './bot.js';
 import { databaseRawSchema } from './database.js';
+import { getLocalIp } from './utils.js';
 
 export const envRawSchema = z.object({
     ...baseRawSchema.shape,
@@ -36,21 +37,37 @@ export const envSchema = envRawSchema.transform((raw) => {
         ? `${raw.BOT_DOMAIN_SUB}.${rootDomain}`
         : rootDomain;
 
+    const localIp = getLocalIp();
+
+    const resolveDevHost = (host: string): string => {
+        if (host === 'localhost' || host === '0.0.0.0') {
+            return localIp;
+        }
+        return host;
+    };
+
+    const bindHost = (host: string): string => {
+        if (!isProd && host === 'localhost') {
+            return '0.0.0.0';
+        }
+        return host;
+    };
+
     const publicApiUrl = isProd
         ? `${protocol}://${apiDomain}`
-        : `${protocol}://${raw.API_HOST}:${raw.API_PORT}`;
+        : `${protocol}://${resolveDevHost(raw.API_HOST)}:${raw.API_PORT}`;
 
     const publicAdminUrl = isProd
         ? `${protocol}://${adminDomain}`
-        : `${protocol}://${raw.ADMIN_HOST}:${raw.ADMIN_PORT}`;
+        : `${protocol}://${resolveDevHost(raw.ADMIN_HOST)}:${raw.ADMIN_PORT}`;
 
     const publicAppUrl = isProd
         ? `${protocol}://${appDomain}`
-        : `${protocol}://${raw.APP_HOST}:${raw.APP_PORT}`;
+        : `${protocol}://${resolveDevHost(raw.APP_HOST)}:${raw.APP_PORT}`;
 
     const publicBotUrl = isProd
         ? `${protocol}://${botDomain}`
-        : `${protocol}://${raw.BOT_HOST}:${raw.BOT_PORT}`;
+        : `${protocol}://${resolveDevHost(raw.BOT_HOST)}:${raw.BOT_PORT}`;
 
     const corsAllowedOrigins = raw.API_CORS_ALLOW_ALL
         ? ['*']
@@ -58,6 +75,9 @@ export const envSchema = envRawSchema.transform((raw) => {
               publicAppUrl,
               publicAdminUrl,
               publicBotUrl,
+              `http://${localIp}:${raw.APP_PORT}`,
+              `http://${localIp}:${raw.ADMIN_PORT}`,
+              `http://${localIp}:${raw.BOT_PORT}`,
               `http://localhost:${raw.APP_PORT}`,
               `http://localhost:${raw.ADMIN_PORT}`,
               `http://localhost:${raw.BOT_PORT}`,
@@ -72,6 +92,11 @@ export const envSchema = envRawSchema.transform((raw) => {
 
     return {
         ...raw,
+        API_HOST: bindHost(raw.API_HOST),
+        ADMIN_HOST: bindHost(raw.ADMIN_HOST),
+        APP_HOST: bindHost(raw.APP_HOST),
+        BOT_HOST: bindHost(raw.BOT_HOST),
+        LOCAL_IP: localIp,
         API_DOMAIN: apiDomain,
         ADMIN_DOMAIN: adminDomain,
         APP_DOMAIN: appDomain,

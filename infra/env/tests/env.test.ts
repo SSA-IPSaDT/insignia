@@ -7,7 +7,7 @@ import { baseRawSchema } from '../src/base';
 import { botRawSchema } from '../src/bot';
 import { createLazyEnv, parseEnv } from '../src/common';
 import { databaseRawSchema } from '../src/database';
-import env from '../src/index';
+import env, { getLocalIp } from '../src/index';
 import { envRawSchema, envSchema } from '../src/schema';
 
 describe('Raw Schemas Isolation', () => {
@@ -98,18 +98,22 @@ describe('Raw Schemas Isolation', () => {
 describe('Unified Dynamic Environment Transformation', () => {
     test('computes dev URLs, origins, and database connection', () => {
         const parsed = envSchema.parse({});
+        const localIp = getLocalIp();
 
         // Dev URLs
-        expect(parsed.PUBLIC_API_URL).toBe('http://localhost:51000');
-        expect(parsed.PUBLIC_ADMIN_URL).toBe('http://localhost:51002');
-        expect(parsed.PUBLIC_APP_URL).toBe('http://localhost:51001');
-        expect(parsed.PUBLIC_WEB_URL).toBe('http://localhost:51001');
-        expect(parsed.PUBLIC_BOT_URL).toBe('http://localhost:51004');
-        expect(parsed.ADMIN_ORIGIN).toBe('http://localhost:51002');
-        expect(parsed.APP_ORIGIN).toBe('http://localhost:51001');
-        expect(parsed.WEB_ORIGIN).toBe('http://localhost:51001');
+        expect(parsed.PUBLIC_API_URL).toBe(`http://${localIp}:51000`);
+        expect(parsed.PUBLIC_ADMIN_URL).toBe(`http://${localIp}:51002`);
+        expect(parsed.PUBLIC_APP_URL).toBe(`http://${localIp}:51001`);
+        expect(parsed.PUBLIC_WEB_URL).toBe(`http://${localIp}:51001`);
+        expect(parsed.PUBLIC_BOT_URL).toBe(`http://${localIp}:51004`);
+        expect(parsed.ADMIN_ORIGIN).toBe(`http://${localIp}:51002`);
+        expect(parsed.APP_ORIGIN).toBe(`http://${localIp}:51001`);
+        expect(parsed.WEB_ORIGIN).toBe(`http://${localIp}:51001`);
 
         // CORS
+        expect(parsed.CORS_ALLOWED_ORIGINS).toContain(
+            `http://${localIp}:51001`,
+        );
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain('http://localhost:51001');
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain('http://localhost:51002');
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain('http://localhost:51004');
