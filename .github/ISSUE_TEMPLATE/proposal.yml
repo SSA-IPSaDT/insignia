@@ -1,0 +1,72 @@
+name: 💡 Архитектурное предложение (Proposal / RFC)
+description: Предложить концептуальные или архитектурные изменения в сервисах, пакетах или структуре платформы
+title: 'proposal(<модуль>): краткое описание концепции'
+labels: ['proposal', 'rfc']
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Данный шаблон предназначен для вынесения на обсуждение предложений (RFC/Proposal), затрагивающих архитектуру любых сервисов (`apps/app`, `apps/bot`, `apps/api`, `apps/admin`), разделяемых пакетов или тулчейна платформы.
+              Перед открытием Pull Request из ветки `proposal/*` рекомендуется зафиксировать мотивацию и концепцию здесь для предварительного обсуждения с тимлидом (@naylour) и командой.
+
+    - type: dropdown
+      id: scope
+      attributes:
+          label: Область предложения
+          description: Какие компоненты или сервисы планируется изменить или переосмыслить?
+          multiple: true
+          options:
+              - apps/app (Клиентское приложение / Svelte 5 / адаптеры / UI / стейт)
+              - apps/bot (Telegram бот / grammY / сценарии / стейт)
+              - apps/api (Бэкенд API / Elysia / сервисы / эндпоинты)
+              - apps/admin (Панель управления)
+              - packages/contracts (Контракты данных, DTO, схемы Zod)
+              - packages/database (Модели Prisma 8 / архитектура хранения)
+              - packages/sdk (Клиентский SDK)
+              - packages/logger (Логирование и наблюдаемость)
+              - infra/* (Docker, CI/CD, переменные окружения, деплой)
+              - architecture / adr (Глобальные архитектурные стандарты)
+              - другое (Иные вопросы или инициативы)
+      validations:
+          required: true
+
+    - type: textarea
+      id: motivation
+      attributes:
+          label: Мотивация и текущая проблема
+          description: Какую проблему вы хотите решить? Почему текущая реализация или архитектура неудобна или недостаточна?
+      validations:
+          required: true
+
+    - type: textarea
+      id: proposed_solution
+      attributes:
+          label: Предлагаемое решение / Концепция
+          description: Опишите предлагаемую структуру кода, интерфейсы, архитектурный подход или приведите черновик (TypeScript, схемы, псевдокод, диаграмму).
+      validations:
+          required: true
+
+    - type: textarea
+      id: impact
+      attributes:
+          label: Влияние на систему и проект
+          description: Какие сервисы или модули будут затронуты этим решением? Потребуются ли изменения в других сервисах, миграции или согласования?
+      validations:
+          required: true
+
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Рассмотренные альтернативы
+          description: Какие другие варианты решения рассматривались и почему предложенный подход предпочтительнее?
+
+    - type: checkboxes
+      id: agreement
+      attributes:
+          label: Регламент работы с Proposal
+          description: Подтвердите ознакомление с регламентом предложений
+          options:
+              - label: Ветка в Git будет названа с префиксом proposal/ или rfc/ (например, proposal/app-routing или proposal/tickets-v2)
+                required: true
+              - label: Осознано, что proposal не мержится в main напрямую, пока решение не будет согласовано и доведено до критериев готовности (тесты, типы, интеграция)
+                required: true
