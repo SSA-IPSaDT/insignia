@@ -42,7 +42,7 @@
     ],
     "scripts": {
         "dev": "vite dev",
-        "build": "bun --bun vite build",
+        "build": "vite build",
         "preview": "vite preview",
         "prepare": "bun --bun svelte-kit sync || echo ''",
         "check": "bun --bun svelte-kit sync && bun --bun svelte-check --tsconfig ./tsconfig.json",
@@ -53,6 +53,8 @@
         "@insignia/env": "workspace:*",
         "@insignia/logger": "workspace:*",
         "@insignia/sdk": "workspace:*",
+        "@tma.js/sdk": "^3.3.0",
+        "@tma.js/sdk-svelte": "^1.0.23",
         "temporal-polyfill": "catalog:",
         "zod": "catalog:"
     },

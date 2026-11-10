@@ -9,12 +9,15 @@ dependsOn:
     - 'env'
     - 'sdk'
     - 'api'
+    - 'bot'
 
 tasks:
     dev:
         command: 'bun run --bun vite dev'
         deps:
             - 'api:dev'
+            - 'bot:dev'
+            - 'sdk:build'
         options:
             persistent: true
             runInCI: false

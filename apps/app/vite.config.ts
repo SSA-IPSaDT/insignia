@@ -41,6 +41,7 @@ export default defineConfig({
         port: env.APP_PORT,
         strictPort: true,
         host: env.APP_HOST,
+        allowedHosts: true,
         fs: {
             allow: ['../..'],
         },
@@ -57,6 +58,7 @@ export default defineConfig({
         port: env.APP_PORT,
         strictPort: true,
         host: env.APP_HOST,
+        allowedHosts: true,
     },
     build: {
         target: 'esnext',

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { PUBLIC_API_URL } from '$app/env/public';
     import { resolve } from '$app/paths';
 
     import api from '#lib/api';
