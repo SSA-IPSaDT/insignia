@@ -14,10 +14,10 @@
 ## 📁 Структура директории
 
 - `docker.compose.yml` — Compose-файл для локальной инфраструктуры разработчика (PostgreSQL).
-- `docker.compose.prod.yml` — Полный продакшен стек (`postgres`, `api`, `web`, `bot`).
+- `docker.compose.prod.yml` — Полный продакшен стек (`postgres`, `api`, `app`, `bot`).
 - `Dockerfile.api` — Продакшен образ бэкенда (`apps/api` на базе Elysia и Bun).
 - `Dockerfile.bot` — Продакшен образ Telegram-бота (`apps/bot` на Bun).
-- `Dockerfile.web` — Продакшен образ SvelteKit (`apps/web` с `svelte-adapter-bun`).
+- `Dockerfile.app` — Продакшен образ клиентского приложения (`apps/app` с `svelte-adapter-bun`).
 
 ---
 
@@ -44,8 +44,8 @@ docker compose -f infra/docker/docker.compose.yml down
 # Сборка API:
 docker build -f infra/docker/Dockerfile.api -t insignia-api:latest .
 
-# Сборка Web (SvelteKit):
-docker build -f infra/docker/Dockerfile.web -t insignia-web:latest .
+# Сборка Client App (SvelteKit):
+docker build -f infra/docker/Dockerfile.app -t insignia-app:latest .
 
 # Сборка Telegram-бота:
 docker build -f infra/docker/Dockerfile.bot -t insignia-bot:latest .

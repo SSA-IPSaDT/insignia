@@ -28,7 +28,7 @@ console.log(env.NODE_ENV);
 
 ### 🌐 Публичные переменные и Vite / SvelteKit (`@insignia/env/public`)
 
-Для фронтенд-приложений (`apps/web`, `apps/admin`), использующих Vite и SvelteKit, предоставляется подмодуль `@insignia/env/public`:
+Для фронтенд-приложений (`apps/app`, `apps/admin`), использующих Vite и SvelteKit, предоставляется подмодуль `@insignia/env/public`:
 
 ```typescript
 import { populateProcessEnv, publicEnvSchema } from '@insignia/env/public';

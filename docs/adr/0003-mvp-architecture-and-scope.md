@@ -3,7 +3,7 @@
 - **Статус**: Принято
 - **Дата**: 2026-11-02
 - **Авторы**: naylour
-- **Область (Scope)**: all (`apps/bot`, `apps/web`, `apps/api`, `packages/contracts`, `packages/database`)
+- **Область (Scope)**: all (`apps/bot`, `apps/app`, `apps/admin`, `apps/api`, `packages/contracts`, `packages/database`)
 
 ---
 
@@ -19,7 +19,7 @@
 
 В команде четко распределены роли:
 
-- **`@naylour`** (Lead Architect / Fullstack): отвечает за инфраструктуру, базу данных (`packages/database`), серверное API (`apps/api`) и веб-интерфейс админки (`apps/web`).
+- **`@naylour`** (Lead Architect / Fullstack): отвечает за инфраструктуру, базу данных (`packages/database`), серверное API (`apps/api`) и веб-интерфейс админки (`apps/admin`).
 - **`@segn1s`** (Bot Service Contributor): отвечает за сервис Telegram-бота (`apps/bot`) и осваивает TypeScript на практике.
 
 Требуется зафиксировать технические границы **MVP (v0.1.0)**, архитектуру сквозного сценария (Vertical Slice) и распределение задач между сервисами, чтобы разработчики могли вести разработку параллельно без блокировок.
@@ -77,7 +77,7 @@
 - **Приемник системных уведомлений**:
     - Служебный вебхук/эндпоинт для отправки оповещений студентам по команде API.
 
-### 2. Веб-клиент (`apps/web` — `@naylour`)
+### 2. Веб-клиент админки (`apps/admin` — `@naylour`)
 
 - **Административная панель организатора**:
     - Авторизация представителей студенческих организаций.
@@ -127,7 +127,7 @@
     - Описание базовых моделей в `packages/database/prisma/schema.prisma` и применение первой миграции.
     - Описание общих DTO и Zod-схем в `packages/contracts`.
 2. **Этап 2 (Параллельная разработка)**:
-    - `@naylour`: Реализация роутов `apps/api` и страниц админки `apps/web`.
+    - `@naylour`: Реализация роутов `apps/api` и страниц админки `apps/admin`.
     - `@segn1s`: Реализация команд `/profile`, `/my_events`, FSM-опроса с Rich Text и Inline Query в `apps/bot`.
 3. **Этап 3 (Интеграция и Тестирование)**:
     - Подключение бота к живому API.
