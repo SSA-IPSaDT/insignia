@@ -2,13 +2,13 @@ import { describe, expect, test } from 'bun:test';
 
 import { adminRawSchema } from '../src/admin';
 import { apiRawSchema } from '../src/api';
+import { appRawSchema, webRawSchema } from '../src/app';
 import { baseRawSchema } from '../src/base';
 import { botRawSchema } from '../src/bot';
 import { createLazyEnv, parseEnv } from '../src/common';
 import { databaseRawSchema } from '../src/database';
 import env from '../src/index';
 import { envRawSchema, envSchema } from '../src/schema';
-import { webRawSchema } from '../src/web';
 
 describe('Raw Schemas Isolation', () => {
     test('baseRawSchema defines base runtime parameters', () => {
@@ -40,12 +40,12 @@ describe('Raw Schemas Isolation', () => {
         expect(parsed.ADMIN_DOMAIN_SUB).toBe('admin');
     });
 
-    test('webRawSchema defines Web-specific raw parameters', () => {
-        const parsed = webRawSchema.parse({});
+    test('appRawSchema defines App-specific raw parameters', () => {
+        const parsed = appRawSchema.parse({});
 
-        expect(parsed.WEB_PORT).toBe(51001);
-        expect(parsed.WEB_HOST).toBe('localhost');
-        expect(parsed.WEB_DOMAIN_SUB).toBe('app');
+        expect(parsed.APP_PORT).toBe(51001);
+        expect(parsed.APP_HOST).toBe('localhost');
+        expect(parsed.APP_DOMAIN_SUB).toBe('app');
         expect(parsed.ENABLE_PWA).toBe(true);
         expect(parsed.TELEGRAM_MINI_APP_MODE).toBe(false);
     });
@@ -102,9 +102,11 @@ describe('Unified Dynamic Environment Transformation', () => {
         // Dev URLs
         expect(parsed.PUBLIC_API_URL).toBe('http://localhost:51000');
         expect(parsed.PUBLIC_ADMIN_URL).toBe('http://localhost:51002');
+        expect(parsed.PUBLIC_APP_URL).toBe('http://localhost:51001');
         expect(parsed.PUBLIC_WEB_URL).toBe('http://localhost:51001');
         expect(parsed.PUBLIC_BOT_URL).toBe('http://localhost:51004');
         expect(parsed.ADMIN_ORIGIN).toBe('http://localhost:51002');
+        expect(parsed.APP_ORIGIN).toBe('http://localhost:51001');
         expect(parsed.WEB_ORIGIN).toBe('http://localhost:51001');
 
         // CORS
@@ -129,9 +131,11 @@ describe('Unified Dynamic Environment Transformation', () => {
 
         expect(parsed.PUBLIC_API_URL).toBe('https://api.insignia.tech');
         expect(parsed.PUBLIC_ADMIN_URL).toBe('https://admin.insignia.tech');
+        expect(parsed.PUBLIC_APP_URL).toBe('https://app.insignia.tech');
         expect(parsed.PUBLIC_WEB_URL).toBe('https://app.insignia.tech');
         expect(parsed.PUBLIC_BOT_URL).toBe('https://bot.insignia.tech');
         expect(parsed.ADMIN_ORIGIN).toBe('https://admin.insignia.tech');
+        expect(parsed.APP_ORIGIN).toBe('https://app.insignia.tech');
         expect(parsed.WEB_ORIGIN).toBe('https://app.insignia.tech');
         expect(parsed.CORS_ALLOWED_ORIGINS).toContain(
             'https://app.insignia.tech',

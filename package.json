@@ -60,6 +60,9 @@
     "catalogs": {
         "server": {
             "elysia": "^1.4.30"
+        },
+        "web": {
+            "tailwindcss": "^4.3.5"
         }
     },
     "packageManager": "bun@1.4.4",

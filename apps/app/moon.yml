@@ -12,7 +12,7 @@ dependsOn:
 
 tasks:
     dev:
-        command: 'bun x vite dev'
+        command: 'bun run --bun vite dev'
         deps:
             - 'api:dev'
         options:
@@ -20,7 +20,7 @@ tasks:
             runInCI: false
 
     build:
-        command: 'bun x vite build'
+        command: 'bun run --bun vite build'
         deps:
             - 'env:build'
             - 'sdk:build'
@@ -33,6 +33,7 @@ tasks:
             - 'svelte.config.*'
         outputs:
             - '.svelte-kit/**'
+            - 'build/**'
 
     check:
         command: 'bun run check'

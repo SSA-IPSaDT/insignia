@@ -2,16 +2,16 @@ import { z } from 'zod';
 
 import { adminRawSchema } from './admin.js';
 import { apiRawSchema } from './api.js';
+import { appRawSchema } from './app.js';
 import { baseRawSchema } from './base.js';
 import { botRawSchema } from './bot.js';
 import { databaseRawSchema } from './database.js';
-import { webRawSchema } from './web.js';
 
 export const envRawSchema = z.object({
     ...baseRawSchema.shape,
     ...apiRawSchema.shape,
     ...adminRawSchema.shape,
-    ...webRawSchema.shape,
+    ...appRawSchema.shape,
     ...botRawSchema.shape,
     ...databaseRawSchema.shape,
 });
@@ -29,8 +29,8 @@ export const envSchema = envRawSchema.transform((raw) => {
     const adminDomain = raw.ADMIN_DOMAIN_SUB
         ? `${raw.ADMIN_DOMAIN_SUB}.${rootDomain}`
         : rootDomain;
-    const webDomain = raw.WEB_DOMAIN_SUB
-        ? `${raw.WEB_DOMAIN_SUB}.${rootDomain}`
+    const appDomain = raw.APP_DOMAIN_SUB
+        ? `${raw.APP_DOMAIN_SUB}.${rootDomain}`
         : rootDomain;
     const botDomain = raw.BOT_DOMAIN_SUB
         ? `${raw.BOT_DOMAIN_SUB}.${rootDomain}`
@@ -44,9 +44,9 @@ export const envSchema = envRawSchema.transform((raw) => {
         ? `${protocol}://${adminDomain}`
         : `${protocol}://${raw.ADMIN_HOST}:${raw.ADMIN_PORT}`;
 
-    const publicWebUrl = isProd
-        ? `${protocol}://${webDomain}`
-        : `${protocol}://${raw.WEB_HOST}:${raw.WEB_PORT}`;
+    const publicAppUrl = isProd
+        ? `${protocol}://${appDomain}`
+        : `${protocol}://${raw.APP_HOST}:${raw.APP_PORT}`;
 
     const publicBotUrl = isProd
         ? `${protocol}://${botDomain}`
@@ -55,13 +55,13 @@ export const envSchema = envRawSchema.transform((raw) => {
     const corsAllowedOrigins = raw.API_CORS_ALLOW_ALL
         ? ['*']
         : [
-              publicWebUrl,
+              publicAppUrl,
               publicAdminUrl,
               publicBotUrl,
-              `http://localhost:${raw.WEB_PORT}`,
+              `http://localhost:${raw.APP_PORT}`,
               `http://localhost:${raw.ADMIN_PORT}`,
               `http://localhost:${raw.BOT_PORT}`,
-              `http://127.0.0.1:${raw.WEB_PORT}`,
+              `http://127.0.0.1:${raw.APP_PORT}`,
               `http://127.0.0.1:${raw.ADMIN_PORT}`,
               `http://127.0.0.1:${raw.BOT_PORT}`,
           ];
@@ -74,16 +74,18 @@ export const envSchema = envRawSchema.transform((raw) => {
         ...raw,
         API_DOMAIN: apiDomain,
         ADMIN_DOMAIN: adminDomain,
-        WEB_DOMAIN: webDomain,
+        APP_DOMAIN: appDomain,
         BOT_DOMAIN: botDomain,
         PUBLIC_API_URL: publicApiUrl,
         PUBLIC_ADMIN_URL: publicAdminUrl,
-        PUBLIC_WEB_URL: publicWebUrl,
+        PUBLIC_APP_URL: publicAppUrl,
         PUBLIC_BOT_URL: publicBotUrl,
         CORS_ALLOWED_ORIGINS: corsAllowedOrigins,
         DATABASE_URL: databaseUrl,
         ADMIN_ORIGIN: publicAdminUrl,
-        WEB_ORIGIN: publicWebUrl,
+        APP_ORIGIN: publicAppUrl,
+        PUBLIC_WEB_URL: publicAppUrl,
+        WEB_ORIGIN: publicAppUrl,
     };
 });
 
