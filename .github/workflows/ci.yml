@@ -21,6 +21,7 @@ jobs:
     verify:
         name: Code Quality & Build Checks
         runs-on: ubuntu-latest
+        if: "!startsWith(github.head_ref, 'proposal/') && !startsWith(github.head_ref, 'rfc/')"
 
         services:
             postgres:

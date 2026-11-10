@@ -1,0 +1,67 @@
+name: Proposal / RFC
+
+on:
+    pull_request:
+        branches: [main]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    proposal:
+        name: Proposal & RFC Quality Checks
+        runs-on: ubuntu-latest
+        if: "startsWith(github.head_ref, 'proposal/') || startsWith(github.head_ref, 'rfc/')"
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v7
+              with:
+                  fetch-depth: 0
+
+            - name: Setup toolchain from mise.toml
+              uses: jdx/mise-action@v5
+              with:
+                  cache: true
+
+            - name: Cache Bun dependencies
+              uses: actions/cache@v6
+              with:
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-bun-
+
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Run HK hygiene checks
+              run: bun run hk:check
+
+            - name: Check code formatting
+              run: bun run fmt:check
+
+            - name: Validate contracts in isolation
+              run: bun --cwd packages/contracts check
+
+            - name: Run contracts schema tests
+              run: bun test packages/contracts
+
+            - name: RFC Review Summary & Guidance
+              run: |
+                  echo "================================================================================"
+                  echo "💡 RFC / Architecture Proposal Detected (${{ github.head_ref }})"
+                  echo "================================================================================"
+                  echo "✓ Code hygiene (HK) passed."
+                  echo "✓ Formatting (bun fmt) passed."
+                  echo ""
+                  echo "ℹ️  NOTICE: Full monorepo build, cross-service typecheck, and database"
+                  echo "   integration tests are intentionally bypassed for RFC / Proposal branches."
+                  echo ""
+                  echo "👉 Next steps:"
+                  echo "   1. Review the proposed concept or architectural change in the Pull Request."
+                  echo "   2. Discuss and align with the lead architect (@naylour) and team."
+                  echo "   3. Once approved, adapt and finalize the implementation to meet full"
+                  echo "      production criteria (full typecheck, test coverage) before merging into main."
+                  echo "================================================================================"
