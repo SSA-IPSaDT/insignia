@@ -91,6 +91,16 @@ export abstract class BaseModule {
                 };
             }
 
+            const formatErrorCause = (err: unknown): unknown => {
+                if (err instanceof Error) {
+                    return {
+                        name: err.name,
+                        message: err.message,
+                    };
+                }
+                return err;
+            };
+
             // 3. Ошибка парсинга/декодирования ответа (битый JSON, обрыв потока)
             if (error instanceof SyntaxError) {
                 return {
@@ -102,7 +112,7 @@ export abstract class BaseModule {
                         message:
                             error.message ||
                             'Ошибка декодирования ответа сервера',
-                        cause: error,
+                        cause: formatErrorCause(error),
                     },
                 };
             }
@@ -141,7 +151,7 @@ export abstract class BaseModule {
                     status: 0,
                     code,
                     message: msg || 'Сетевой сбой при обращении к API',
-                    cause: error,
+                    cause: formatErrorCause(error),
                 },
             };
         }
