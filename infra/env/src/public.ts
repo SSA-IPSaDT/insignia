@@ -7,9 +7,11 @@ export const publicApiUrlSchema = z
     .url()
     .describe('URL бэкенд API платформы Insignia');
 
-export const publicWebUrlSchema = z
+export const publicAppUrlSchema = z
     .url()
-    .describe('URL веб-приложения Insignia');
+    .describe('URL клиентского приложения Insignia');
+
+export const publicWebUrlSchema = publicAppUrlSchema;
 
 export const publicAdminUrlSchema = z
     .url()
@@ -30,7 +32,8 @@ export const publicEnvSchema = z.object({
     ROOT_DOMAIN: z.string().default('insignia.tech'),
 
     PUBLIC_API_URL: publicApiUrlSchema,
-    PUBLIC_WEB_URL: publicWebUrlSchema,
+    PUBLIC_APP_URL: publicAppUrlSchema,
+    PUBLIC_WEB_URL: publicWebUrlSchema.optional(),
     PUBLIC_ADMIN_URL: publicAdminUrlSchema,
 
     ENABLE_PWA: enablePwaSchema,

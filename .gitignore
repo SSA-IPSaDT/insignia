@@ -41,3 +41,5 @@ fnox.*.local.toml
 
 # AI agent skills generated/synchronized locally
 packages/database/.agents
+
+skills

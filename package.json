@@ -60,6 +60,9 @@
     "catalogs": {
         "server": {
             "elysia": "^1.4.30"
+        },
+        "web": {
+            "tailwindcss": "^4.3.5"
         }
     },
     "packageManager": "bun@1.4.4",
@@ -68,12 +71,12 @@
         "node": ">=22.0.0"
     },
     "scripts": {
-        "dev": "fnox exec -- moon run web:dev",
+        "dev": "fnox exec -- moon run app:dev",
         "dev:all": "fnox exec -- moon run :dev",
         "dev:admin": "fnox exec -- moon run admin:dev",
         "dev:api": "fnox exec -- moon run api:dev",
         "dev:bot": "fnox exec -- moon run bot:dev",
-        "dev:web": "fnox exec -- moon run web:dev",
+        "dev:app": "fnox exec -- moon run app:dev",
         "build": "fnox exec -- moon run :build",
         "typecheck": "moon run :check",
         "check": "moon run :check",

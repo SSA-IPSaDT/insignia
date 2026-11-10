@@ -18,7 +18,7 @@ body:
               - apps/admin (Панель администратора SvelteKit)
               - apps/api (Бэкенд REST API)
               - apps/bot (Telegram-бот)
-              - apps/web (Веб-интерфейс SvelteKit)
+              - apps/app (Клиентское приложение SvelteKit / Mini App)
               - packages/contracts (Схемы Zod / DTO)
               - packages/database (Prisma 8 / PostgreSQL)
               - packages/logger (Логирование)

@@ -25,6 +25,9 @@ export class BotService {
             status: 'ok',
             service: 'bot',
             mode: env.BOT_WEBHOOK_ENABLED ? 'webhook' : 'polling',
+            telegramEnvironment: env.TELEGRAM_TEST_ENVIRONMENT
+                ? 'test'
+                : 'prod',
         }));
 
         if (env.BOT_WEBHOOK_ENABLED) {
@@ -40,8 +43,12 @@ export class BotService {
             port: env.BOT_PORT,
         });
 
+        const dcLabel = env.TELEGRAM_TEST_ENVIRONMENT
+            ? 'Test DC (Тестовая среда)'
+            : 'Production DC (Боевая среда)';
+
         logger.info(
-            `Bot HTTP server started on http://${env.BOT_HOST}:${env.BOT_PORT}`,
+            `Bot HTTP server started on http://${env.BOT_HOST}:${env.BOT_PORT} (Telegram: ${dcLabel})`,
         );
 
         await startTelegramBot(this.telegramBot);

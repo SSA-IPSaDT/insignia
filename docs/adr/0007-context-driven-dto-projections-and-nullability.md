@@ -3,7 +3,7 @@
 - **Статус**: Принято
 - **Дата**: 2026-11-08
 - **Авторы**: @naylour, Antigravity (AI Assistant)
-- **Область (Scope)**: packages/contracts | apps/api | apps/web | apps/bot
+- **Область (Scope)**: packages/contracts | apps/api | apps/app | apps/admin | apps/bot
 
 ---
 

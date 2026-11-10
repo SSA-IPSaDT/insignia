@@ -19,7 +19,7 @@
 - [ ] `apps/admin` — панель администратора
 - [ ] `apps/api` — серверная часть (API)
 - [ ] `apps/bot` — бот автоматизации
-- [ ] `apps/web` — клиентский веб-интерфейс
+- [ ] `apps/app` — клиентское приложение (Mini App / PWA)
 - [ ] `packages/contracts` — контракты данных и схемы
 - [ ] `packages/database` — база данных, схемы и миграции
 - [ ] `packages/tsconfig` — конфигурации TypeScript

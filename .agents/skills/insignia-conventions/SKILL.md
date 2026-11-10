@@ -37,7 +37,7 @@ description: Verifies adherence to Insignia code conventions including arrow fun
         ```
 
 4. **HTTP-клиент (Ky)**:
-    - Взаимодействие между клиентами (`apps/web`, `apps/admin`, `apps/bot`) и API осуществляется через Ky с типизацией:
+    - Взаимодействие между клиентами (`apps/app`, `apps/admin`, `apps/bot`) и API осуществляется через Ky с типизацией:
         ```typescript
         const user = await api.get('users/me').json<UserDto>();
         ```
@@ -66,6 +66,6 @@ description: Verifies adherence to Insignia code conventions including arrow fun
     - Разработчик запускает только нужный для его роли стек:
         - `bun run dev:api` — только бэкенд API (`apps/api`).
         - `bun run dev:bot` — бот вместе с API (`apps/bot` + `apps/api`).
-        - `bun run dev:web` — веб-интерфейс вместе с API (`apps/web` + `apps/api`).
+        - `bun run dev:app` — клиентское приложение вместе с API (`apps/app` + `apps/api`).
         - `bun run dev:admin` — панель администратора вместе с API (`apps/admin` + `apps/api`).
-        - `bun run dev:all` — весь стек целиком (`api`, `bot`, `web`, `admin`).
+        - `bun run dev:all` — весь стек целиком (`api`, `bot`, `app`, `admin`).

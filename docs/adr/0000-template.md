@@ -3,7 +3,7 @@
 - **Статус**: [Черновик | Предложено | Принято | Отклонено | Устарело | Заменено на ADR-XXXX]
 - **Дата**: ГГГГ-ММ-ДД
 - **Авторы**: [Имя Фамилия / GitHub username]
-- **Область (Scope)**: [apps/api | apps/web | packages/contracts | tooling | infrastructure | all]
+- **Область (Scope)**: [apps/api | apps/app | apps/admin | apps/bot | packages/contracts | tooling | infrastructure | all]
 
 ---
 

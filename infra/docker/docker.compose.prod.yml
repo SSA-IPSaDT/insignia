@@ -12,11 +12,11 @@ services:
         networks:
             - insignia-internal
 
-    web:
+    app:
         build:
             context: ../..
-            dockerfile: infra/docker/Dockerfile.web
-        container_name: insignia-prod-web
+            dockerfile: infra/docker/Dockerfile.app
+        container_name: insignia-prod-app
         restart: always
         depends_on:
             - api

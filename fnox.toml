@@ -28,9 +28,9 @@ JWT_REFRESH_EXPIRES_IN = { provider = "plain", value = "7d" }
 ADMIN_PORT = { provider = "plain", value = "51002" }
 ADMIN_HOST = { provider = "plain", value = "localhost" }
 ADMIN_DOMAIN_SUB = { provider = "plain", value = "admin" }
-WEB_PORT = { provider = "plain", value = "51001" }
-WEB_HOST = { provider = "plain", value = "localhost" }
-WEB_DOMAIN_SUB = { provider = "plain", value = "app" }
+APP_PORT = { provider = "plain", value = "51001" }
+APP_HOST = { provider = "plain", value = "localhost" }
+APP_DOMAIN_SUB = { provider = "plain", value = "app" }
 ENABLE_PWA = { provider = "plain", value = "true" }
 TELEGRAM_MINI_APP_MODE = { provider = "plain", value = "false" }
 TELEGRAM_BOT_TOKEN = { provider = "plain", value = "0000000000:AAFakeTestTokenForDevAndTestingOnly" }

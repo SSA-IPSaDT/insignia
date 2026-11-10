@@ -10,9 +10,13 @@
     "js/ts.preferences.includePackageJsonAutoImports": "on",
     // File associations
     "files.associations": {
+        "*.css": "tailwindcss",
         "*.pkl": "plaintext",
         "*.toml": "toml"
     },
+    // CSS & Tailwind at-rules (@apply, @theme, @utility, @custom-variant)
+    "css.lint.unknownAtRules": "ignore",
+    "scss.lint.unknownAtRules": "ignore",
     // Markdown
     "[markdown]": {
         "files.trimTrailingWhitespace": false

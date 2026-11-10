@@ -27,7 +27,7 @@ moon query projects
 
 # Детальная информация по конкретному проекту:
 moon project api
-moon project web
+moon project app
 
 # Запуск задачи для всех затронутых (affected) проектов:
 moon run :build
@@ -35,7 +35,7 @@ moon run :build
 # Запуск задачи для конкретного проекта:
 moon run api:dev
 moon run bot:dev
-moon run web:dev
+moon run app:dev
 
 # Проверка графа задач:
 moon action-graph

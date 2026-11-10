@@ -70,7 +70,7 @@ git checkout -b <тип-ветки>/<название-задачи>
 
 - `api` — серверный сервис (`apps/api`).
 - `bot` — бот автоматизации (`apps/bot`).
-- `web` — фронтенд интерфейс (`apps/web`).
+- `app` — клиентское приложение (`apps/app`).
 - `contracts` — общие контракты и DTO (`packages/contracts`).
 - `db` — база данных, модели и миграции (`packages/database`).
 - `tooling` — общие инструменты репозитория (`mise.toml`, `bunfig.toml`, `.moon`).

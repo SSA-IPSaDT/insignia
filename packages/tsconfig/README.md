@@ -24,7 +24,7 @@
 | :--------------- | :----------------------------- | :------------------------------------------------------------------------------------------------------ |
 | **Базовый**      | `@insignia/tsconfig/base.json` | Изоморфный строгий конфиг без платформенных типов (для `@insignia/contracts`).                          |
 | **Bun Backend**  | `@insignia/tsconfig/bun.json`  | Серверный конфиг с нативными типами Bun (для `apps/api`, `apps/bot`, `packages/database`, `infra/env`). |
-| **Web Frontend** | `@insignia/tsconfig/web.json`  | Клиентский конфиг с типами DOM и браузерного API (для `apps/web`).                                      |
+| **Web Frontend** | `@insignia/tsconfig/web.json`  | Клиентский конфиг с типами DOM и браузерного API (для `apps/app`, `apps/admin`).                        |
 
 ---
 

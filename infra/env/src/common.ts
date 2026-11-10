@@ -72,6 +72,7 @@ export const createLazyEnv = <T extends z.ZodType<object>>(
             ) {
                 return () => getCached();
             }
+
             return (getCached() as Record<string | symbol, unknown>)[prop];
         },
         has: (_, prop: string | symbol) => {
