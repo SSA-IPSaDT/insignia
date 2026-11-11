@@ -59,7 +59,8 @@
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
-        "@types/bun": "^1.4.4",
-        "svelte": "^5.57.1"
+        "@types/bun": "catalog:",
+        "svelte": "catalog:web",
+        "typescript": "catalog:"
     }
 }
