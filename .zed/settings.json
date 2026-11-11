@@ -2,9 +2,28 @@
     "tab_size": 4,
     "hard_tabs": false,
     "format_on_save": "on",
+    "file_scan_exclusions": [
+        "**/node_modules",
+        "**/.moon",
+        "**/.svelte-kit",
+        "**/build",
+        "**/dist",
+        "**/logs",
+        "**/coverage",
+        "**/*.tsbuildinfo",
+        "**/old",
+        "..."
+    ],
     "languages": {
         "TypeScript": {
             "format_on_save": "on",
+            "language_servers": [
+                "typescript-ls",
+                "!vtsls",
+                "!typescript-language-server",
+                "!eslint",
+                "..."
+            ],
             "formatter": {
                 "external": {
                     "command": "bun",
@@ -14,6 +33,13 @@
         },
         "TSX": {
             "format_on_save": "on",
+            "language_servers": [
+                "typescript-ls",
+                "!vtsls",
+                "!typescript-language-server",
+                "!eslint",
+                "..."
+            ],
             "formatter": {
                 "external": {
                     "command": "bun",
@@ -23,6 +49,13 @@
         },
         "JavaScript": {
             "format_on_save": "on",
+            "language_servers": [
+                "typescript-ls",
+                "!vtsls",
+                "!typescript-language-server",
+                "!eslint",
+                "..."
+            ],
             "formatter": {
                 "external": {
                     "command": "bun",
@@ -70,9 +103,149 @@
             "format_on_save": "on",
             "tab_size": 4,
             "hard_tabs": false
+        },
+        "JSX": {
+            "format_on_save": "on",
+            "language_servers": [
+                "typescript-ls",
+                "!vtsls",
+                "!typescript-language-server",
+                "!eslint",
+                "..."
+            ],
+            "formatter": {
+                "external": {
+                    "command": "bun",
+                    "arguments": ["fmt", "--stdin-filepath", "{buffer_path}"]
+                }
+            }
+        },
+        "Svelte": {
+            "tab_size": 4,
+            "hard_tabs": false,
+            "format_on_save": "on",
+            "language_servers": [
+                "svelte-language-server",
+                "tailwindcss-language-server",
+                "!vtsls",
+                "!typescript-language-server",
+                "!eslint",
+                "..."
+            ],
+            "formatter": {
+                "external": {
+                    "command": "bun",
+                    "arguments": ["fmt", "--stdin-filepath", "{buffer_path}"]
+                }
+            }
+        },
+        "YAML": {
+            "tab_size": 2,
+            "hard_tabs": false,
+            "format_on_save": "on",
+            "formatter": {
+                "external": {
+                    "command": "bun",
+                    "arguments": ["fmt", "--stdin-filepath", "{buffer_path}"]
+                }
+            }
         }
     },
     "lsp": {
+        "typescript-ls": {
+            "settings": {
+                "typescript": {
+                    "preferences": {
+                        "quoteStyle": "single",
+                        "preferTypeOnlyAutoImports": true,
+                        "autoImportFileExcludePatterns": [
+                            "**/node_modules/.bun/**",
+                            "**/.svelte-kit/**",
+                            "**/build/**",
+                            "**/dist/**",
+                            "**/.moon/**",
+                            "**/logs/**",
+                            "**/old/**"
+                        ]
+                    },
+                    "workspaceSymbols": {
+                        "excludeLibrarySymbols": true
+                    }
+                },
+                "javascript": {
+                    "preferences": {
+                        "quoteStyle": "single",
+                        "preferTypeOnlyAutoImports": true,
+                        "autoImportFileExcludePatterns": [
+                            "**/node_modules/.bun/**",
+                            "**/.svelte-kit/**",
+                            "**/build/**",
+                            "**/dist/**",
+                            "**/.moon/**",
+                            "**/logs/**",
+                            "**/old/**"
+                        ]
+                    },
+                    "workspaceSymbols": {
+                        "excludeLibrarySymbols": true
+                    }
+                }
+            }
+        },
+        "svelte-language-server": {
+            "settings": {
+                "typescript": {
+                    "preferences": {
+                        "quoteStyle": "single",
+                        "preferTypeOnlyAutoImports": true,
+                        "includePackageJsonAutoImports": "off",
+                        "autoImportFileExcludePatterns": [
+                            "**/node_modules/.bun/**",
+                            "**/.svelte-kit/**",
+                            "**/build/**",
+                            "**/dist/**",
+                            "**/.moon/**",
+                            "**/logs/**",
+                            "**/old/**"
+                        ]
+                    }
+                },
+                "javascript": {
+                    "preferences": {
+                        "quoteStyle": "single",
+                        "preferTypeOnlyAutoImports": true,
+                        "includePackageJsonAutoImports": "off",
+                        "autoImportFileExcludePatterns": [
+                            "**/node_modules/.bun/**",
+                            "**/.svelte-kit/**",
+                            "**/build/**",
+                            "**/dist/**",
+                            "**/.moon/**",
+                            "**/logs/**",
+                            "**/old/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "tailwindcss-language-server": {
+            "settings": {
+                "tailwindCSS": {
+                    "files": {
+                        "exclude": [
+                            "**/.git/**",
+                            "**/node_modules/**",
+                            "**/.moon/**",
+                            "**/.svelte-kit/**",
+                            "**/build/**",
+                            "**/dist/**",
+                            "**/logs/**",
+                            "**/old/**"
+                        ]
+                    }
+                }
+            }
+        },
         "vscode-css-language-server": {
             "settings": {
                 "css": {

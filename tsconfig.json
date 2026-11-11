@@ -3,5 +3,19 @@
     "extends": "./packages/tsconfig/base.json",
     "compilerOptions": {
         "types": ["bun"]
-    }
+    },
+    "include": ["scripts/**/*.ts"],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/**",
+        "apps/**",
+        "packages/**",
+        "infra/**",
+        "**/.moon/**",
+        "**/.svelte-kit/**",
+        "**/build/**",
+        "**/dist/**",
+        "**/logs/**",
+        "old/**"
+    ]
 }
