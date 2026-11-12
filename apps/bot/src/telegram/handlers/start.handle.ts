@@ -9,6 +9,7 @@ export default (async (ctx) => {
     const view = renderStartView({
         firstName: ctx.from?.first_name,
         payload,
+        isOnboarded: ctx.session.onboarded,
     });
 
     await ctx.reply(view.text, {
