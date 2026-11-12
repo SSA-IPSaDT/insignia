@@ -8,6 +8,7 @@ import {
     USER_ERROR_MESSAGES,
 } from '@insignia/contracts/users';
 import { seedUsers } from '@insignia/database/seed';
+import env from '@insignia/env';
 
 import { app } from '#/app';
 import * as usersService from '#modules/v1/users/users.service';
@@ -29,8 +30,11 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeMeResponseSchema[404].parse(body);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.error.code).toBe('USER_NOT_FOUND');
+        expect(parsed.code).toBe('USER_NOT_FOUND');
+        expect(parsed.status).toBe(404);
+        expect(parsed.type).toBe(
+            `${env.PUBLIC_API_URL.replace(/\/+$/, '')}/problems/user-not-found`,
+        );
     });
 
     it('GET /v1/users/me returns 404 with USER_NOT_FOUND when user does not exist in database', async () => {
@@ -47,9 +51,9 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeMeResponseSchema[404].parse(body);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.error.code).toBe('USER_NOT_FOUND');
-        expect(parsed.error.message).toBe(USER_ERROR_MESSAGES.USER_NOT_FOUND);
+        expect(parsed.code).toBe('USER_NOT_FOUND');
+        expect(parsed.status).toBe(404);
+        expect(parsed.detail).toBe(USER_ERROR_MESSAGES.USER_NOT_FOUND);
 
         meSpy.mockRestore();
     });
@@ -86,13 +90,12 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeMeResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(parsed.data.id).toBe(validUserId);
-        expect(parsed.data.firstName).toBe('Александр');
-        expect(parsed.data.lastName).toBe('Смирнов');
-        expect(parsed.data.email).toBe('alex.smirnov@insignia.dev');
-        expect('patronymic' in parsed.data).toBe(false);
-        expect('avatarUrl' in parsed.data).toBe(false);
+        expect(parsed.id).toBe(validUserId);
+        expect(parsed.firstName).toBe('Александр');
+        expect(parsed.lastName).toBe('Смирнов');
+        expect(parsed.email).toBe('alex.smirnov@insignia.dev');
+        expect('patronymic' in parsed).toBe(false);
+        expect('avatarUrl' in parsed).toBe(false);
 
         meSpy.mockRestore();
     });
@@ -107,9 +110,9 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUserByIdResponseSchema[422].parse(body);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.error.code).toBe('VALIDATION_ERROR');
-        expect(parsed.error.details.fields.id).toBeDefined();
+        expect(parsed.code).toBe('VALIDATION_ERROR');
+        expect(parsed.status).toBe(422);
+        expect(parsed.details?.fields.id).toBeDefined();
     });
 
     it('GET /v1/users/:id returns 404 with USER_NOT_FOUND when user does not exist', async () => {
@@ -127,9 +130,9 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUserByIdResponseSchema[404].parse(body);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.error.code).toBe('USER_NOT_FOUND');
-        expect(parsed.error.message).toBe(USER_ERROR_MESSAGES.USER_NOT_FOUND);
+        expect(parsed.code).toBe('USER_NOT_FOUND');
+        expect(parsed.status).toBe(404);
+        expect(parsed.detail).toBe(USER_ERROR_MESSAGES.USER_NOT_FOUND);
 
         userSpy.mockRestore();
     });
@@ -158,11 +161,10 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUserByIdResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(parsed.data.id).toBe(validUserId);
-        expect(parsed.data.firstName).toBe('Ольга');
-        expect('lastName' in parsed.data).toBe(false);
-        expect('avatarUrl' in parsed.data).toBe(false);
+        expect(parsed.id).toBe(validUserId);
+        expect(parsed.firstName).toBe('Ольга');
+        expect('lastName' in parsed).toBe(false);
+        expect('avatarUrl' in parsed).toBe(false);
 
         userSpy.mockRestore();
     });
@@ -177,14 +179,13 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(Array.isArray(parsed.data.items)).toBe(true);
-        expect(parsed.data.meta.page).toBe(1);
-        expect(parsed.data.meta.limit).toBe(20);
-        expect(parsed.data.meta.total).toBeGreaterThanOrEqual(25);
-        expect(parsed.data.meta.totalPages).toBeGreaterThanOrEqual(2);
-        expect(parsed.data.meta.hasNextPage).toBe(true);
-        expect(parsed.data.meta.hasPrevPage).toBe(false);
+        expect(Array.isArray(parsed.items)).toBe(true);
+        expect(parsed.meta.page).toBe(1);
+        expect(parsed.meta.limit).toBe(20);
+        expect(parsed.meta.total).toBeGreaterThanOrEqual(25);
+        expect(parsed.meta.totalPages).toBeGreaterThanOrEqual(2);
+        expect(parsed.meta.hasNextPage).toBe(true);
+        expect(parsed.meta.hasPrevPage).toBe(false);
     });
 
     it('GET /v1/users?page=2&limit=20 returns next page with hasPrevPage=true', async () => {
@@ -197,9 +198,8 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(parsed.data.meta.page).toBe(2);
-        expect(parsed.data.meta.hasPrevPage).toBe(true);
+        expect(parsed.meta.page).toBe(2);
+        expect(parsed.meta.hasPrevPage).toBe(true);
     });
 
     it('GET /v1/users?search=Александр filters users by FTS across first name, last name, and patronymic', async () => {
@@ -215,9 +215,8 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(parsed.data.items.length).toBeGreaterThan(0);
-        for (const user of parsed.data.items) {
+        expect(parsed.items.length).toBeGreaterThan(0);
+        for (const user of parsed.items) {
             expect(
                 user.firstName.includes('Александр') ||
                     (user.lastName && user.lastName.includes('Александр')) ||
@@ -239,9 +238,8 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(parsed.data.items.length).toBe(1);
-        expect(parsed.data.items[0]?.lastName).toBe('Смирнов');
+        expect(parsed.items.length).toBe(1);
+        expect(parsed.items[0]?.lastName).toBe('Смирнов');
     });
 
     it('GET /v1/users?search=alex.smirnov@insignia.dev filters users by email using FTS', async () => {
@@ -257,9 +255,8 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[200].parse(body);
 
-        expect(parsed.success).toBe(true);
-        expect(parsed.data.items.length).toBe(1);
-        expect(parsed.data.items[0]?.firstName).toBe('Александр');
+        expect(parsed.items.length).toBe(1);
+        expect(parsed.items[0]?.firstName).toBe('Александр');
     });
 
     it('GET /v1/users?page=0 returns 422 with validation error for page', async () => {
@@ -272,8 +269,8 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[422].parse(body);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.error.code).toBe('VALIDATION_ERROR');
+        expect(parsed.code).toBe('VALIDATION_ERROR');
+        expect(parsed.status).toBe(422);
     });
 
     it('GET /v1/users?limit=150 returns 422 with validation error for limit exceeding max', async () => {
@@ -286,8 +283,8 @@ describe('Users API Endpoints', () => {
         const body = await response.json();
         const parsed = takeUsersResponseSchema[422].parse(body);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.error.code).toBe('VALIDATION_ERROR');
+        expect(parsed.code).toBe('VALIDATION_ERROR');
+        expect(parsed.status).toBe(422);
     });
 
     it('GET /docs/json includes /v1/users and /v1/users/{id} OpenAPI documentation', async () => {
@@ -298,6 +295,7 @@ describe('Users API Endpoints', () => {
         expect(response.status).toBe(200);
 
         const schema = (await response.json()) as {
+            servers?: Array<{ url: string; description: string }>;
             paths: Record<
                 string,
                 { get: { responses: Record<string, unknown> } }
@@ -306,6 +304,21 @@ describe('Users API Endpoints', () => {
                 schemas?: Record<string, unknown>;
             };
         };
+
+        expect(schema.servers).toBeDefined();
+        expect(Array.isArray(schema.servers)).toBe(true);
+        expect(schema.servers?.length).toBe(2);
+        expect(
+            schema.servers?.some((s) =>
+                s.description.startsWith('Development Environment'),
+            ),
+        ).toBe(true);
+        expect(
+            schema.servers?.some((s) =>
+                s.description.startsWith('Production Environment'),
+            ),
+        ).toBe(true);
+
         const usersListEndpoint = schema.paths['/v1/users'];
         const userEndpoint = schema.paths['/v1/users/{id}'];
         const meEndpoint = schema.paths['/v1/users/me'];
@@ -334,14 +347,14 @@ describe('Users API Endpoints', () => {
             description: string;
         };
         expect(res200.description).toBe(
-            'Конверт успешного ответа с публичным профилем пользователя',
+            'Ответ API с публичным профилем пользователя',
         );
 
         const res404 = userEndpoint?.get?.responses['404'] as {
             description: string;
         };
         expect(res404.description).toBe(
-            'Конверт ответа с ошибкой: пользователь не найден',
+            'Ответ с ошибкой: пользователь не найден',
         );
 
         const schemas = schema.components?.schemas ?? {};
@@ -377,8 +390,8 @@ describe('Users API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 
     it('DELETE /v1/users/:id returns 501 NOT_IMPLEMENTED', async () => {
@@ -390,7 +403,7 @@ describe('Users API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 });
