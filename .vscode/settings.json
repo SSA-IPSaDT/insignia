@@ -5,9 +5,63 @@
     "files.eol": "\n",
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
-    // TypeScript
-    "js/ts.tsdk.path": "node_modules/typescript/lib",
-    "js/ts.preferences.includePackageJsonAutoImports": "on",
+    // TypeScript (TypeScript 7 Go + TS 6 alias fallback & monorepo perf)
+    "js/ts.experimental.useTsgo": true,
+    "js/ts.tsdk.path": "node_modules/@typescript/tsserver/lib",
+    "js/ts.preferences.quoteStyle": "single",
+    "js/ts.preferences.preferTypeOnlyAutoImports": true,
+    "js/ts.preferences.includePackageJsonAutoImports": "off",
+    "js/ts.preferences.autoImportFileExcludePatterns": [
+        "**/node_modules/.bun/**",
+        "**/.svelte-kit/**",
+        "**/build/**",
+        "**/dist/**",
+        "**/.moon/**",
+        "**/logs/**",
+        "**/old/**"
+    ],
+    "js/ts.tsserver.maxMemory": 4096,
+    "js/ts.tsserver.experimental.enableProjectDiagnostics": false,
+    "js/ts.workspaceSymbols.scope": "currentProject",
+    // File Watcher, Search & Tailwind Excludes
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.moon/**": true,
+        "**/logs/**": true,
+        "**/.svelte-kit/**": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/coverage/**": true,
+        "**/*.tsbuildinfo": true,
+        "**/old/**": true
+    },
+    "search.exclude": {
+        "**/node_modules/**": true,
+        "**/.moon/**": true,
+        "**/logs/**": true,
+        "**/.svelte-kit/**": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/coverage/**": true,
+        "**/bun.lock": true,
+        "**/old/**": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/*.tsbuildinfo": true
+    },
+    "tailwindCSS.files.exclude": [
+        "**/.git/**",
+        "**/node_modules/**",
+        "**/.svelte-kit/**",
+        "**/build/**",
+        "**/dist/**",
+        "**/.moon/**",
+        "**/logs/**",
+        "**/old/**"
+    ],
     // File associations
     "files.associations": {
         "*.css": "tailwindcss",

@@ -5,6 +5,7 @@
         "bradlc.vscode-tailwindcss",
         "editorconfig.editorconfig",
         "prisma.prisma",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "typescriptteam.native-preview"
     ]
 }

@@ -49,12 +49,13 @@
         "typecheck": "bun check"
     },
     "dependencies": {
-        "libphonenumber-js": "^1.13.15",
+        "libphonenumber-js": "^1.13.16",
         "zod": "catalog:",
         "temporal-polyfill": "catalog:"
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
-        "@types/bun": "^1.4.4"
+        "@types/bun": "catalog:",
+        "typescript": "catalog:"
     }
 }

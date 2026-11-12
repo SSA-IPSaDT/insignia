@@ -33,7 +33,8 @@
     },
     "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
-        "@types/bun": "^1.4.4"
+        "@types/bun": "catalog:",
+        "typescript": "catalog:"
     },
     "exports": {
         ".": {

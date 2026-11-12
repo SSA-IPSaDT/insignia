@@ -51,6 +51,9 @@ export default defineConfig({
                 '**/.git/**',
                 '**/logs/**',
                 '**/.moon/**',
+                '**/.svelte-kit/output/**',
+                '**/build/**',
+                '**/dist/**',
             ],
         },
     },
@@ -62,8 +65,25 @@ export default defineConfig({
     },
     build: {
         target: 'esnext',
+        minify: 'oxc',
         cssMinify: 'lightningcss',
+        sourcemap: false,
         reportCompressedSize: false,
         chunkSizeWarningLimit: 1000,
+        rolldownOptions: {
+            treeshake: true,
+            output: {
+                comments: false,
+                minify: {
+                    compress: {
+                        dropDebugger: true,
+                        unused: true,
+                        joinVars: true,
+                        sequences: true,
+                    },
+                    mangle: true,
+                },
+            },
+        },
     },
 });
