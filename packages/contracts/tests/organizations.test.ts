@@ -134,16 +134,19 @@ describe('Organizations Contracts Validation', () => {
             'Код ошибки организации',
         );
         expect(organizationErrors.notFoundSchema?.description).toBe(
-            'Конверт ответа с ошибкой: организация не найдена',
+            'Ответ с ошибкой: организация не найдена',
         );
 
         const error = organizationErrors.createError('ORGANIZATION_NOT_FOUND');
-        expect(error.error.message).toBe(
+        expect(error.detail).toBe(
             ORGANIZATION_ERROR_MESSAGES.ORGANIZATION_NOT_FOUND,
         );
+        expect(error.code).toBe('ORGANIZATION_NOT_FOUND');
+        expect(error.status).toBe(404);
 
         const notFound = organizationErrors.createNotFound!();
-        expect(notFound.error.code).toBe('ORGANIZATION_NOT_FOUND');
+        expect(notFound.code).toBe('ORGANIZATION_NOT_FOUND');
+        expect(notFound.status).toBe(404);
     });
 
     test('takeOrganizationsEndpoint defines standard response codes and 501', () => {

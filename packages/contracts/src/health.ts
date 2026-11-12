@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import {
-    type ApiResponse,
     createDomainEndpoint,
     createDomainErrors,
     createDomainResponse,
@@ -41,7 +40,7 @@ export const healthDTOSchema = z
 export type HealthDTO = z.infer<typeof healthDTOSchema>;
 
 /**
- * Фабрика ошибок системных сервисов и инфраструктуры.
+ * Фабрика ошибок системных сервисов и инфраструктуры по стандарту RFC 9457.
  */
 export const healthErrors = createDomainErrors({
     domain: 'системных сервисов',
@@ -53,6 +52,12 @@ export const healthErrors = createDomainErrors({
         STORAGE_UNAVAILABLE:
             'Недоступно подключение к объектному хранилищу (S3).',
     } as const,
+    statuses: {
+        SERVICES_UNAVAILABLE: 503,
+        DATABASE_UNAVAILABLE: 503,
+        CACHE_UNAVAILABLE: 503,
+        STORAGE_UNAVAILABLE: 503,
+    },
 });
 
 export const healthErrorCodeSchema = healthErrors.codeSchema;
@@ -63,7 +68,7 @@ export type HealthErrorResponse = z.infer<typeof healthErrorResponseSchema>;
 export const createHealthErrorResponse = healthErrors.createError;
 
 /**
- * Конверт и конструктор успешного ответа проверки состояния сервиса.
+ * Конструктор успешного ответа проверки состояния сервиса (чистый HealthDTO).
  */
 export const healthResponse = createDomainResponse(
     healthDTOSchema,
@@ -71,8 +76,9 @@ export const healthResponse = createDomainResponse(
 );
 
 export const healthResponseSchema = healthResponse.schema;
-export type HealthResponse = ApiResponse<HealthDTO>;
+export type HealthResponse = HealthDTO;
 export const createHealthResponse = healthResponse.create;
+export const wrapHealthResponse = healthResponse.wrap;
 
 /**
  * Контракт маршрута GET /health (системный мониторинг и проверка доступности).

@@ -32,8 +32,9 @@ export const telegramAccountResponse = createDomainResponse(
 );
 
 export const telegramAccountResponseSchema = telegramAccountResponse.schema;
-export type TelegramAccountResponse = ApiResponse<TelegramAccountDto>;
+export type TelegramAccountResponse = TelegramAccountDto;
 export const createTelegramAccountResponse = telegramAccountResponse.create;
+export const wrapTelegramAccountResponse = telegramAccountResponse.wrap;
 
 export const deleteTelegramAccountResponse = createDomainResponse(
     deleteTelegramAccountDtoSchema,
@@ -42,10 +43,11 @@ export const deleteTelegramAccountResponse = createDomainResponse(
 
 export const deleteTelegramAccountResponseSchema =
     deleteTelegramAccountResponse.schema;
-export type DeleteTelegramAccountResponse =
-    ApiResponse<DeleteTelegramAccountDto>;
+export type DeleteTelegramAccountResponse = DeleteTelegramAccountDto;
 export const createDeleteTelegramAccountResponse =
     deleteTelegramAccountResponse.create;
+export const wrapDeleteTelegramAccountResponse =
+    deleteTelegramAccountResponse.wrap;
 
 export const syncTelegramAccountEndpoint = createDomainEndpoint({
     body: syncTelegramAccountDtoSchema,

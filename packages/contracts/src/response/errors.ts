@@ -31,12 +31,73 @@ export const COMMON_ERROR_MESSAGES: Record<CommonErrorCode, string> = {
     DATABASE_ERROR: 'Ошибка при взаимодействии с базой данных.',
 } as const;
 
+export const COMMON_ERROR_STATUSES: Record<CommonErrorCode, number> = {
+    BAD_REQUEST: 400,
+    VALIDATION_ERROR: 422,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    CONFLICT: 409,
+    INTERNAL_SERVER_ERROR: 500,
+    NOT_IMPLEMENTED: 501,
+    SERVICE_UNAVAILABLE: 503,
+    DATABASE_ERROR: 503,
+} as const;
+
+export const COMMON_ERROR_SLUGS: Record<CommonErrorCode, string> = {
+    BAD_REQUEST: 'bad-request',
+    VALIDATION_ERROR: 'validation-error',
+    UNAUTHORIZED: 'unauthorized',
+    FORBIDDEN: 'forbidden',
+    NOT_FOUND: 'not-found',
+    CONFLICT: 'conflict',
+    INTERNAL_SERVER_ERROR: 'internal-server-error',
+    NOT_IMPLEMENTED: 'not-implemented',
+    SERVICE_UNAVAILABLE: 'service-unavailable',
+    DATABASE_ERROR: 'database-error',
+} as const;
+
 export const defaultDetailsSchema = z
     .unknown()
     .describe('Дополнительные контекстные данные или детализация ошибки')
     .optional();
 
 export type DefaultDetailsSchema = typeof defaultDetailsSchema;
+
+/**
+ * Интерфейс документа ошибки по спецификации RFC 9457 Problem Details.
+ */
+export interface ProblemDetails<TCode extends string = CommonErrorCode> {
+    /** Каноничный URI спецификации типа проблемы */
+    type: string;
+    /** Краткое человекочитаемое название типа проблемы */
+    title: string;
+    /** HTTP статус-код ответа origin-сервера */
+    status: number;
+    /** Подробное объяснение конкретного случая возникновения проблемы */
+    detail: string;
+    /** URI ресурса или запроса, где возникла ошибка */
+    instance: string;
+    /** Машиночитаемый код ошибки платформы Insignia */
+    code: TCode;
+    /** Список нарушенных параметров запроса (для валидационных ошибок) */
+    invalidParams?: Array<{ name: string; reason: string }>;
+    /** Дополнительный контекст ошибки */
+    details?: unknown;
+}
+
+/** Алиас для совместимости с кодовой базой и SDK */
+export type ApiErrorResponse<TCode extends string = CommonErrorCode> =
+    ProblemDetails<TCode>;
+
+export type InvalidParamsSchema = z.ZodOptional<
+    z.ZodArray<
+        z.ZodObject<{
+            name: z.ZodString;
+            reason: z.ZodString;
+        }>
+    >
+>;
 
 export interface CreateApiErrorResponseSchemaOptions<
     TCode extends ZodType = typeof commonErrorCodeSchema,
@@ -46,6 +107,9 @@ export interface CreateApiErrorResponseSchemaOptions<
     codeSchema?: TCode;
     detailsSchema?: TDetails;
     messageSchema?: TMessage;
+    status?: number;
+    title?: string;
+    slug?: string;
     description?: string;
 }
 
@@ -56,12 +120,14 @@ export function createApiErrorResponseSchema<
 >(
     options: CreateApiErrorResponseSchemaOptions<TCode, TDetails, TMessage>,
 ): z.ZodObject<{
-    success: z.ZodLiteral<false>;
-    error: z.ZodObject<{
-        code: TCode;
-        message: TMessage;
-        details: TDetails;
-    }>;
+    type: z.ZodString;
+    title: z.ZodString;
+    status: z.ZodNumber;
+    detail: TMessage;
+    instance: z.ZodString;
+    code: TCode;
+    invalidParams: InvalidParamsSchema;
+    details: TDetails;
 }>;
 export function createApiErrorResponseSchema<
     TCode extends ZodType = typeof commonErrorCodeSchema,
@@ -69,12 +135,14 @@ export function createApiErrorResponseSchema<
     codeSchema: TCode,
     description: string,
 ): z.ZodObject<{
-    success: z.ZodLiteral<false>;
-    error: z.ZodObject<{
-        code: TCode;
-        message: z.ZodString;
-        details: DefaultDetailsSchema;
-    }>;
+    type: z.ZodString;
+    title: z.ZodString;
+    status: z.ZodNumber;
+    detail: z.ZodString;
+    instance: z.ZodString;
+    code: TCode;
+    invalidParams: InvalidParamsSchema;
+    details: DefaultDetailsSchema;
 }>;
 export function createApiErrorResponseSchema<
     TCode extends ZodType = typeof commonErrorCodeSchema,
@@ -84,12 +152,14 @@ export function createApiErrorResponseSchema<
     detailsSchema?: TDetails,
     description?: string,
 ): z.ZodObject<{
-    success: z.ZodLiteral<false>;
-    error: z.ZodObject<{
-        code: TCode;
-        message: z.ZodString;
-        details: TDetails;
-    }>;
+    type: z.ZodString;
+    title: z.ZodString;
+    status: z.ZodNumber;
+    detail: z.ZodString;
+    instance: z.ZodString;
+    code: TCode;
+    invalidParams: InvalidParamsSchema;
+    details: TDetails;
 }>;
 export function createApiErrorResponseSchema<
     TCode extends ZodType = typeof commonErrorCodeSchema,
@@ -101,12 +171,14 @@ export function createApiErrorResponseSchema<
     messageSchema?: TMessage,
     description?: string,
 ): z.ZodObject<{
-    success: z.ZodLiteral<false>;
-    error: z.ZodObject<{
-        code: TCode;
-        message: TMessage;
-        details: TDetails;
-    }>;
+    type: z.ZodString;
+    title: z.ZodString;
+    status: z.ZodNumber;
+    detail: TMessage;
+    instance: z.ZodString;
+    code: TCode;
+    invalidParams: InvalidParamsSchema;
+    details: TDetails;
 }>;
 export function createApiErrorResponseSchema(
     first?: unknown,
@@ -117,6 +189,9 @@ export function createApiErrorResponseSchema(
     let codeSchema: ZodType | undefined;
     let detailsSchema: ZodType | undefined;
     let messageSchema: ZodType | undefined;
+    let status = 500;
+    let title = 'Ошибка API';
+    let slug = 'error';
     let description: string | undefined;
 
     if (
@@ -130,6 +205,9 @@ export function createApiErrorResponseSchema(
         codeSchema = opts.codeSchema;
         detailsSchema = opts.detailsSchema;
         messageSchema = opts.messageSchema;
+        status = opts.status ?? 500;
+        title = opts.title ?? 'Ошибка API';
+        slug = opts.slug ?? 'error';
         description = opts.description;
     } else {
         codeSchema = first as ZodType | undefined;
@@ -176,18 +254,47 @@ export function createApiErrorResponseSchema(
         : z.string().describe('Понятное человеку описание причины ошибки');
 
     const resolvedDescription =
-        description ?? 'Стандартный конверт ответа API с ошибкой';
+        description ?? 'Стандартный ответ API с ошибкой';
 
     return z
         .object({
-            success: z.literal(false).describe('Флаг успешности ответа'),
-            error: z
-                .object({
-                    code: resolvedCode,
-                    message: resolvedMessage,
-                    details: resolvedDetails,
-                })
-                .describe('Объект с подробностями возникшей ошибки'),
+            type: z
+                .string()
+                .default(`/problems/${slug}`)
+                .describe('Каноничный URI документации типа проблемы'),
+            title: z
+                .string()
+                .default(title)
+                .describe('Краткое человекопонятное резюме типа проблемы'),
+            status: z
+                .number()
+                .int()
+                .default(status)
+                .describe('HTTP статус-код ответа сервера'),
+            detail: hasDescription(resolvedMessage)
+                ? resolvedMessage
+                : resolvedMessage.describe(
+                      'Подробное объяснение конкретного случая возникновения проблемы',
+                  ),
+            instance: z
+                .string()
+                .default('/')
+                .describe('URI ресурса или эндпоинта, где возникла ошибка'),
+            code: resolvedCode,
+            invalidParams: z
+                .array(
+                    z.object({
+                        name: z
+                            .string()
+                            .describe('Имя некорректного поля или параметра'),
+                        reason: z
+                            .string()
+                            .describe('Причина отклонения валидатором'),
+                    }),
+                )
+                .optional()
+                .describe('Список нарушенных параметров запроса'),
+            details: resolvedDetails,
         })
         .describe(resolvedDescription);
 }
@@ -203,11 +310,14 @@ const commonErrorMessageDescription = [
 
 export const apiErrorResponseSchema = createApiErrorResponseSchema({
     codeSchema: commonErrorCodeSchema,
+    status: 400,
+    title: COMMON_ERROR_MESSAGES.BAD_REQUEST,
+    slug: 'bad-request',
     messageSchema: z
         .string()
         .default(COMMON_ERROR_MESSAGES.BAD_REQUEST)
         .describe(commonErrorMessageDescription),
-    description: 'Стандартный конверт ответа API с ошибкой',
+    description: 'Стандартный ответ API с ошибкой',
 });
 
 /**
@@ -217,6 +327,9 @@ export const internalServerErrorResponseSchema = createApiErrorResponseSchema({
     codeSchema: z
         .literal('INTERNAL_SERVER_ERROR')
         .describe('Внутренняя непредвиденная ошибка сервера'),
+    status: 500,
+    title: COMMON_ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+    slug: 'internal-server-error',
     messageSchema: z
         .string()
         .default(COMMON_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
@@ -234,6 +347,9 @@ export const serviceUnavailableResponseSchema = createApiErrorResponseSchema({
     codeSchema: z
         .enum(['SERVICE_UNAVAILABLE', 'DATABASE_ERROR'])
         .describe('Код ошибки недоступности сервиса или базы данных'),
+    status: 503,
+    title: COMMON_ERROR_MESSAGES.SERVICE_UNAVAILABLE,
+    slug: 'service-unavailable',
     messageSchema: z
         .string()
         .default(COMMON_ERROR_MESSAGES.SERVICE_UNAVAILABLE)
@@ -261,6 +377,9 @@ export const notImplementedResponseSchema = createApiErrorResponseSchema({
     codeSchema: z
         .literal('NOT_IMPLEMENTED')
         .describe('Запрашиваемый функционал ещё не реализован'),
+    status: 501,
+    title: COMMON_ERROR_MESSAGES.NOT_IMPLEMENTED,
+    slug: 'not-implemented',
     messageSchema: z
         .string()
         .default(COMMON_ERROR_MESSAGES.NOT_IMPLEMENTED)
@@ -270,59 +389,116 @@ export const notImplementedResponseSchema = createApiErrorResponseSchema({
 
 export type NotImplementedResponse = ApiErrorResponse<'NOT_IMPLEMENTED'>;
 
-export type ApiErrorResponse<TCode extends string = CommonErrorCode> = {
-    success: false;
-    error: {
-        code: TCode;
-        message: string;
-        details?: unknown;
-    };
-};
-
+/**
+ * Создаёт ответ с ошибкой по стандарту RFC 9457 Problem Details.
+ */
 export const createErrorResponse = <TCode extends string = CommonErrorCode>(
     code: TCode,
-    message?: string,
+    detail?: string,
     details?: unknown,
+    options?: {
+        status?: number;
+        instance?: string;
+        title?: string;
+        slug?: string;
+        type?: string;
+        invalidParams?: Array<{ name: string; reason: string }>;
+    },
 ): ApiErrorResponse<TCode> => {
-    const resolveMessage =
-        message ??
+    const resolvedStatus =
+        options?.status ??
+        (code in COMMON_ERROR_STATUSES
+            ? COMMON_ERROR_STATUSES[code as CommonErrorCode]
+            : 500);
+
+    const resolvedSlug =
+        options?.slug ??
+        (code in COMMON_ERROR_SLUGS
+            ? COMMON_ERROR_SLUGS[code as CommonErrorCode]
+            : code.toLowerCase().replace(/_/g, '-'));
+
+    const resolvedTitle =
+        options?.title ??
         (code in COMMON_ERROR_MESSAGES
             ? COMMON_ERROR_MESSAGES[code as CommonErrorCode]
-            : `Ошибка: ${code}`);
+            : code);
+
+    const resolvedDetail = detail ?? resolvedTitle;
+    const resolvedType = options?.type ?? `/problems/${resolvedSlug}`;
+    const resolvedInstance = options?.instance ?? '/';
 
     return {
-        success: false,
-        error: {
-            code,
-            message: resolveMessage,
-            ...(details !== undefined ? { details } : {}),
-        },
+        type: resolvedType,
+        title: resolvedTitle,
+        status: resolvedStatus,
+        detail: resolvedDetail,
+        instance: resolvedInstance,
+        code,
+        ...(options?.invalidParams
+            ? { invalidParams: options.invalidParams }
+            : {}),
+        ...(details !== undefined ? { details } : {}),
     };
 };
 
+export const createProblemResponse = createErrorResponse;
+
 export const createErrorFactory = <TCode extends string>(
-    messages: Record<TCode, string>,
+    messages: Readonly<Record<TCode, string>> | Record<TCode, string>,
+    defaults?: {
+        statuses?: Partial<Record<TCode, number>>;
+        notFoundCode?: TCode;
+    },
 ) => {
-    return <T extends TCode | CommonErrorCode>(
+    return <T extends TCode>(
         code: T,
-        message?: string,
+        detail?: string,
         details?: unknown,
+        options?: {
+            instance?: string;
+            status?: number;
+            title?: string;
+            slug?: string;
+            type?: string;
+            invalidParams?: Array<{ name: string; reason: string }>;
+        },
     ): ApiErrorResponse<T> => {
-        const resolveMessage =
-            message ??
+        const resolvedTitle =
+            options?.title ??
             (code in messages
                 ? messages[code as TCode]
                 : code in COMMON_ERROR_MESSAGES
                   ? COMMON_ERROR_MESSAGES[code as CommonErrorCode]
                   : `Ошибка: ${code}`);
 
+        const resolvedStatus =
+            options?.status ??
+            (defaults?.statuses && (code as TCode) in defaults.statuses
+                ? defaults.statuses[code as TCode]!
+                : undefined) ??
+            (code === defaults?.notFoundCode ? 404 : undefined) ??
+            (code in COMMON_ERROR_STATUSES
+                ? COMMON_ERROR_STATUSES[code as CommonErrorCode]
+                : 500);
+
+        const resolvedSlug =
+            code in COMMON_ERROR_SLUGS
+                ? COMMON_ERROR_SLUGS[code as CommonErrorCode]
+                : code.toLowerCase().replace(/_/g, '-');
+
+        const resolvedDetail = detail ?? resolvedTitle;
+
         return {
-            success: false,
-            error: {
-                code,
-                message: resolveMessage,
-                ...(details !== undefined ? { details } : {}),
-            },
+            type: options?.type ?? `/problems/${resolvedSlug}`,
+            title: resolvedTitle,
+            status: resolvedStatus,
+            detail: resolvedDetail,
+            instance: options?.instance ?? '/',
+            code,
+            ...(options?.invalidParams
+                ? { invalidParams: options.invalidParams }
+                : {}),
+            ...(details !== undefined ? { details } : {}),
         };
     };
 };

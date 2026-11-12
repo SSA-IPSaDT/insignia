@@ -5,7 +5,7 @@ import { createDomainErrors } from '../response';
 export const organizationErrors = createDomainErrors({
     domain: 'организации',
     notFoundCode: 'ORGANIZATION_NOT_FOUND',
-    notFoundDescription: 'Конверт ответа с ошибкой: организация не найдена',
+    notFoundDescription: 'Ответ с ошибкой: организация не найдена',
     messages: {
         ORGANIZATION_NOT_FOUND: 'Организация не найдена.',
         ORGANIZATION_ALREADY_EXISTS:
@@ -18,6 +18,14 @@ export const organizationErrors = createDomainErrors({
         ORGANIZATION_FORBIDDEN:
             'Недостаточно прав для управления этой организацией.',
     } as const,
+    statuses: {
+        ORGANIZATION_NOT_FOUND: 404,
+        ORGANIZATION_ALREADY_EXISTS: 409,
+        ORGANIZATION_SLUG_TAKEN: 409,
+        ORGANIZATION_LIMIT_REACHED: 400,
+        ORGANIZATION_SUSPENDED: 403,
+        ORGANIZATION_FORBIDDEN: 403,
+    },
 });
 
 export type OrganizationErrorCode = z.infer<
@@ -42,5 +50,6 @@ export const createOrganizationNotFoundErrorResponse =
 export const organizationAlreadyExistsErrorSchema =
     organizationErrors.createSpecificErrorSchema(
         'ORGANIZATION_ALREADY_EXISTS',
-        'Конверт ответа с ошибкой: организация с таким именем уже существует',
+        'Ответ с ошибкой: организация с таким именем уже существует',
+        409,
     );
