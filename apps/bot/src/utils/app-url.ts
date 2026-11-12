@@ -37,3 +37,11 @@ export const resolveAppUrl = (rawUrl: string = env.PUBLIC_APP_URL): string => {
 export const resolveApiUrl = (rawUrl: string = env.PUBLIC_API_URL): string => {
     return resolveNetworkUrl(rawUrl);
 };
+
+export const isWebAppUrl = (rawUrl: string): boolean => {
+    try {
+        return new URL(rawUrl).protocol === 'https:';
+    } catch {
+        return false;
+    }
+};

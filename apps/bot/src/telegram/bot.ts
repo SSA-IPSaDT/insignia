@@ -1,4 +1,4 @@
-import { conversations } from '@grammyjs/conversations';
+import { conversations, createConversation } from '@grammyjs/conversations';
 import { hydrate } from '@grammyjs/hydrate';
 import { limit } from '@grammyjs/ratelimiter';
 import { apiThrottler } from '@grammyjs/transformer-throttler';
@@ -7,11 +7,20 @@ import { type AnyElysia, Elysia } from 'elysia';
 import { Bot, session, webhookCallback } from 'grammy';
 
 import { loadCachedBotInfoSync, saveCachedBotInfoSync } from '#telegram/cache';
-import type { BotContext, SessionData } from '#telegram/context';
+import type {
+    BotContext,
+    ConversationContext,
+    SessionData,
+} from '#telegram/context';
 import { initialSessionData } from '#telegram/context';
+import {
+    PROFILE_CONVERSATION_ID,
+    profileConversation,
+} from '#telegram/conversations';
 import commands, { setTelegramCommands } from '#telegram/handlers';
+import callbacksHandle from '#telegram/handlers/callbacks.handle';
 import { autoChatAction } from '#telegram/plugins';
-import { resolveAppUrl } from '#utils/app-url';
+import { isWebAppUrl, resolveAppUrl } from '#utils/app-url';
 import { logger } from '#utils/logger';
 
 export const createTelegramBot = (): Bot<BotContext> => {
@@ -61,7 +70,29 @@ export const createTelegramBot = (): Bot<BotContext> => {
         }),
     );
 
+    // Debug-трейс входящих апдейтов: без него живой прогон в Telegram
+    // невозможно сопоставить с логами сервиса.
+    bot.use(async (ctx, next) => {
+        if (ctx.callbackQuery?.data !== undefined) {
+            logger.debug(`callback: ${ctx.callbackQuery.data}`);
+        } else if (ctx.message?.text !== undefined) {
+            logger.debug(
+                `message: ${ctx.message.text.slice(0, 80)}${ctx.message.text.length > 80 ? '…' : ''}`,
+            );
+        }
+
+        await next();
+    });
+
+    bot.use(
+        createConversation<BotContext, ConversationContext>(
+            profileConversation,
+            { id: PROFILE_CONVERSATION_ID },
+        ),
+    );
+
     bot.use(commands);
+    bot.on('callback_query:data', callbacksHandle);
 
     bot.catch((err) => {
         logger.error('Ошибка в обработке обновления Telegram:', err.error);
@@ -112,21 +143,30 @@ export const startTelegramBot = async (bot: Bot<BotContext>): Promise<void> => {
     await setTelegramCommands(bot);
 
     const appUrl = resolveAppUrl();
-    try {
-        await bot.api.setChatMenuButton({
-            menu_button: {
-                type: 'web_app',
-                text: 'Открыть App',
-                web_app: {
-                    url: appUrl,
-                },
-            },
-        });
+
+    // Telegram принимает Web App-кнопку только по HTTPS. Локальный HTTP-адрес
+    // заведомо отклонится, поэтому не шумим в логах.
+    if (!isWebAppUrl(appUrl)) {
         logger.info(
-            `Telegram chat menu button synchronized with URL: ${appUrl} [${dcLabel}]`,
+            `Skipping Telegram chat menu button: ${appUrl} is not HTTPS (локальный режим) [${dcLabel}]`,
         );
-    } catch (error) {
-        logger.warn('Failed to sync Telegram chat menu button', error);
+    } else {
+        try {
+            await bot.api.setChatMenuButton({
+                menu_button: {
+                    type: 'web_app',
+                    text: 'Открыть App',
+                    web_app: {
+                        url: appUrl,
+                    },
+                },
+            });
+            logger.info(
+                `Telegram chat menu button synchronized with URL: ${appUrl} [${dcLabel}]`,
+            );
+        } catch (error) {
+            logger.warn('Failed to sync Telegram chat menu button', error);
+        }
     }
 
     if (env.BOT_WEBHOOK_ENABLED) {
