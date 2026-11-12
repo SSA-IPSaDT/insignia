@@ -18,29 +18,21 @@ export const telegram = new Elysia({
 })
     .post(
         '/sync',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         syncTelegramAccountEndpoint,
     )
     .get(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         takeTelegramAccountByIdEndpoint,
     )
     .patch(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         updateTelegramAccountEndpoint,
     )
     .delete(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         deleteTelegramAccountEndpoint,
     );

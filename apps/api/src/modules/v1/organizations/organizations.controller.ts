@@ -19,36 +19,26 @@ export const organizations = new Elysia({
 })
     .get(
         '',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         takeOrganizationsEndpoint,
     )
     .post(
         '',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         createOrganizationEndpoint,
     )
     .get(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         takeOrganizationByIdEndpoint,
     )
     .patch(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         updateOrganizationEndpoint,
     )
     .delete(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         deleteOrganizationEndpoint,
     );

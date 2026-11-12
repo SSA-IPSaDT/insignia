@@ -1,14 +1,14 @@
 import { createErrorResponse } from '@insignia/contracts/response';
 import {
-    createPaginatedPublicUsersResponse,
-    createPublicUserResponse,
     createUserNotFoundErrorResponse,
-    createUserProfileResponse,
     deleteUserEndpoint,
     takeMeEndpoint,
     takeUserByIdEndpoint,
     takeUsersEndpoint,
     updateUserEndpoint,
+    wrapPaginatedPublicUsersResponse,
+    wrapPublicUserResponse,
+    wrapUserProfileResponse,
 } from '@insignia/contracts/users';
 import Elysia from 'elysia';
 
@@ -26,36 +26,42 @@ export const users = new Elysia({
     .use(accounts)
     .get(
         '/me',
-        async ({ headers, status }) => {
+        async ({ headers }) => {
             const userId =
                 headers['x-user-id'] ||
                 headers['insignia-signet'] ||
                 headers['authorization']?.replace(/^Bearer\s+/i, '');
 
             if (!userId) {
-                return status(404, createUserNotFoundErrorResponse());
+                return createUserNotFoundErrorResponse(
+                    'Пользователь не найден.',
+                );
             }
 
             const user = await usersService.takeMeById(userId);
 
             if (!user) {
-                return status(404, createUserNotFoundErrorResponse());
+                return createUserNotFoundErrorResponse(
+                    'Пользователь не найден.',
+                );
             }
 
-            return createUserProfileResponse(user);
+            return wrapUserProfileResponse(user);
         },
         takeMeEndpoint,
     )
     .get(
         '/:id',
-        async ({ params: { id }, status }) => {
+        async ({ params: { id } }) => {
             const user = await usersService.takePublicUserById(id);
 
             if (!user) {
-                return status(404, createUserNotFoundErrorResponse());
+                return createUserNotFoundErrorResponse(
+                    'Пользователь не найден.',
+                );
             }
 
-            return createPublicUserResponse(user);
+            return wrapPublicUserResponse(user);
         },
         takeUserByIdEndpoint,
     )
@@ -63,7 +69,7 @@ export const users = new Elysia({
         '',
         async ({ query }) => {
             const { items, total } = await usersService.takeUsers(query);
-            return createPaginatedPublicUsersResponse({
+            return wrapPaginatedPublicUsersResponse({
                 items,
                 total,
                 page: query.page,
@@ -74,15 +80,11 @@ export const users = new Elysia({
     )
     .patch(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         updateUserEndpoint,
     )
     .delete(
         '/:id',
-        async ({ status }) => {
-            return status(501, createErrorResponse('NOT_IMPLEMENTED'));
-        },
+        () => createErrorResponse('NOT_IMPLEMENTED'),
         deleteUserEndpoint,
     );
