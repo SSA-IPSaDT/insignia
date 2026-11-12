@@ -5,6 +5,7 @@ import {
     DEFAULT_INVALID_FIELD_MESSAGE,
     DEFAULT_VALIDATION_ERROR_MESSAGE,
 } from '@insignia/contracts/response';
+import env from '@insignia/env';
 import Elysia from 'elysia';
 
 interface ValidationErrorLike {
@@ -71,27 +72,99 @@ const extractValidationFields = (
     return fields;
 };
 
+const isProblemDetails = (val: unknown): val is Record<string, unknown> =>
+    typeof val === 'object' &&
+    val !== null &&
+    !(val instanceof Response) &&
+    'type' in val &&
+    'status' in val &&
+    typeof (val as { status: unknown }).status === 'number' &&
+    (val as { status: number }).status >= 400;
+
+const formatProblemType = (type: unknown): string => {
+    if (typeof type !== 'string') {
+        return `${env.PUBLIC_API_URL.replace(/\/+$/, '')}/problems/not-found`;
+    }
+    if (type.startsWith('http://') || type.startsWith('https://')) {
+        return type;
+    }
+    const cleanSlug = type.replace(/^\/?(problems\/)?/, '');
+    const baseUrl = env.PUBLIC_API_URL.replace(/\/+$/, '');
+    return `${baseUrl}/problems/${cleanSlug}`;
+};
+
 export const errorPlugin = new Elysia({ name: 'error-handler' })
-    .onError(({ code, error, set }) => {
+    .onAfterHandle(({ response, set, path }) => {
+        if (isProblemDetails(response)) {
+            set.status = response.status as number;
+            set.headers['content-type'] =
+                'application/problem+json; charset=utf-8';
+            if (!response.instance || response.instance === '/') {
+                response.instance = path;
+            }
+            response.type = formatProblemType(response.type);
+            return;
+        }
+
+        if (
+            typeof response === 'object' &&
+            response !== null &&
+            'response' in response &&
+            isProblemDetails((response as { response: unknown }).response)
+        ) {
+            const inner = (response as { response: Record<string, unknown> })
+                .response;
+            set.headers['content-type'] =
+                'application/problem+json; charset=utf-8';
+            if (!inner.instance || inner.instance === '/') {
+                inner.instance = path;
+            }
+            inner.type = formatProblemType(inner.type);
+        }
+    })
+    .onError(({ code, error, set, path, request }) => {
+        set.headers['content-type'] = 'application/problem+json; charset=utf-8';
+        const instance =
+            path || (request ? new URL(request.url).pathname : '/');
+
+        const finalizeError = <T extends { type: string }>(problem: T): T => {
+            problem.type = formatProblemType(problem.type);
+            return problem;
+        };
+
         if (code === 'VALIDATION') {
             set.status = 422;
             const fields = extractValidationFields(error);
-            return createValidationErrorResponse(fields);
+            return finalizeError(
+                createValidationErrorResponse(
+                    fields,
+                    DEFAULT_VALIDATION_ERROR_MESSAGE,
+                    { instance },
+                ),
+            );
         }
 
         if (code === 'NOT_FOUND') {
             set.status = 404;
-            return createErrorResponse(
-                'NOT_FOUND',
-                COMMON_ERROR_MESSAGES.NOT_FOUND,
+            return finalizeError(
+                createErrorResponse(
+                    'NOT_FOUND',
+                    COMMON_ERROR_MESSAGES.NOT_FOUND,
+                    undefined,
+                    { instance, status: 404 },
+                ),
             );
         }
 
         if (code === 'PARSE') {
             set.status = 400;
-            return createErrorResponse(
-                'BAD_REQUEST',
-                COMMON_ERROR_MESSAGES.BAD_REQUEST,
+            return finalizeError(
+                createErrorResponse(
+                    'BAD_REQUEST',
+                    COMMON_ERROR_MESSAGES.BAD_REQUEST,
+                    undefined,
+                    { instance, status: 400 },
+                ),
             );
         }
 
@@ -112,16 +185,24 @@ export const errorPlugin = new Elysia({ name: 'error-handler' })
 
         if (isDatabaseError) {
             set.status = 503;
-            return createErrorResponse(
-                'SERVICE_UNAVAILABLE',
-                COMMON_ERROR_MESSAGES.SERVICE_UNAVAILABLE,
+            return finalizeError(
+                createErrorResponse(
+                    'SERVICE_UNAVAILABLE',
+                    COMMON_ERROR_MESSAGES.SERVICE_UNAVAILABLE,
+                    undefined,
+                    { instance, status: 503 },
+                ),
             );
         }
 
         if (set.status === 501) {
-            return createErrorResponse(
-                'NOT_IMPLEMENTED',
-                COMMON_ERROR_MESSAGES.NOT_IMPLEMENTED,
+            return finalizeError(
+                createErrorResponse(
+                    'NOT_IMPLEMENTED',
+                    COMMON_ERROR_MESSAGES.NOT_IMPLEMENTED,
+                    undefined,
+                    { instance, status: 501 },
+                ),
             );
         }
 
@@ -130,9 +211,13 @@ export const errorPlugin = new Elysia({ name: 'error-handler' })
             typeof set.status === 'number' && set.status >= 400
                 ? set.status
                 : 500;
-        return createErrorResponse(
-            'INTERNAL_SERVER_ERROR',
-            COMMON_ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        return finalizeError(
+            createErrorResponse(
+                'INTERNAL_SERVER_ERROR',
+                COMMON_ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+                undefined,
+                { instance, status: set.status },
+            ),
         );
     })
     .as('global');
