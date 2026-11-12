@@ -1,0 +1,148 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1f2328;
+    --text-muted: #656d76;
+    --border-color: #d0d7de;
+    --link-color: #0969da;
+    --code-bg: #f6f8fa;
+    --font-sans:
+        -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+        sans-serif;
+    --font-mono:
+        ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0d1117;
+        --text-color: #e6edf3;
+        --text-muted: #848d97;
+        --border-color: #30363d;
+        --link-color: #4493f8;
+        --code-bg: #161b22;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 16px;
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header,
+footer {
+    margin-bottom: 2rem;
+}
+
+footer {
+    margin-top: 3rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 1.5rem 0;
+}
+
+h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+}
+
+h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul,
+ol {
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+code,
+pre {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+}
+
+code {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.15rem 0.35rem;
+}
+
+pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.problems-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.problem-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.problem-item:last-child {
+    border-bottom: none;
+}
