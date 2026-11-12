@@ -1,8 +1,4 @@
-import type {
-    ApiResponse,
-    PaginatedApiResponse,
-    PaginatedData,
-} from '@insignia/contracts/common';
+import type { PaginatedData } from '@insignia/contracts/common';
 import type {
     PublicUserDto,
     TakeUsersQuery,
@@ -25,7 +21,7 @@ export class UsersModule extends BaseModule {
         InsigniaSdkResult<UserDto, UserErrorCode>
     > => {
         return this.execute<UserDto, UserErrorCode>(() =>
-            this.http.get('v1/users/me').json<ApiResponse<UserDto>>(),
+            this.http.get('v1/users/me').json<UserDto>(),
         );
     };
 
@@ -41,7 +37,7 @@ export class UsersModule extends BaseModule {
         id: string,
     ): Promise<InsigniaSdkResult<PublicUserDto, UserErrorCode>> => {
         return this.execute<PublicUserDto, UserErrorCode>(() =>
-            this.http.get(`v1/users/${id}`).json<ApiResponse<PublicUserDto>>(),
+            this.http.get(`v1/users/${id}`).json<PublicUserDto>(),
         );
     };
 
@@ -58,7 +54,7 @@ export class UsersModule extends BaseModule {
                 .get('v1/users', {
                     searchParams: this.toSearchParams(query),
                 })
-                .json<PaginatedApiResponse<PublicUserDto>>(),
+                .json<PaginatedData<PublicUserDto>>(),
         );
     };
 

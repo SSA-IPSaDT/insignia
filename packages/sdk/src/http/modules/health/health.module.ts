@@ -1,4 +1,3 @@
-import type { ApiResponse } from '@insignia/contracts/common';
 import type { HealthDTO, HealthErrorCode } from '@insignia/contracts/health';
 
 import type { InsigniaSdkResult } from '#errors';
@@ -13,7 +12,7 @@ export class HealthModule extends BaseModule {
         InsigniaSdkResult<HealthDTO, HealthErrorCode>
     > => {
         return this.execute<HealthDTO, HealthErrorCode>(async () => {
-            return await this.http.get('health').json<ApiResponse<HealthDTO>>();
+            return await this.http.get('health').json<HealthDTO>();
         });
     };
 }

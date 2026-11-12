@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import type {
     ApiErrorResponse,
     ApiResponse,
-    PaginatedApiResponse,
+    PaginatedData,
 } from '@insignia/contracts/common';
 import type { PublicUserDto, UserDto } from '@insignia/contracts/users';
 import { Temporal } from 'temporal-polyfill';
@@ -36,15 +36,10 @@ describe('SDK UsersModule (Result Pattern & Cursor Paginator)', () => {
     };
 
     test('takeMe returns UserDto on 200', async () => {
-        const mockResponse: ApiResponse<UserDto> = {
-            success: true,
-            data: mockMeUser,
-        };
-
         let capturedUrl = '';
         const mockFetch = (async (input: RequestInfo | URL) => {
             capturedUrl = input instanceof Request ? input.url : String(input);
-            return new Response(JSON.stringify(mockResponse), {
+            return new Response(JSON.stringify(mockMeUser), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -73,15 +68,10 @@ describe('SDK UsersModule (Result Pattern & Cursor Paginator)', () => {
     });
 
     test('takeUserById returns PublicUserDto on 200', async () => {
-        const mockResponse: ApiResponse<PublicUserDto> = {
-            success: true,
-            data: mockUser,
-        };
-
         let capturedUrl = '';
         const mockFetch = (async (input: RequestInfo | URL) => {
             capturedUrl = input instanceof Request ? input.url : String(input);
-            return new Response(JSON.stringify(mockResponse), {
+            return new Response(JSON.stringify(mockUser), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -106,17 +96,18 @@ describe('SDK UsersModule (Result Pattern & Cursor Paginator)', () => {
 
     test('takeUserById returns SdkApiError on 404 NOT_FOUND', async () => {
         const mockErrorResponse: ApiErrorResponse<'USER_NOT_FOUND'> = {
-            success: false,
-            error: {
-                code: 'USER_NOT_FOUND',
-                message: 'Пользователь не найден.',
-            },
+            type: '/problems/user-not-found',
+            title: 'Пользователь не найден.',
+            status: 404,
+            detail: 'Пользователь не найден.',
+            instance: `/v1/users/non-existent-id`,
+            code: 'USER_NOT_FOUND',
         };
 
         const mockFetch = (async () => {
             return new Response(JSON.stringify(mockErrorResponse), {
                 status: 404,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/problem+json' },
             });
         }) as unknown as typeof fetch;
 
@@ -137,18 +128,15 @@ describe('SDK UsersModule (Result Pattern & Cursor Paginator)', () => {
     });
 
     test('takeUsers serializes searchParams and returns PaginatedData', async () => {
-        const mockResponse: PaginatedApiResponse<PublicUserDto> = {
-            success: true,
-            data: {
-                items: [mockUser],
-                meta: {
-                    page: 2,
-                    limit: 10,
-                    total: 25,
-                    totalPages: 3,
-                    hasNextPage: true,
-                    hasPrevPage: true,
-                },
+        const mockResponse: PaginatedData<PublicUserDto> = {
+            items: [mockUser],
+            meta: {
+                page: 2,
+                limit: 10,
+                total: 25,
+                totalPages: 3,
+                hasNextPage: true,
+                hasPrevPage: true,
             },
         };
 
@@ -201,18 +189,15 @@ describe('SDK UsersModule (Result Pattern & Cursor Paginator)', () => {
             const limit = Number(url.searchParams.get('limit') ?? 10);
             requestedPages.push(page);
 
-            const mockResponse: PaginatedApiResponse<PublicUserDto> = {
-                success: true,
-                data: {
-                    items: [{ ...mockUser, id: `user-${page}` }],
-                    meta: {
-                        page,
-                        limit,
-                        total: 30,
-                        totalPages: 3,
-                        hasNextPage: page < 3,
-                        hasPrevPage: page > 1,
-                    },
+            const mockResponse: PaginatedData<PublicUserDto> = {
+                items: [{ ...mockUser, id: `user-${page}` }],
+                meta: {
+                    page,
+                    limit,
+                    total: 30,
+                    totalPages: 3,
+                    hasNextPage: page < 3,
+                    hasPrevPage: page > 1,
                 },
             };
 

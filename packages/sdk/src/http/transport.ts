@@ -1,4 +1,7 @@
-import type { ApiErrorResponse } from '@insignia/contracts';
+import type {
+    CommonErrorCode,
+    ProblemDetails,
+} from '@insignia/contracts/common';
 import ky, { isHTTPError, type KyInstance } from 'ky';
 
 import { InsigniaApiError } from '#errors';
@@ -40,19 +43,22 @@ export const createHttpTransport = (
                     if (isHTTPError(error)) {
                         const { response } = error;
                         const payload = error.data as
-                            ApiErrorResponse | undefined;
+                            ProblemDetails | undefined;
 
                         if (
                             payload &&
                             typeof payload === 'object' &&
-                            payload.success === false &&
-                            payload.error
+                            (payload.type || payload.code || payload.title)
                         ) {
                             return new InsigniaApiError(
                                 response.status,
-                                payload.error.code,
-                                payload.error.message,
-                                payload.error.details,
+                                (payload.code ??
+                                    'UNKNOWN_ERROR') as CommonErrorCode,
+                                payload.detail ||
+                                    payload.title ||
+                                    `HTTP error ${response.status}`,
+                                payload.invalidParams ?? payload.details,
+                                payload,
                                 error,
                             );
                         }
