@@ -1,8 +1,28 @@
+<div align="center">
+
 # Insignia
 
-> **Insignia** — интерактивная омниканальная платформа для создания и прохождения динамических форм, опросов и пользовательских сценариев прямо внутри привычных мессенджеров (Telegram, в перспективе VK и MAX).
+> **Интерактивная омниканальная платформа для создания и прохождения динамических форм, опросов и пользовательских сценариев прямо внутри привычных мессенджеров (Telegram, в перспективе VK и MAX).**
+
+<p align="center">
+  <a href="https://github.com/SSA-IPSaDT/insignia/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SSA-IPSaDT/insignia/ci.yml?branch=main&style=flat-square&logo=github&label=CI%20Pipeline" alt="CI Pipeline" />
+  </a>
+  <a href="https://github.com/SSA-IPSaDT/insignia/pulls">
+    <img src="https://img.shields.io/github/issues-pr/SSA-IPSaDT/insignia?style=flat-square&color=blueviolet&logo=git&label=PRs" alt="Pull Requests" />
+  </a>
+  <a href="https://github.com/SSA-IPSaDT/insignia/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/SSA-IPSaDT/insignia?style=flat-square&color=orange&logo=github&label=Contributors" alt="Contributors" />
+  </a>
+  <a href="https://github.com/SSA-IPSaDT/insignia/commits/main">
+    <img src="https://img.shields.io/github/last-commit/SSA-IPSaDT/insignia?style=flat-square&color=blue&label=Updated" alt="Last Commit" />
+  </a>
+  <img src="https://img.shields.io/badge/License-UNLICENSED-lightgrey?style=flat-square" alt="License" />
+</p>
 
 Платформа соединяет нативные интерфейсы мессенджеров, легковесные кроссплатформенные приложения (Mini Apps / PWA) и производительный серверный бэкенд в единую среду с нулевым трением для конечного пользователя.
+
+</div>
 
 ---
 
@@ -155,6 +175,57 @@ Insignia построена как высокопроизводительный 
 - 📐 **[Архитектурные решения (ADR)](docs/adr/)** — принятые архитектурные решения и проектный контекст.
 - 📑 **[Интерактивная документация API (Scalar)](http://localhost:51000/docs)** — спецификация REST API и схем данных _(скоро появится, в разработке)_.
 - 🔍 **[Каталог спецификаций ошибок RFC 9457](http://localhost:51000/problems)** — каноничный реестр кодов и типов проблем платформы _(скоро появится, в разработке)_.
+
+---
+
+## 👥 Команда проекта (Team & Contributors)
+
+Платформа разрабатывается и сопровождается постоянным составом авторов согласно [реестру ответственности (ROSTER.md)](ROSTER.md):
+
+<table align="center">
+  <tr>
+    <td align="center" width="33%">
+      <a href="https://github.com/naylour">
+        <img src="https://github.com/naylour.png?size=96" width="96px;" style="border-radius:50%" alt="naylour"/><br />
+        <sub><b>naylour</b></sub>
+      </a><br />
+      <sub><b>Lead Architect / Core Maintainer</b></sub><br />
+      <small>Архитектура монорепозитория, бэкенд (apps/api), инфраструктура</small>
+    </td>
+    <td align="center" width="33%">
+      <a href="https://github.com/segn1s">
+        <img src="https://github.com/segn1s.png?size=96" width="96px;" style="border-radius:50%" alt="segn1s"/><br />
+        <sub><b>segn1s</b></sub>
+      </a><br />
+      <sub><b>Bot Service Contributor</b></sub><br />
+      <small>Сценарии и интеграции Telegram-бота (apps/bot)</small>
+    </td>
+    <td align="center" width="33%">
+      <a href="https://github.com/sasadobryi12-code">
+        <img src="https://github.com/sasadobryi12-code.png?size=96" width="96px;" style="border-radius:50%" alt="sasadobryi12-code"/><br />
+        <sub><b>sasadobryi12-code</b></sub>
+      </a><br />
+      <sub><b>App Service Contributor</b></sub><br />
+      <small>Клиентское приложение и Mini App (apps/app)</small>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🛠 Технологический стек (Tech Stack)
+
+<p align="center">
+  <a href="https://bun.sh/"><img src="https://img.shields.io/badge/Bun-1.2+-000000?style=flat-square&logo=bun&logoColor=white" alt="Bun" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://svelte.dev/"><img src="https://img.shields.io/badge/Svelte-5%20(Runes)-FF3E00?style=flat-square&logo=svelte&logoColor=white" alt="Svelte 5" /></a>
+  <a href="https://elysiajs.com/"><img src="https://img.shields.io/badge/Elysia.js-000000?style=flat-square&logo=elysia&logoColor=white" alt="Elysia" /></a>
+  <a href="https://www.prisma.io/"><img src="https://img.shields.io/badge/Prisma-8%20ORM-2D3748?style=flat-square&logo=prisma&logoColor=white" alt="Prisma" /></a>
+  <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/PostgreSQL-18-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" /></a>
+  <a href="https://zod.dev/"><img src="https://img.shields.io/badge/Zod-v3-3E67B1?style=flat-square&logo=zod&logoColor=white" alt="Zod" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" /></a>
+  <a href="https://moonrepo.dev/"><img src="https://img.shields.io/badge/Moonrepo-Workspace-FF0055?style=flat-square&logo=moon&logoColor=white" alt="Moonrepo" /></a>
+</p>
 
 ---
 
