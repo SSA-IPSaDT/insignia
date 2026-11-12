@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 import {
-    type ApiResponse,
     createDomainEndpoint,
     createDomainPaginatedResponse,
     createDomainResponse,
     type PaginatedApiResponse,
+    type PaginatedData,
     paginationQuerySchema,
 } from '../response';
 import { organizationBaseSchema, organizationStatusSchema } from './base';
@@ -58,8 +58,9 @@ export const organizationResponse = createDomainResponse(
 );
 
 export const organizationResponseSchema = organizationResponse.schema;
-export type OrganizationResponse = ApiResponse<OrganizationDto>;
+export type OrganizationResponse = OrganizationDto;
 export const createOrganizationResponse = organizationResponse.create;
+export const wrapOrganizationResponse = organizationResponse.wrap;
 
 export const paginatedOrganizationsResponse = createDomainPaginatedResponse(
     publicOrganizationDtoSchema,
@@ -69,9 +70,11 @@ export const paginatedOrganizationsResponse = createDomainPaginatedResponse(
 export const paginatedOrganizationsResponseSchema =
     paginatedOrganizationsResponse.schema;
 export type PaginatedOrganizationsResponse =
-    PaginatedApiResponse<PublicOrganizationDto>;
+    PaginatedData<PublicOrganizationDto>;
 export const createPaginatedOrganizationsResponse =
     paginatedOrganizationsResponse.create;
+export const wrapPaginatedOrganizationsResponse =
+    paginatedOrganizationsResponse.wrap;
 
 export const deleteOrganizationResponse = createDomainResponse(
     deleteOrganizationDtoSchema,
@@ -80,9 +83,10 @@ export const deleteOrganizationResponse = createDomainResponse(
 
 export const deleteOrganizationResponseSchema =
     deleteOrganizationResponse.schema;
-export type DeleteOrganizationResponse = ApiResponse<DeleteOrganizationDto>;
+export type DeleteOrganizationResponse = DeleteOrganizationDto;
 export const createDeleteOrganizationResponse =
     deleteOrganizationResponse.create;
+export const wrapDeleteOrganizationResponse = deleteOrganizationResponse.wrap;
 
 export const takeOrganizationsEndpoint = createDomainEndpoint({
     query: takeOrganizationsQuerySchema,

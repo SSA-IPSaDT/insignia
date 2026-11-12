@@ -14,8 +14,8 @@ describe('Organizations API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 
     it('POST /v1/organizations returns 501 NOT_IMPLEMENTED', async () => {
@@ -31,8 +31,8 @@ describe('Organizations API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 
     it('GET /v1/organizations/:id returns 501 NOT_IMPLEMENTED', async () => {
@@ -42,8 +42,8 @@ describe('Organizations API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 
     it('PATCH /v1/organizations/:id returns 501 NOT_IMPLEMENTED', async () => {
@@ -59,8 +59,8 @@ describe('Organizations API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 
     it('DELETE /v1/organizations/:id returns 501 NOT_IMPLEMENTED', async () => {
@@ -72,7 +72,7 @@ describe('Organizations API Endpoints', () => {
 
         expect(response.status).toBe(501);
         const body = notImplementedResponseSchema.parse(await response.json());
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('NOT_IMPLEMENTED');
+        expect(body.code).toBe('NOT_IMPLEMENTED');
+        expect(body.status).toBe(501);
     });
 });

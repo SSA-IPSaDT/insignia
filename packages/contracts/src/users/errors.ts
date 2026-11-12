@@ -5,7 +5,7 @@ import { createDomainErrors } from '../response';
 export const userErrors = createDomainErrors({
     domain: 'пользователя',
     notFoundCode: 'USER_NOT_FOUND',
-    notFoundDescription: 'Конверт ответа с ошибкой: пользователь не найден',
+    notFoundDescription: 'Ответ с ошибкой: пользователь не найден',
     messages: {
         USER_NOT_FOUND: 'Пользователь не найден.',
         USER_ALREADY_EXISTS: 'Пользователь с такими данными уже существует.',
@@ -14,6 +14,14 @@ export const userErrors = createDomainErrors({
         USER_DELETE_FAILED: 'Не удалось удалить пользователя.',
         USER_BLOCKED: 'Профиль пользователя заблокирован.',
     } as const,
+    statuses: {
+        USER_NOT_FOUND: 404,
+        USER_ALREADY_EXISTS: 409,
+        USER_CREATE_FAILED: 500,
+        USER_UPDATE_FAILED: 500,
+        USER_DELETE_FAILED: 500,
+        USER_BLOCKED: 403,
+    },
 });
 
 export type UserErrorCode = z.infer<typeof userErrors.codeSchema>;

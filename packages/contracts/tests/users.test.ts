@@ -280,7 +280,7 @@ describe('User Endpoint & Error Contracts Validation', () => {
         expect(result.success).toBe(false);
     });
 
-    test('createPublicUserResponse validates and transforms raw DB user', () => {
+    test('createPublicUserResponse validates and transforms raw DB user into PublicUserDto', () => {
         const rawDbUser = {
             id: validUserId,
             firstName: 'Ольга',
@@ -291,47 +291,42 @@ describe('User Endpoint & Error Contracts Validation', () => {
         };
 
         const response = createPublicUserResponse(rawDbUser);
-        expect(response.success).toBe(true);
-        expect(response.data.id).toBe(validUserId);
-        expect(response.data.firstName).toBe('Ольга');
-        expect(response.data.lastName).toBeUndefined();
-        expect(response.data.avatarUrl).toBeUndefined();
+        expect(response.id).toBe(validUserId);
+        expect(response.firstName).toBe('Ольга');
+        expect(response.lastName).toBeUndefined();
+        expect(response.avatarUrl).toBeUndefined();
 
         const json = JSON.parse(JSON.stringify(response));
         expect(json).toEqual({
-            success: true,
-            data: {
-                id: validUserId,
-                firstName: 'Ольга',
-            },
+            id: validUserId,
+            firstName: 'Ольга',
         });
-        expect('lastName' in json.data).toBe(false);
+        expect('lastName' in json).toBe(false);
     });
 
-    test('createUserNotFoundErrorResponse produces correct 404 error envelope', () => {
+    test('createUserNotFoundErrorResponse produces correct 404 error RFC 9457 problem', () => {
         const notFoundResponse = createUserNotFoundErrorResponse();
-        expect(notFoundResponse.success).toBe(false);
-        expect(notFoundResponse.error.code).toBe('USER_NOT_FOUND');
-        expect(notFoundResponse.error.message).toBe(
+        expect(notFoundResponse.code).toBe('USER_NOT_FOUND');
+        expect(notFoundResponse.status).toBe(404);
+        expect(notFoundResponse.detail).toBe(
             USER_ERROR_MESSAGES.USER_NOT_FOUND,
         );
+        expect(notFoundResponse.type).toBe('/problems/user-not-found');
 
         const customMessageResponse = createUserNotFoundErrorResponse(
             'Пользователь не найден в текущей организации.',
         );
-        expect(customMessageResponse.error.message).toBe(
+        expect(customMessageResponse.detail).toBe(
             'Пользователь не найден в текущей организации.',
         );
+        expect(customMessageResponse.status).toBe(404);
     });
 
     test('takeUserByIdResponseSchema validates 200, 404, and 422 schemas', () => {
         // 200
         const successPayload = {
-            success: true,
-            data: {
-                id: validUserId,
-                firstName: 'Иван',
-            },
+            id: validUserId,
+            firstName: 'Иван',
         };
         expect(
             takeUserByIdResponseSchema[200].safeParse(successPayload).success,
@@ -339,11 +334,12 @@ describe('User Endpoint & Error Contracts Validation', () => {
 
         // 404
         const notFoundPayload = {
-            success: false,
-            error: {
-                code: 'USER_NOT_FOUND',
-                message: 'Пользователь не найден.',
-            },
+            type: '/problems/user-not-found',
+            title: 'Пользователь не найден.',
+            status: 404,
+            detail: 'Пользователь не найден.',
+            instance: `/v1/users/${validUserId}`,
+            code: 'USER_NOT_FOUND',
         };
         expect(
             takeUserByIdResponseSchema[404].safeParse(notFoundPayload).success,
@@ -351,13 +347,20 @@ describe('User Endpoint & Error Contracts Validation', () => {
 
         // 422
         const validationErrorPayload = {
-            success: false,
-            error: {
-                code: 'VALIDATION_ERROR',
-                message: 'Ошибка валидации входящих данных.',
-                details: {
-                    fields: { id: 'Некорректный идентификатор пользователя' },
+            type: '/problems/validation-error',
+            title: 'Ошибка валидации входящих данных.',
+            status: 422,
+            detail: 'Ошибка валидации входящих данных.',
+            instance: `/v1/users/${validUserId}`,
+            code: 'VALIDATION_ERROR',
+            invalidParams: [
+                {
+                    name: 'id',
+                    reason: 'Некорректный идентификатор пользователя',
                 },
+            ],
+            details: {
+                fields: { id: 'Некорректный идентификатор пользователя' },
             },
         };
         expect(
@@ -378,22 +381,22 @@ describe('User Endpoint & Error Contracts Validation', () => {
 
         for (const code of codes) {
             const res = createUserErrorResponse(code);
-            expect(res.success).toBe(false);
-            expect(res.error.code).toBe(code);
-            expect(res.error.message).toBe(USER_ERROR_MESSAGES[code]);
+            expect(res.code).toBe(code);
+            expect(res.detail).toBe(USER_ERROR_MESSAGES[code]);
+            expect(res.title).toBe(USER_ERROR_MESSAGES[code]);
+            expect(res.type).toContain('/problems/');
         }
     });
 
     test('createUserErrorResponse falls back to CommonErrorCode when requested', () => {
-        const res = createUserErrorResponse('BAD_REQUEST');
-        expect(res.success).toBe(false);
-        expect(res.error.code).toBe('BAD_REQUEST');
-        expect(res.error.message).toBe('Некорректный запрос.');
+        const res = createUserErrorResponse('BAD_REQUEST' as any);
+        expect(res.code).toBe('BAD_REQUEST');
+        expect(res.detail).toBe('Некорректный запрос.');
+        expect(res.status).toBe(400);
     });
 
     test('user error schemas include rich markdown descriptions and defaults for Scalar UI', () => {
-        const messageDesc =
-            userErrorResponseSchema.shape.error.shape.message.description;
+        const messageDesc = userErrorResponseSchema.shape.detail.description;
         expect(messageDesc).toContain('**Стандартные сообщения по кодам:**');
         expect(messageDesc).toContain(
             '- `USER_NOT_FOUND`: *«Пользователь не найден.»*',
@@ -405,21 +408,20 @@ describe('User Endpoint & Error Contracts Validation', () => {
             '- `USER_BLOCKED`: *«Профиль пользователя заблокирован.»*',
         );
 
-        expect(
-            userNotFoundErrorResponseSchema.shape.error.shape.message
-                .description,
-        ).toBe('Пользователь не найден.');
+        expect(userNotFoundErrorResponseSchema.shape.detail.description).toBe(
+            'Пользователь не найден.',
+        );
     });
 
     test('takeUserByIdResponseSchema has clean and specific envelope descriptions', () => {
         expect(takeUserByIdResponseSchema[200].description).toBe(
-            'Конверт успешного ответа с публичным профилем пользователя',
+            'Ответ API с публичным профилем пользователя',
         );
         expect(takeUserByIdResponseSchema[404].description).toBe(
-            'Конверт ответа с ошибкой: пользователь не найден',
+            'Ответ с ошибкой: пользователь не найден',
         );
         expect(takeUserByIdResponseSchema[422].description).toBe(
-            'Ответ API с ошибкой валидации',
+            'Ответ API с ошибкой валидации входящих данных',
         );
         expect(takeUserByIdResponseSchema[500].description).toBe(
             'Ответ API с внутренней ошибкой сервера',
@@ -469,7 +471,7 @@ describe('User Endpoint & Error Contracts Validation', () => {
         ).toBe(false);
     });
 
-    test('createPaginatedPublicUsersResponse formats valid envelope with transformed DTOs', () => {
+    test('createPaginatedPublicUsersResponse formats valid pure PaginatedData with transformed DTOs', () => {
         const rawUsers = [
             {
                 id: '018f2780-2396-7a8e-a9d5-7389a0f69a53',
@@ -486,13 +488,12 @@ describe('User Endpoint & Error Contracts Validation', () => {
             limit: 20,
         });
 
-        expect(response.success).toBe(true);
-        expect(response.data.items[0].firstName).toBe('Иван');
-        expect(response.data.items[0].lastName).toBeUndefined();
-        expect(response.data.meta.total).toBe(1);
-        expect(response.data.meta.totalPages).toBe(1);
-        expect(response.data.meta.hasNextPage).toBe(false);
-        expect(response.data.meta.hasPrevPage).toBe(false);
+        expect(response.items[0].firstName).toBe('Иван');
+        expect(response.items[0].lastName).toBeUndefined();
+        expect(response.meta.total).toBe(1);
+        expect(response.meta.totalPages).toBe(1);
+        expect(response.meta.hasNextPage).toBe(false);
+        expect(response.meta.hasPrevPage).toBe(false);
     });
 
     test('takeUsersEndpoint defines 200, 422, 500, 501, 503 schemas and detail tags', () => {

@@ -84,13 +84,15 @@ describe('Telegram Account Contracts Validation', () => {
         const error = telegramAccountErrors.createError(
             'TELEGRAM_AUTH_INVALID',
         );
-        expect(error.error.code).toBe('TELEGRAM_AUTH_INVALID');
-        expect(error.error.message).toBe(
+        expect(error.code).toBe('TELEGRAM_AUTH_INVALID');
+        expect(error.detail).toBe(
             TELEGRAM_ACCOUNT_ERROR_MESSAGES.TELEGRAM_AUTH_INVALID,
         );
+        expect(error.status).toBe(401);
 
         const notFound = telegramAccountErrors.createNotFound!();
-        expect(notFound.error.code).toBe('TELEGRAM_ACCOUNT_NOT_FOUND');
+        expect(notFound.code).toBe('TELEGRAM_ACCOUNT_NOT_FOUND');
+        expect(notFound.status).toBe(404);
     });
 
     test('all telegram endpoints define standard 501 response code', () => {

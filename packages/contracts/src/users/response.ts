@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 import {
-    type ApiResponse,
     createDomainEndpoint,
     createDomainPaginatedResponse,
     createDomainResponse,
     type PaginatedApiResponse,
+    type PaginatedData,
     paginationQuerySchema,
 } from '../response';
 import { userBaseSchema } from './base';
@@ -54,7 +54,7 @@ export const takeUsersQuerySchema = paginationQuerySchema
 export type TakeUsersQuery = z.infer<typeof takeUsersQuerySchema>;
 
 /**
- * Общий конверт и конструктор успешного ответа с публичным профилем пользователя.
+ * Схема и конструктор успешного ответа с публичным профилем пользователя.
  */
 export const publicUserResponse = createDomainResponse(
     publicUserDtoSchema,
@@ -62,11 +62,12 @@ export const publicUserResponse = createDomainResponse(
 );
 
 export const publicUserResponseSchema = publicUserResponse.schema;
-export type PublicUserResponse = ApiResponse<PublicUserDto>;
+export type PublicUserResponse = PublicUserDto;
 export const createPublicUserResponse = publicUserResponse.create;
+export const wrapPublicUserResponse = publicUserResponse.wrap;
 
 /**
- * Пагинированный конверт и конструктор успешного ответа со списком пользователей.
+ * Пагинированная схема и конструктор успешного ответа со списком пользователей.
  */
 export const paginatedPublicUsersResponse = createDomainPaginatedResponse(
     publicUserDtoSchema,
@@ -75,12 +76,14 @@ export const paginatedPublicUsersResponse = createDomainPaginatedResponse(
 
 export const paginatedPublicUsersResponseSchema =
     paginatedPublicUsersResponse.schema;
-export type PaginatedPublicUsersResponse = PaginatedApiResponse<PublicUserDto>;
+export type PaginatedPublicUsersResponse = PaginatedData<PublicUserDto>;
 export const createPaginatedPublicUsersResponse =
     paginatedPublicUsersResponse.create;
+export const wrapPaginatedPublicUsersResponse =
+    paginatedPublicUsersResponse.wrap;
 
 /**
- * Общий конверт и конструктор успешного ответа с полным профилем пользователя (ручка me / профиль).
+ * Схема и конструктор успешного ответа с полным профилем пользователя (ручка me / профиль).
  */
 export const userProfileResponse = createDomainResponse(
     userProfileDtoSchema,
@@ -88,8 +91,9 @@ export const userProfileResponse = createDomainResponse(
 );
 
 export const userProfileResponseSchema = userProfileResponse.schema;
-export type UserProfileResponse = ApiResponse<UserProfileDTO>;
+export type UserProfileResponse = UserProfileDTO;
 export const createUserProfileResponse = userProfileResponse.create;
+export const wrapUserProfileResponse = userProfileResponse.wrap;
 
 /**
  * Контракт маршрута GET v1/users/me (получение полного профиля текущего пользователя).
@@ -154,8 +158,9 @@ export const deleteUserResponse = createDomainResponse(
 );
 
 export const deleteUserResponseSchema = deleteUserResponse.schema;
-export type DeleteUserResponse = ApiResponse<DeleteUserDto>;
+export type DeleteUserResponse = DeleteUserDto;
 export const createDeleteUserResponse = deleteUserResponse.create;
+export const wrapDeleteUserResponse = deleteUserResponse.wrap;
 
 /**
  * Контракт маршрута PATCH v1/users/:id (частичное обновление профиля пользователя).

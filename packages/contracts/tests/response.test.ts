@@ -93,29 +93,32 @@ describe('Response Contract - Success Envelope', () => {
 describe('Response Contract - Error Envelope', () => {
     test('apiErrorResponseSchema parses standard common error', () => {
         const payload = {
-            success: false,
-            error: {
-                code: 'NOT_FOUND',
-                message: 'Entity not found',
-                details: { id: '123' },
-            },
+            type: '/problems/not-found',
+            title: 'Запрашиваемый ресурс не найден.',
+            status: 404,
+            detail: 'Entity not found',
+            instance: '/test',
+            code: 'NOT_FOUND',
+            details: { id: '123' },
         };
 
         const result = apiErrorResponseSchema.safeParse(payload);
         expect(result.success).toBe(true);
         if (result.success) {
-            expect(result.data.error.code).toBe('NOT_FOUND');
-            expect(result.data.error.details).toEqual({ id: '123' });
+            expect(result.data.code).toBe('NOT_FOUND');
+            expect(result.data.status).toBe(404);
+            expect(result.data.details).toEqual({ id: '123' });
         }
     });
 
     test('apiErrorResponseSchema rejects unknown common error code', () => {
         const payload = {
-            success: false,
-            error: {
-                code: 'RANDOM_UNKNOWN_CODE',
-                message: 'Some message',
-            },
+            type: '/problems/unknown',
+            title: 'Unknown error',
+            status: 400,
+            detail: 'Some message',
+            instance: '/test',
+            code: 'RANDOM_UNKNOWN_CODE',
         };
 
         const result = apiErrorResponseSchema.safeParse(payload);
@@ -124,49 +127,52 @@ describe('Response Contract - Error Envelope', () => {
 
     test('createApiErrorResponseSchema allows custom error codes schema', () => {
         const customCodeSchema = z.enum(['EVENT_CLOSED', 'SLOTS_FULL']);
-        const customErrorSchema =
-            createApiErrorResponseSchema(customCodeSchema);
+        const customErrorSchema = createApiErrorResponseSchema(
+            customCodeSchema,
+            'Кастомная ошибка',
+        );
 
         const validPayload = {
-            success: false,
-            error: {
-                code: 'EVENT_CLOSED',
-                message: 'Registration closed',
-            },
+            type: '/problems/event-closed',
+            title: 'Регистрация закрыта',
+            status: 400,
+            detail: 'Registration closed',
+            instance: '/events/1',
+            code: 'EVENT_CLOSED',
         };
         expect(customErrorSchema.safeParse(validPayload).success).toBe(true);
 
         const invalidPayload = {
-            success: false,
-            error: {
-                code: 'NOT_FOUND', // not in customCodeSchema
-                message: 'Registration closed',
-            },
+            type: '/problems/not-found',
+            title: 'Not found',
+            status: 404,
+            detail: 'Registration closed',
+            instance: '/events/1',
+            code: 'NOT_FOUND', // not in customCodeSchema
         };
         expect(customErrorSchema.safeParse(invalidPayload).success).toBe(false);
     });
 
     test('createApiErrorResponseSchema supports custom description and simplified success description', () => {
-        const customError = createApiErrorResponseSchema(
-            undefined,
-            undefined,
-            'Кастомное описание ошибки',
-        );
+        const customError = createApiErrorResponseSchema({
+            description: 'Кастомное описание ошибки',
+            slug: 'custom-error',
+            title: 'Кастомная ошибка',
+        });
         expect(customError.description).toBe('Кастомное описание ошибки');
-        expect(customError.shape.success.description).toBe(
-            'Флаг успешности ответа',
-        );
+        expect(customError.shape.type.description).toContain('Каноничный URI');
     });
 
     test('createErrorResponse uses default message from registry when omitted', () => {
         const response = createErrorResponse('NOT_FOUND');
 
         expect(response).toEqual({
-            success: false,
-            error: {
-                code: 'NOT_FOUND',
-                message: COMMON_ERROR_MESSAGES.NOT_FOUND,
-            },
+            type: '/problems/not-found',
+            title: COMMON_ERROR_MESSAGES.NOT_FOUND,
+            status: 404,
+            detail: COMMON_ERROR_MESSAGES.NOT_FOUND,
+            instance: '/',
+            code: 'NOT_FOUND',
         });
     });
 
@@ -174,7 +180,9 @@ describe('Response Contract - Error Envelope', () => {
         const customMessage = 'Пользователь не найден в системе';
         const response = createErrorResponse('NOT_FOUND', customMessage);
 
-        expect(response.error.message).toBe(customMessage);
+        expect(response.detail).toBe(customMessage);
+        expect(response.title).toBe(COMMON_ERROR_MESSAGES.NOT_FOUND);
+        expect(response.status).toBe(404);
     });
 
     test('createErrorResponse includes details when provided', () => {
@@ -185,31 +193,40 @@ describe('Response Contract - Error Envelope', () => {
             details,
         );
 
-        expect(response.error.details).toEqual(details);
-        expect(response.error.message).toBe(
-            COMMON_ERROR_MESSAGES.VALIDATION_ERROR,
-        );
+        expect(response.details).toEqual(details);
+        expect(response.detail).toBe(COMMON_ERROR_MESSAGES.VALIDATION_ERROR);
+        expect(response.status).toBe(422);
     });
 
     test('createErrorResponse falls back to formatted code for custom unknown codes', () => {
-        const response = createErrorResponse('CUSTOM_NEW_ERROR');
+        const response = createErrorResponse('CUSTOM_NEW_ERROR' as any);
 
-        expect(response.error.message).toBe('Ошибка: CUSTOM_NEW_ERROR');
+        expect(response.detail).toBe('CUSTOM_NEW_ERROR');
+        expect(response.status).toBe(500);
+        expect(response.type).toBe('/problems/custom-new-error');
     });
 });
 
 describe('Response Contract - Validation Error Envelope', () => {
     test('validationErrorResponseSchema validates correct validation error format', () => {
         const payload = {
-            success: false,
-            error: {
-                code: 'VALIDATION_ERROR',
-                message: 'Ошибка валидации входящих данных.',
-                details: {
-                    fields: {
-                        email: 'Некорректный адрес электронной почты',
-                        firstName: 'Имя не может быть пустым',
-                    },
+            type: '/problems/validation-error',
+            title: 'Ошибка валидации входящих данных.',
+            status: 422,
+            detail: 'Ошибка валидации входящих данных.',
+            instance: '/test',
+            code: 'VALIDATION_ERROR',
+            invalidParams: [
+                {
+                    name: 'email',
+                    reason: 'Некорректный адрес электронной почты',
+                },
+                { name: 'firstName', reason: 'Имя не может быть пустым' },
+            ],
+            details: {
+                fields: {
+                    email: 'Некорректный адрес электронной почты',
+                    firstName: 'Имя не может быть пустым',
                 },
             },
         };
@@ -217,8 +234,9 @@ describe('Response Contract - Validation Error Envelope', () => {
         const result = validationErrorResponseSchema.safeParse(payload);
         expect(result.success).toBe(true);
         if (result.success) {
-            expect(result.data.error.code).toBe('VALIDATION_ERROR');
-            expect(result.data.error.details.fields.email).toBe(
+            expect(result.data.code).toBe('VALIDATION_ERROR');
+            expect(result.data.invalidParams?.[0]?.name).toBe('email');
+            expect(result.data.details?.fields.email).toBe(
                 'Некорректный адрес электронной почты',
             );
         }
@@ -226,14 +244,13 @@ describe('Response Contract - Validation Error Envelope', () => {
 
     test('validationErrorResponseSchema rejects error code other than VALIDATION_ERROR', () => {
         const payload = {
-            success: false,
-            error: {
-                code: 'BAD_REQUEST',
-                message: 'Ошибка валидации',
-                details: {
-                    fields: { name: 'Ошибка' },
-                },
-            },
+            type: '/problems/validation-error',
+            title: 'Ошибка валидации',
+            status: 422,
+            detail: 'Ошибка валидации',
+            instance: '/test',
+            code: 'BAD_REQUEST',
+            invalidParams: [{ name: 'name', reason: 'Ошибка' }],
         };
 
         const result = validationErrorResponseSchema.safeParse(payload);
@@ -242,15 +259,21 @@ describe('Response Contract - Validation Error Envelope', () => {
 
     test('createValidationErrorResponse creates properly formatted payload with default message', () => {
         const fields = { username: 'Слишком короткое имя' };
-        const response = createValidationErrorResponse(fields);
+        const response = createValidationErrorResponse(fields, undefined, {
+            instance: '/users/create',
+        });
 
         expect(response).toEqual({
-            success: false,
-            error: {
-                code: 'VALIDATION_ERROR',
-                message: DEFAULT_VALIDATION_ERROR_MESSAGE,
-                details: { fields },
-            },
+            type: '/problems/validation-error',
+            title: DEFAULT_VALIDATION_ERROR_MESSAGE,
+            status: 422,
+            detail: DEFAULT_VALIDATION_ERROR_MESSAGE,
+            instance: '/users/create',
+            code: 'VALIDATION_ERROR',
+            invalidParams: [
+                { name: 'username', reason: 'Слишком короткое имя' },
+            ],
+            details: { fields },
         });
     });
 
@@ -263,11 +286,12 @@ describe('Response Contract - Validation Error Envelope', () => {
         type Inferred = z.infer<typeof customErrorSchema>;
 
         const errorPayload: Inferred = {
-            success: false,
-            error: {
-                code: 'CUSTOM_NOT_FOUND',
-                message: 'Объект не найден',
-            },
+            type: '/problems/custom-not-found',
+            title: 'Объект не найден',
+            status: 404,
+            detail: 'Объект не найден',
+            instance: '/custom/1',
+            code: 'CUSTOM_NOT_FOUND',
         };
 
         const parsed = customErrorSchema.safeParse(errorPayload);
@@ -295,12 +319,11 @@ describe('Domain Response & Endpoint Factories', () => {
             'Ответ API с ошибкой организации',
         );
         expect(testErrors.notFoundSchema?.description).toBe(
-            'Конверт ответа с ошибкой: организации не найден',
+            'Ответ API: организации не найден(а)',
         );
 
         const messageDesc =
-            testErrors.errorResponseSchema.shape.error.shape.message
-                .description;
+            testErrors.errorResponseSchema.shape.detail.description;
         expect(messageDesc).toContain('**Стандартные сообщения по кодам:**');
         expect(messageDesc).toContain(
             '- `ORGANIZATION_NOT_FOUND`: *«Организация не найдена.»*',
@@ -312,9 +335,9 @@ describe('Domain Response & Endpoint Factories', () => {
             '- `ORGANIZATION_SUSPENDED`: *«Деятельность организации приостановлена.»*',
         );
 
-        expect(
-            testErrors.notFoundSchema?.shape.error.shape.message.description,
-        ).toBe('Организация не найдена.');
+        expect(testErrors.notFoundSchema?.shape.detail.description).toBe(
+            'Организация не найдена.',
+        );
 
         const validParsed = testErrors.codeSchema.safeParse(
             'ORGANIZATION_SUSPENDED',
@@ -328,11 +351,12 @@ describe('Domain Response & Endpoint Factories', () => {
     test('createDomainErrors creates typed error responses and not found responses', () => {
         const notFound = testErrors.createNotFound!();
         expect(notFound).toEqual({
-            success: false,
-            error: {
-                code: 'ORGANIZATION_NOT_FOUND',
-                message: 'Организация не найдена.',
-            },
+            type: '/problems/organization-not-found',
+            title: 'Организация не найдена.',
+            status: 404,
+            detail: 'Организация не найдена.',
+            instance: '/',
+            code: 'ORGANIZATION_NOT_FOUND',
         });
 
         const customError = testErrors.createError(
@@ -341,12 +365,13 @@ describe('Domain Response & Endpoint Factories', () => {
             { reason: 'payment' },
         );
         expect(customError).toEqual({
-            success: false,
-            error: {
-                code: 'ORGANIZATION_SUSPENDED',
-                message: 'Деятельность организации приостановлена.',
-                details: { reason: 'payment' },
-            },
+            type: '/problems/organization-suspended',
+            title: 'Деятельность организации приостановлена.',
+            status: 500,
+            detail: 'Деятельность организации приостановлена.',
+            instance: '/',
+            code: 'ORGANIZATION_SUSPENDED',
+            details: { reason: 'payment' },
         });
     });
 
@@ -357,20 +382,21 @@ describe('Domain Response & Endpoint Factories', () => {
         );
 
         expect(conflictSchema.description).toBe('Конфликт имени организации');
-        expect(conflictSchema.shape.error.shape.message.description).toBe(
+        expect(conflictSchema.shape.detail.description).toBe(
             'Организация с таким именем уже существует.',
         );
         const parsed = conflictSchema.safeParse({
-            success: false,
-            error: {
-                code: 'ORGANIZATION_ALREADY_EXISTS',
-                message: 'Организация с таким именем уже существует.',
-            },
+            type: '/problems/organization-already-exists',
+            title: 'Организация с таким именем уже существует.',
+            status: 400,
+            detail: 'Организация с таким именем уже существует.',
+            instance: '/',
+            code: 'ORGANIZATION_ALREADY_EXISTS',
         });
         expect(parsed.success).toBe(true);
     });
 
-    test('createDomainResponse generates envelope schema and safe constructor', () => {
+    test('createDomainResponse generates pure DTO schema and safe constructor', () => {
         const orgDtoSchema = z.object({
             id: z.string().uuid(),
             name: z.string(),
@@ -382,9 +408,7 @@ describe('Domain Response & Endpoint Factories', () => {
 
         const orgResponse = createDomainResponse(orgDtoSchema, 'организацией');
 
-        expect(orgResponse.schema.description).toBe(
-            'Конверт успешного ответа с организацией',
-        );
+        expect(orgResponse.schema.description).toBe('Ответ API с организацией');
 
         const rawDbOrg = {
             id: '018f2780-2396-7a8e-a9d5-7389a0f69a53',
@@ -393,12 +417,11 @@ describe('Domain Response & Endpoint Factories', () => {
         };
 
         const result = orgResponse.create(rawDbOrg);
-        expect(result.success).toBe(true);
-        expect(result.data.name).toBe('Insignia Org');
-        expect(result.data.slug).toBeUndefined();
+        expect(result.name).toBe('Insignia Org');
+        expect(result.slug).toBeUndefined();
 
         const json = JSON.parse(JSON.stringify(result));
-        expect('slug' in json.data).toBe(false);
+        expect('slug' in json).toBe(false);
     });
 
     test('createDomainEndpoint injects standard error schemas (422, 500, 501, 503) and assembles route contract', () => {
@@ -502,13 +525,12 @@ describe('Pagination & Paginated Envelope', () => {
             page: 1,
             limit: 10,
         });
-        expect(res.success).toBe(true);
-        expect(res.data.items).toEqual(['item1', 'item2']);
-        expect(res.data.meta.total).toBe(2);
-        expect(res.data.meta.totalPages).toBe(1);
+        expect(res.items).toEqual(['item1', 'item2']);
+        expect(res.meta.total).toBe(2);
+        expect(res.meta.totalPages).toBe(1);
     });
 
-    test('createDomainPaginatedResponse transforms items and produces valid envelope', () => {
+    test('createDomainPaginatedResponse transforms items and produces valid PaginatedData', () => {
         const itemDtoSchema = z.object({
             id: z.string(),
             title: z.string(),
@@ -524,7 +546,7 @@ describe('Pagination & Paginated Envelope', () => {
         );
 
         expect(paginatedFactory.schema.description).toBe(
-            'Конверт успешного ответа со списком элементов',
+            'Пагинированный ответ со списком элементов',
         );
 
         const rawItems = [
@@ -539,9 +561,52 @@ describe('Pagination & Paginated Envelope', () => {
             limit: 10,
         });
 
-        expect(response.success).toBe(true);
-        expect(response.data.items[0].note).toBeUndefined();
-        expect(response.data.items[1].note).toBe('Important');
-        expect(response.data.meta.total).toBe(2);
+        expect(response.items[0].note).toBeUndefined();
+        expect(response.items[1].note).toBe('Important');
+        expect(response.meta.total).toBe(2);
+    });
+
+    test('createDomainResponse.wrap and createDomainPaginatedResponse.wrap wrap data without calling Zod parse', () => {
+        let parseCallCount = 0;
+        const testSchema = z.object({
+            id: z.string(),
+            name: z.string().transform((v) => {
+                parseCallCount++;
+                return v.toUpperCase();
+            }),
+        });
+
+        const singleFactory = createDomainResponse(testSchema, 'тестом');
+        const paginatedFactory = createDomainPaginatedResponse(
+            testSchema,
+            'списком тестов',
+        );
+
+        // .wrap не вызывает dtoSchema.parse()
+        const rawSingle = { id: 'test-1', name: 'alice' };
+        const wrappedSingle = singleFactory.wrap(rawSingle);
+
+        expect(wrappedSingle).toBe(
+            rawSingle as unknown as { id: string; name: string },
+        );
+        expect(parseCallCount).toBe(0);
+
+        // .wrap для пагинации не вызывает dtoSchema.parse() для элементов
+        const rawItems = [
+            { id: 'test-1', name: 'bob' },
+            { id: 'test-2', name: 'charlie' },
+        ];
+        const wrappedPaginated = paginatedFactory.wrap({
+            items: rawItems,
+            total: 2,
+            page: 1,
+            limit: 10,
+        });
+
+        expect(wrappedPaginated.items).toBe(
+            rawItems as unknown as { id: string; name: string }[],
+        );
+        expect(wrappedPaginated.meta.total).toBe(2);
+        expect(parseCallCount).toBe(0);
     });
 });

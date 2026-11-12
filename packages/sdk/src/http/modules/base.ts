@@ -1,4 +1,4 @@
-import type { ApiResponse, CommonErrorCode } from '@insignia/contracts/common';
+import type { CommonErrorCode } from '@insignia/contracts/common';
 import { isHTTPError, type KyInstance } from 'ky';
 
 import {
@@ -48,12 +48,16 @@ export abstract class BaseModule {
      * Никогда не выбрасывает исключений наружу — возвращает InsigniaSdkResult<T, TCode>.
      */
     protected execute = async <T, TCode extends string = CommonErrorCode>(
-        requestFn: () => Promise<ApiResponse<T>>,
+        requestFn: () => Promise<T>,
     ): Promise<InsigniaSdkResult<T, TCode>> => {
         try {
-            return await requestFn();
+            const data = await requestFn();
+            return {
+                success: true,
+                data,
+            };
         } catch (error) {
-            // 1. Контрактная ошибка бэкенда Insignia (обработана бэкендом)
+            // 1. Контрактная ошибка бэкенда Insignia (RFC 9457 Problem Details)
             if (error instanceof InsigniaApiError) {
                 return {
                     success: false,
@@ -63,6 +67,7 @@ export abstract class BaseModule {
                         code: error.code as TCode,
                         message: error.message,
                         details: error.details,
+                        problem: error.problem,
                     },
                 };
             }

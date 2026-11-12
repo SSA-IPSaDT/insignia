@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
 import {
-    type ApiResponse,
     createHealthErrorResponse,
     createHealthResponse,
     type HealthDTO,
@@ -12,37 +11,31 @@ import {
 
 describe('Health Contracts Schema Validation', () => {
     test('healthResponseSchema parses valid health payload', () => {
-        const payload: ApiResponse<HealthDTO> = {
-            success: true,
-            data: {
-                status: 'ok',
-                timestamp: new Date().toISOString(),
-                uptime: process.uptime(),
-                services: {
-                    database: 'healthy',
-                    redis: 'healthy',
-                },
+        const payload: HealthDTO = {
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+            services: {
+                database: 'healthy',
+                redis: 'healthy',
             },
         };
 
         const result = healthResponseSchema.safeParse(payload);
         expect(result.success).toBe(true);
         if (result.success) {
-            expect(result.data.data.status).toBe('ok');
-            expect(result.data.data.services.database).toBe('healthy');
+            expect(result.data.status).toBe('ok');
+            expect(result.data.services.database).toBe('healthy');
         }
     });
 
     test('healthResponseSchema rejects invalid service status', () => {
         const invalidPayload = {
-            success: true,
-            data: {
-                status: 'ok',
-                timestamp: new Date().toISOString(),
-                uptime: 10,
-                services: {
-                    database: 'broken_status',
-                },
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            uptime: 10,
+            services: {
+                database: 'broken_status',
             },
         };
 
@@ -52,13 +45,10 @@ describe('Health Contracts Schema Validation', () => {
 
     test('healthResponseSchema rejects missing timestamp', () => {
         const invalidPayload = {
-            success: true,
-            data: {
-                status: 'ok',
-                uptime: 10,
-                services: {
-                    database: 'healthy',
-                },
+            status: 'ok',
+            uptime: 10,
+            services: {
+                database: 'healthy',
             },
         };
 
@@ -68,14 +58,15 @@ describe('Health Contracts Schema Validation', () => {
 
     test('healthErrorResponseSchema validates correct health error payload', () => {
         const payload = {
-            success: false,
-            error: {
-                code: 'DATABASE_UNAVAILABLE',
-                message: 'База данных не отвечает',
-                details: {
-                    services: {
-                        database: 'unhealthy',
-                    },
+            type: '/problems/database-unavailable',
+            title: 'Недоступно подключение к базе данных.',
+            status: 503,
+            detail: 'База данных не отвечает',
+            instance: '/health',
+            code: 'DATABASE_UNAVAILABLE',
+            details: {
+                services: {
+                    database: 'unhealthy',
                 },
             },
         };
@@ -83,24 +74,26 @@ describe('Health Contracts Schema Validation', () => {
         const result = healthErrorResponseSchema.safeParse(payload);
         expect(result.success).toBe(true);
         if (result.success) {
-            expect(result.data.error.code).toBe('DATABASE_UNAVAILABLE');
+            expect(result.data.code).toBe('DATABASE_UNAVAILABLE');
+            expect(result.data.status).toBe(503);
         }
     });
 
     test('healthErrorResponseSchema rejects unknown health error codes', () => {
         const invalidPayload = {
-            success: false,
-            error: {
-                code: 'SOME_RANDOM_CODE',
-                message: 'Unknown error',
-            },
+            type: '/problems/unknown',
+            title: 'Unknown error',
+            status: 503,
+            detail: 'Unknown error',
+            instance: '/health',
+            code: 'SOME_RANDOM_CODE',
         };
 
         const result = healthErrorResponseSchema.safeParse(invalidPayload);
         expect(result.success).toBe(false);
     });
 
-    test('createHealthResponse formats valid payload with success: true', () => {
+    test('createHealthResponse formats valid payload with pure HealthDTO', () => {
         const res = createHealthResponse({
             status: 'ok',
             timestamp: '2026-11-09T03:00:00.000Z',
@@ -108,17 +101,18 @@ describe('Health Contracts Schema Validation', () => {
             services: { database: 'healthy' },
         });
 
-        expect(res.success).toBe(true);
-        expect(res.data.status).toBe('ok');
-        expect(res.data.services.database).toBe('healthy');
+        expect(res.status).toBe('ok');
+        expect(res.services.database).toBe('healthy');
     });
 
-    test('createHealthErrorResponse formats valid error payload with default message', () => {
+    test('createHealthErrorResponse formats valid RFC 9457 error payload with default message', () => {
         const res = createHealthErrorResponse('DATABASE_UNAVAILABLE');
 
-        expect(res.success).toBe(false);
-        expect(res.error.code).toBe('DATABASE_UNAVAILABLE');
-        expect(res.error.message).toBe('Недоступно подключение к базе данных.');
+        expect(res.code).toBe('DATABASE_UNAVAILABLE');
+        expect(res.status).toBe(503);
+        expect(res.detail).toBe('Недоступно подключение к базе данных.');
+        expect(res.title).toBe('Недоступно подключение к базе данных.');
+        expect(res.type).toBe('/problems/database-unavailable');
     });
 
     test('healthEndpoint defines 200, 422, 500, 501, 503 response schemas and detail tags', () => {

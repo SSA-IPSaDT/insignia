@@ -1,9 +1,12 @@
-import type { CommonErrorCode } from '@insignia/contracts/common';
+import type {
+    CommonErrorCode,
+    ProblemDetails,
+} from '@insignia/contracts/common';
 
 export type SdkErrorType = 'api' | 'network' | 'http' | 'parse';
 
 /**
- * 1. Ошибка бизнес-домена, возвращенная бэкендом Insignia по контракту
+ * 1. Ошибка бизнес-домена, возвращенная бэкендом Insignia по стандарту RFC 9457 Problem Details
  */
 export type SdkApiError<TCode extends string = string> = {
     type: 'api';
@@ -11,6 +14,7 @@ export type SdkApiError<TCode extends string = string> = {
     code: TCode;
     message: string;
     details?: unknown;
+    problem?: ProblemDetails<TCode>;
 };
 
 export type SdkNetworkErrorCode =
@@ -75,6 +79,7 @@ export class InsigniaApiError<
         public readonly code: TCode,
         message: string,
         public readonly details?: unknown,
+        public readonly problem?: ProblemDetails<TCode>,
         public override readonly cause?: Error,
     ) {
         super(message);

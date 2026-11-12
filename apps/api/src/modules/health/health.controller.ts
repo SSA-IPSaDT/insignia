@@ -1,9 +1,9 @@
 import {
     createHealthErrorResponse,
-    createHealthResponse,
     healthEndpoint,
     type HealthErrorCode,
     type SystemServices,
+    wrapHealthResponse,
 } from '@insignia/contracts/health';
 import Elysia from 'elysia';
 
@@ -19,7 +19,7 @@ export const healthController = new Elysia({
     },
 }).get(
     '',
-    async ({ status }) => {
+    async () => {
         const [dbResult, redisResult, storageResult] = await Promise.allSettled(
             [checkDatabase(), checkRedis(), checkStorage()],
         );
@@ -44,7 +44,7 @@ export const healthController = new Elysia({
             .map(([name]) => name);
 
         if (failedServices.length === 0) {
-            return createHealthResponse({
+            return wrapHealthResponse({
                 status: 'ok',
                 timestamp: new Date().toISOString(),
                 uptime: process.uptime(),
@@ -71,13 +71,10 @@ export const healthController = new Elysia({
             }
         }
 
-        return status(
-            503,
-            createHealthErrorResponse(
-                errorCode,
-                `Недоступны системные сервисы: ${failedServices.join(', ')}`,
-                { services },
-            ),
+        return createHealthErrorResponse(
+            errorCode,
+            `Недоступны системные сервисы: ${failedServices.join(', ')}`,
+            { services },
         );
     },
     healthEndpoint,

@@ -63,6 +63,7 @@
       "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
         "@types/bun": "^1.4.4",
+        "svelte": "^5.57.1",
       },
     },
     "apps/app": {
@@ -135,18 +136,6 @@
       "version": "0.1.0",
       "dependencies": {
         "zod": "catalog:",
-      },
-      "devDependencies": {
-        "@insignia/tsconfig": "workspace:*",
-        "@types/bun": "^1.4.4",
-      },
-    },
-    "infra/tunnel": {
-      "name": "@insignia/tunnel",
-      "version": "0.1.0",
-      "dependencies": {
-        "@insignia/env": "workspace:*",
-        "@insignia/logger": "workspace:*",
       },
       "devDependencies": {
         "@insignia/tsconfig": "workspace:*",
@@ -443,8 +432,6 @@
     "@insignia/sdk": ["@insignia/sdk@workspace:packages/sdk"],
 
     "@insignia/tsconfig": ["@insignia/tsconfig@workspace:packages/tsconfig"],
-
-    "@insignia/tunnel": ["@insignia/tunnel@workspace:infra/tunnel"],
 
     "@internationalized/date": ["@internationalized/date@3.12.4", "", { "dependencies": { "@swc/helpers": "^0.5.0" } }, "sha512-M1dEn4c1U1HsSlaVR8upZtSqvXrTkHDfv18H01uCSJyjVLDxnBR38v/fMxecmlwXKR4i9HeZcmgQAPE6A+aGJQ=="],
 

@@ -5,7 +5,7 @@ import { createDomainErrors } from '../../../response';
 export const telegramAccountErrors = createDomainErrors({
     domain: 'аккаунта Telegram',
     notFoundCode: 'TELEGRAM_ACCOUNT_NOT_FOUND',
-    notFoundDescription: 'Конверт ответа с ошибкой: аккаунт Telegram не найден',
+    notFoundDescription: 'Ответ с ошибкой: аккаунт Telegram не найден',
     messages: {
         TELEGRAM_ACCOUNT_NOT_FOUND: 'Аккаунт Telegram не найден.',
         TELEGRAM_ACCOUNT_ALREADY_EXISTS:
@@ -16,6 +16,13 @@ export const telegramAccountErrors = createDomainErrors({
             'Недействительные данные авторизации Telegram (initData).',
         TELEGRAM_ACCOUNT_DETACH_FAILED: 'Не удалось отвязать аккаунт Telegram.',
     } as const,
+    statuses: {
+        TELEGRAM_ACCOUNT_NOT_FOUND: 404,
+        TELEGRAM_ACCOUNT_ALREADY_EXISTS: 409,
+        TELEGRAM_SYNC_FAILED: 500,
+        TELEGRAM_AUTH_INVALID: 401,
+        TELEGRAM_ACCOUNT_DETACH_FAILED: 500,
+    },
 });
 
 export type TelegramAccountErrorCode = z.infer<

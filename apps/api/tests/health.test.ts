@@ -1,12 +1,12 @@
 import { describe, expect, it, spyOn } from 'bun:test';
 
 import {
-    type ApiResponse,
     type HealthDTO,
     healthErrorResponseSchema,
     healthResponseSchema,
     type SystemServices,
 } from '@insignia/contracts';
+import env from '@insignia/env';
 
 import { app } from '#/app';
 import * as healthService from '#modules/health/health.service';
@@ -20,13 +20,12 @@ describe('System Health API', () => {
         expect(response.status).toBe(200);
 
         const raw = await response.json();
-        const body: ApiResponse<HealthDTO> = healthResponseSchema.parse(raw);
+        const body: HealthDTO = healthResponseSchema.parse(raw);
 
-        expect(body.success).toBe(true);
-        expect(body.data.status).toBe('ok');
-        expect(body.data.uptime).toBeGreaterThanOrEqual(0);
-        expect(typeof body.data.timestamp).toBe('string');
-        expect(body.data.services).toEqual({
+        expect(body.status).toBe('ok');
+        expect(body.uptime).toBeGreaterThanOrEqual(0);
+        expect(typeof body.timestamp).toBe('string');
+        expect(body.services).toEqual({
             database: 'healthy',
             redis: 'healthy',
             storage: 'healthy',
@@ -47,10 +46,14 @@ describe('System Health API', () => {
         const raw = await response.json();
         const body = healthErrorResponseSchema.parse(raw);
 
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('DATABASE_UNAVAILABLE');
+        expect(body.code).toBe('DATABASE_UNAVAILABLE');
+        expect(body.status).toBe(503);
+        expect(body.type).toBe(
+            `${env.PUBLIC_API_URL.replace(/\/+$/, '')}/problems/database-unavailable`,
+        );
+        expect(body.instance).toBe('/health');
 
-        const details = body.error.details as { services: SystemServices };
+        const details = body.details as { services: SystemServices };
         expect(details.services.database).toBe('unhealthy');
         expect(details.services.redis).toBe('healthy');
 
@@ -74,10 +77,13 @@ describe('System Health API', () => {
         const raw = await response.json();
         const body = healthErrorResponseSchema.parse(raw);
 
-        expect(body.success).toBe(false);
-        expect(body.error.code).toBe('SERVICES_UNAVAILABLE');
+        expect(body.code).toBe('SERVICES_UNAVAILABLE');
+        expect(body.status).toBe(503);
+        expect(body.type).toBe(
+            `${env.PUBLIC_API_URL.replace(/\/+$/, '')}/problems/services-unavailable`,
+        );
 
-        const details = body.error.details as { services: SystemServices };
+        const details = body.details as { services: SystemServices };
         expect(details.services.database).toBe('unhealthy');
         expect(details.services.redis).toBe('unhealthy');
 

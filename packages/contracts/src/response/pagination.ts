@@ -81,21 +81,18 @@ export const createPaginatedDataSchema = <T extends ZodType>(
     });
 
 /**
- * Тип полного успешного пагинированного ответа API.
+ * Тип полного успешного пагинированного ответа API (чистый плоский объект без конверта success).
  */
-export type PaginatedApiResponse<T> = ApiResponse<PaginatedData<T>>;
+export type PaginatedApiResponse<T> = PaginatedData<T>;
 
 /**
  * Создаёт схему успешного пагинированного ответа API с метаданными.
  */
 export const createPaginatedResponseSchema = <T extends ZodType>(
     itemSchema: T,
-    description: string = 'Стандартный конверт успешного пагинированного ответа API',
+    description: string = 'Пагинированный список с метаданными пагинации',
 ) => {
-    return createApiResponseSchema(
-        createPaginatedDataSchema(itemSchema),
-        description,
-    );
+    return createPaginatedDataSchema(itemSchema).describe(description);
 };
 
 /**
@@ -125,7 +122,7 @@ export const calculatePaginationMeta = ({
 };
 
 /**
- * Формирует типизированный пагинированный ответ API.
+ * Формирует типизированный пагинированный ответ API (без оболочки success).
  */
 export const createPaginatedResponse = <T>({
     items,
@@ -141,10 +138,7 @@ export const createPaginatedResponse = <T>({
     const meta = calculatePaginationMeta({ total, page, limit });
 
     return {
-        success: true,
-        data: {
-            items,
-            meta,
-        },
+        items,
+        meta,
     };
 };

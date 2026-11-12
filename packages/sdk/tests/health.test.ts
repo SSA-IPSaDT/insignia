@@ -17,15 +17,10 @@ describe('SDK HealthModule (Result Pattern)', () => {
             },
         };
 
-        const mockResponse: ApiResponse<HealthDTO> = {
-            success: true,
-            data: mockHealthData,
-        };
-
         let requestedUrl = '';
         const mockFetch = (async (input: RequestInfo | URL) => {
             requestedUrl = input instanceof Request ? input.url : String(input);
-            return new Response(JSON.stringify(mockResponse), {
+            return new Response(JSON.stringify(mockHealthData), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -50,18 +45,19 @@ describe('SDK HealthModule (Result Pattern)', () => {
 
     test('returns ApiErrorResponse with type: "api" on 503 from backend', async () => {
         const mockErrorPayload: ApiErrorResponse<'SERVICES_UNAVAILABLE'> = {
-            success: false,
-            error: {
-                code: 'SERVICES_UNAVAILABLE',
-                message: 'Недоступны системные сервисы: database',
-                details: { services: { database: 'unhealthy' } },
-            },
+            type: '/problems/services-unavailable',
+            title: 'Недоступны системные сервисы.',
+            status: 503,
+            detail: 'Недоступны системные сервисы: database',
+            instance: '/health',
+            code: 'SERVICES_UNAVAILABLE',
+            details: { services: { database: 'unhealthy' } },
         };
 
         const mockFetch = (async () => {
             return new Response(JSON.stringify(mockErrorPayload), {
                 status: 503,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/problem+json' },
             });
         }) as unknown as typeof fetch;
 

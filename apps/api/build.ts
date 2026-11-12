@@ -9,6 +9,9 @@ console.log(
     `📦 Сборка @insignia/api [режим: ${isProd ? 'PRODUCTION' : 'DEVELOPMENT'}]...`,
 );
 
+// Сборка статических HTML-страниц каталога проблем RFC 9457 с использованием Svelte 5
+await import('./problems/build.ts');
+
 const result = await Bun.build({
     entrypoints: ['./src/index.ts'],
     outdir: './dist',
