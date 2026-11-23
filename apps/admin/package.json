@@ -54,7 +54,7 @@
         "lucide-svelte": "^1.0.1",
         "mode-watcher": "catalog:web",
         "svelte-sonner": "catalog:web",
-        "tailwind-merge": "^3.7.0",
+        "tailwind-merge": "^3.7.1",
         "zod": "catalog:",
         "temporal-polyfill": "catalog:"
     },
